@@ -1,0 +1,17 @@
+# 开发配置
+server:
+  port: 8400
+
+spring:
+  application:
+    name: YUNKE-APM-Spring-Admin
+
+  security:
+    user:
+      name: yunke
+      password: 123456
+
+  boot:
+    admin:
+      ui:
+        title: ${spring.application.name}

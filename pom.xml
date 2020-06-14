@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.3.0.RELEASE</version>
+    <relativePath/>
+  </parent>
+
+  <modules>
+    <module>yunke-common</module>
+    <module>yunke-core</module>
+    <module>yunke-apm</module>
+  </modules>
+
+  <groupId>com.yunke</groupId>
+  <artifactId>yunke</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0</version>
+  <modelVersion>4.0.0</modelVersion>
+  <name>${project.artifactId}</name>
+  <description>云课内部管理系统项目工程总控</description>
+
+  <!-- 全局依赖统一版本号管理（包括 Spring Boot 在内的依赖版本请不要随意升级，跟项目组确认后再升级） -->
+  <properties>
+    <java.version>1.8</java.version>
+    <yunke.version>1.0</yunke.version>
+    <p6spy.version>3.9.0</p6spy.version>
+    <hutool.version>5.3.7</hutool.version>
+    <guava.version>29.0-jre</guava.version>
+    <ip2region.version>1.7</ip2region.version>
+    <justauth.version>1.3.3</justauth.version>
+    <common-io.version>2.7</common-io.version>
+    <fastjson.version>1.2.70</fastjson.version>
+    <spring-admin.version>2.2.3</spring-admin.version>
+    <easy-captcha.version>1.6.2</easy-captcha.version>
+    <myabtis-plus.verison>3.3.2</myabtis-plus.verison>
+    <security-jwt.version>1.1.1.RELEASE</security-jwt.version>
+    <dynamic-datasource.version>3.1.1</dynamic-datasource.version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!-- 跳过系统测试 -->
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

@@ -1,0 +1,36 @@
+package com.yunke.core.handler;
+
+import com.yunke.common.core.entity.R;
+import com.yunke.common.core.util.HttpUtil;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
+
+/**
+ * @author chachae
+ * @version v1.0
+ * @date 2020/6/13 22:39
+ */
+@Component
+public class YunkeWebLoginFailureHandler implements AuthenticationFailureHandler {
+
+  @Override
+  public void onAuthenticationFailure(HttpServletRequest httpServletRequest,
+      HttpServletResponse httpServletResponse, AuthenticationException exception)
+      throws IOException {
+    String message;
+    if (exception instanceof BadCredentialsException) {
+      message = "用户名或密码错误！";
+    } else if (exception instanceof LockedException) {
+      message = "用户已被锁定！";
+    } else {
+      message = "认证失败，请联系网站管理员！";
+    }
+    HttpUtil.makeFailureResponse(httpServletResponse, R.fail(message));
+  }
+}

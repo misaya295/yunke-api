@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>yunke</artifactId>
+    <groupId>com.yunke</groupId>
+    <version>1.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>yunke-core</artifactId>
+  <version>1.0</version>
+  <modelVersion>4.0.0</modelVersion>
+  <name>${project.artifactId}</name>
+  <description>云课内部管理系统核心服务模块</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.yunke</groupId>
+      <artifactId>yunke-common-datasource-starter</artifactId>
+      <version>${yunke.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.yunke</groupId>
+      <artifactId>yunke-common-redis-starter</artifactId>
+      <version>${yunke.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.yunke</groupId>
+      <artifactId>yunke-common-security-starter</artifactId>
+      <version>${yunke.version}</version>
+    </dependency>
+    <!-- thymeleaf -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    <!-- spring boot test 系统测试 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- 验证码 -->
+    <dependency>
+      <groupId>com.github.whvcse</groupId>
+      <artifactId>easy-captcha</artifactId>
+      <version>${easy-captcha.version}</version>
+    </dependency>
+    <!-- ip2region -->
+    <dependency>
+      <groupId>org.lionsoul</groupId>
+      <artifactId>ip2region</artifactId>
+      <version>${ip2region.version}</version>
+    </dependency>
+    <!-- justAuth -->
+    <dependency>
+      <groupId>com.xkcoding.justauth</groupId>
+      <artifactId>justauth-spring-boot-starter</artifactId>
+      <version>${justauth.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>com.yunke.core.YunkeCoreApplication</mainClass>
+          <layout>ZIP</layout>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

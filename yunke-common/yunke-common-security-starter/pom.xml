@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>yunke-common</artifactId>
+    <groupId>com.yunke</groupId>
+    <version>1.0</version>
+  </parent>
+
+  <artifactId>yunke-common-security-starter</artifactId>
+  <version>1.0</version>
+  <modelVersion>4.0.0</modelVersion>
+  <name>${project.artifactId}</name>
+  <description>云课内部管理系统 Spring-Security 配置自定义starter</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.yunke</groupId>
+      <artifactId>yunke-common-core</artifactId>
+      <version>${yunke.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
+
+</project>

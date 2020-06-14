@@ -1,0 +1,21 @@
+# system
+.DS_Store
+
+# project
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+# idea
+.idea
+*.iws
+*.iml
+*.ipr
+
+# plugins
+**/gen
+log/
+**/**/resources/rebel.xml
+spy.log

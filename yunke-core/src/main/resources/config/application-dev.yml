@@ -1,0 +1,89 @@
+# 开发配置
+server:
+  port: 8300
+
+spring:
+  application:
+    name: YUNKE-CORE
+  datasource:
+    dynamic:
+      p6spy: ${open.p6spy:true}
+      hikari:
+        connection-timeout: 20000
+        max-lifetime: 1500000
+        max-pool-size: 20
+        min-idle: 5
+        connection-test-query: SELECT 1
+        pool-name: YUNKE-CORE-HikariCP
+      primary: base
+      datasource:
+        base:
+          username: ${mysql.username:root}
+          password: ${mysql.password:123456}
+          driver-class-name: ${mysql.driver:com.mysql.cj.jdbc.Driver}
+          url: jdbc:mysql://${mysql.url:123.207.61.33}:${mysql.port:3306}/db-yunke?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  redis:
+    database: 0
+    host: ${redis.host:120.79.212.132}
+    port: ${redis.port:6379}
+    password: ${redis.password:}
+    lettuce:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+    timeout: 5000
+  boot:
+    admin:
+      client:
+        url: http://${spring-admin:106.15.202.13}:8400
+        username: yunke
+        password: 123456
+        instance:
+          prefer-ip: true
+  thymeleaf:
+    cache: false
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  type-aliases-package: com.yunke.common.core.entity
+  configuration:
+    jdbc-type-for-null: null
+    map-underscore-to-camel-case: true
+  global-config:
+    banner: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+yunke:
+  security:
+    enable: true
+    anon-uris: /actuator/**,/auth/captcha,/social/**,/resource/**,/oauth/token
+  frontUrl: http://localhost:9527
+
+justauth:
+  enabled: true
+  type:
+    github:
+      client-id: caf4644ad6d3070dab52
+      client-secret: 4410ff1d4335e1183166c653a477ccca0b3e6583
+      redirect-uri: http://api.cloudx.cn:8300/auth/social/github/callback
+    gitee:
+      client-id: 1f7714460552ac1260bace3204a91b55596b3289fac8d072375a6f03f6995673
+      client-secret: a87a6d242e47a635f38636790e110c848cff2ef722ddc4b05391ff4be456913f
+      redirect-uri: http://api.cloudx.cn:8300/auth/social/gitee/callback
+  cache:
+    type: redis
+    prefix: 'YUNKE::CLOUD::SOCIAL::STATE::'
+    timeout: 1h
