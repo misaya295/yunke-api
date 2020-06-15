@@ -27,8 +27,13 @@ public class UserRole {
    */
   private Long roleId;
 
-  public UserRole(Long userId) {
+  public UserRole(Long userId, Long roleId) {
     this.userId = userId;
+    this.roleId = roleId;
+  }
+
+  public UserRole(Long userId) {
+    this(userId, null);
   }
 
 }

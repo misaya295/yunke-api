@@ -43,8 +43,7 @@ public class UserManager {
     if (user != null) {
       List<UserDataPermission> permissions = userMapper.selectUserDataPermissions(user.getUserId());
       String deptIds = permissions.stream().map(p -> String.valueOf(p.getDeptId()))
-          .collect(Collectors.joining(
-              StrUtil.COMMA));
+          .collect(Collectors.joining(StrUtil.COMMA));
       user.setDeptIds(deptIds);
     }
     return user;
@@ -58,7 +57,7 @@ public class UserManager {
    */
   public String findUserPermissions(String username) {
     List<Menu> userPermissions = menuMapper.selectUserPermissions(username);
-    return userPermissions.stream().map(Menu::getPerms).collect(Collectors.joining(","));
+    return userPermissions.stream().map(Menu::getPerms).collect(Collectors.joining(StrUtil.COMMA));
   }
 
   /**
