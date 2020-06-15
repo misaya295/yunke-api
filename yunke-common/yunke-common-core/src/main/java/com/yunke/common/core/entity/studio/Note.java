@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
@@ -24,6 +25,7 @@ public class Note implements Serializable {
   /**
    * 备注类型
    */
+  @NotBlank(message = "{required}")
   private String noteName;
 
 

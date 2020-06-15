@@ -100,12 +100,6 @@ public class UserController {
     return result == null;
   }
 
-  /**
-   * 用户名检测
-   *
-   * @param user 用户数据
-   * @return boolean
-   */
   @GetMapping("options")
   public R<List<OptionTree<SystemUser>>> getTreeOption(SystemUser user) {
     List<OptionTree<SystemUser>> tree = userService.getSystemUserTree(user);

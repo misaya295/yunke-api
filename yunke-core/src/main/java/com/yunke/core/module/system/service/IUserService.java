@@ -66,7 +66,7 @@ public interface IUserService extends IService<SystemUser> {
    * @param deptIds 部门id
    * @return List<String>
    */
-  List<String> getUserIdByDeptIds(String[] deptIds);
+  List<Long> getUserIdByDeptIds(String[] deptIds);
 
 
   /**

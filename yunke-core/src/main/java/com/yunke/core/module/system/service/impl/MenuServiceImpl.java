@@ -124,7 +124,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public void deleteMeuns(String[] menuIds) {
+  public void deleteMenus(String[] menuIds) {
     List<String> result = roleMenuService.getRoleIdsByMenuId(menuIds);
     if (CollUtil.isNotEmpty(result)) {
       throw new ApiException("菜单存在角色关联，请移除相关角色后重试");

@@ -1,7 +1,7 @@
 package com.yunke.common.core.util;
 
-import com.yunke.common.core.entity.router.VueRouter;
 import com.yunke.common.core.entity.Tree;
+import com.yunke.common.core.entity.router.VueRouter;
 import java.util.ArrayList;
 import java.util.List;
 

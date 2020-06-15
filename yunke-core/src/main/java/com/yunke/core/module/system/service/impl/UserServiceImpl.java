@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import com.yunke.common.core.constant.SystemConstant;
 import com.yunke.common.core.entity.OptionTree;
 import com.yunke.common.core.entity.QueryParam;
@@ -25,6 +26,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -62,20 +64,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, SystemUser> impleme
 
   @Override
   public void updateLoginTime(String username) {
-    SystemUser user = new SystemUser();
-    user.setLastLoginTime(new Date());
     LambdaQueryWrapper<SystemUser> qw = new LambdaQueryWrapper<>();
     qw.eq(SystemUser::getUsername, username);
-    baseMapper.update(user, qw);
+    baseMapper.update(new SystemUser().setLastLoginTime(new Date()), qw);
   }
 
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void createUser(SystemUser user) {
     // 创建用户
-    user.setCreateTime(new Date());
-    user.setAvatar(SystemUser.DEFAULT_AVATAR);
-    user.setPassword(passwordEncoder.encode(SystemUser.DEFAULT_PASSWORD));
+    user
+        .setCreateTime(new Date())
+        .setAvatar(SystemUser.DEFAULT_AVATAR)
+        .setPassword(passwordEncoder.encode(SystemUser.DEFAULT_PASSWORD));
     save(user);
     // 保存用户角色
     String[] roles = StrUtil.splitToArray(user.getRoleId(), StrUtil.C_COMMA);
@@ -102,10 +103,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, SystemUser> impleme
   @Transactional(rollbackFor = Exception.class)
   public void updateUser(SystemUser user) {
     // 更新用户
-    user.setPassword(null);
-    user.setUsername(null);
-    user.setCreateTime(null);
-    user.setUpdateTime(new Date());
+    user
+        .setPassword(null)
+        .setUsername(null)
+        .setCreateTime(null)
+        .setUpdateTime(new Date());
     updateById(user);
     // 维护用户角色信息
     String[] userIds = {String.valueOf(user.getUserId())};
@@ -119,12 +121,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, SystemUser> impleme
   }
 
   @Override
-  public List<String> getUserIdByDeptIds(String[] deptIds) {
-    return baseMapper.selectList(
+  public List<Long> getUserIdByDeptIds(String[] deptIds) {
+    return Lists.transform(baseMapper.selectList(
         new LambdaQueryWrapper<SystemUser>()
-            .in(SystemUser::getDeptId, String.join(",", deptIds)))
-        .stream().map(user -> String.valueOf(user.getUserId()))
-        .collect(Collectors.toList());
+            .in(SystemUser::getDeptId, Arrays.asList(deptIds))), SystemUser::getUserId);
   }
 
   @Override
@@ -162,10 +162,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, SystemUser> impleme
     SystemUser params = new SystemUser();
     params.setPassword(passwordEncoder.encode(SystemUser.DEFAULT_PASSWORD));
 
-    List<String> list = Arrays.asList(usernames);
     baseMapper
-        .update(params, new LambdaQueryWrapper<SystemUser>().in(SystemUser::getUsername, list));
-
+        .update(params, new LambdaQueryWrapper<SystemUser>()
+            .in(SystemUser::getUsername, Arrays.asList(usernames)));
   }
 
   @Override
@@ -174,47 +173,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, SystemUser> impleme
     Collection<List<SystemUser>> values = users.stream()
         .collect(Collectors.groupingBy(SystemUser::getDeptId)).values();
 
-    List<OptionTree<SystemUser>> result = new ArrayList<>();
-
-    for (List<SystemUser> list : values) {
-      OptionTree<SystemUser> parent = new OptionTree<>();
-      parent.setValue((String.valueOf(list.get(0).getDeptId())));
-      parent.setLabel(list.get(0).getDeptName());
-
-      List<OptionTree<SystemUser>> children = new ArrayList<>();
-      for (SystemUser systemUser : list) {
-        OptionTree<SystemUser> child = new OptionTree<>();
-        child.setValue((String.valueOf(systemUser.getUserId())));
-        child.setLabel(systemUser.getFullName());
-        children.add(child);
-      }
-      parent.setChildren(children);
-      result.add(parent);
+    List<OptionTree<SystemUser>> result = new ArrayList<>(values.size());
+    for (List<SystemUser> curs : values) {
+      List<OptionTree<SystemUser>> trees = new ArrayList<>(curs.size());
+      curs.forEach(cur -> trees.add(new OptionTree<>(cur.getUserId(), cur.getFullName())));
+      result.add(new OptionTree<>(curs.get(0).getDeptId(), curs.get(0).getDeptName(), trees));
     }
 
     return result;
   }
 
   private void setUserRoles(SystemUser user, String[] roles) {
-    List<UserRole> userRoles = new ArrayList<>();
-    for (String roleId : roles) {
-      UserRole userRole = new UserRole();
-      userRole.setUserId(user.getUserId());
-      userRole.setRoleId(Long.valueOf(roleId));
-      userRoles.add(userRole);
-    }
+    List<UserRole> userRoles = new ArrayList<>(roles.length);
+    Stream.of(roles).forEach(id -> userRoles.add(new UserRole(user.getUserId(), Long.valueOf(id))));
     userRoleService.saveBatch(userRoles);
   }
 
   private void setUserDataPermissions(SystemUser user, String[] deptIds) {
-    List<UserDataPermission> userDataPermissions = new ArrayList<>();
-    for (String deptId : deptIds) {
-      UserDataPermission permission = new UserDataPermission();
-      permission.setUserId(user.getUserId());
-      permission.setDeptId(Long.valueOf(deptId));
-      userDataPermissions.add(permission);
-    }
-    userDataPermissionService.saveBatch(userDataPermissions);
+    List<UserDataPermission> udps = new ArrayList<>(deptIds.length);
+    Stream.of(deptIds)
+        .forEach(id -> udps.add(new UserDataPermission(user.getUserId(), Long.valueOf(id))));
+    userDataPermissionService.saveBatch(udps);
   }
 
   private boolean hasCurrentUser(String[] userIds) {

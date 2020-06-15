@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 用户数据权限关联表(TUserDept)表实体类
@@ -13,6 +14,7 @@ import lombok.Data;
  * @since 2020-05-28 12:03:36
  */
 @Data
+@NoArgsConstructor
 @TableName("t_user_data_permission")
 public class UserDataPermission implements Serializable {
 
@@ -22,5 +24,14 @@ public class UserDataPermission implements Serializable {
   private Long userId;
 
   private Long deptId;
+
+  public UserDataPermission(Long userId, Long deptId) {
+    this.userId = userId;
+    this.deptId = deptId;
+  }
+
+  public UserDataPermission(Long userId) {
+    this(userId, null);
+  }
 
 }

@@ -75,5 +75,5 @@ public interface IMenuService extends IService<Menu> {
    *
    * @param menuIds menuIds
    */
-  void deleteMeuns(String[] menuIds);
+  void deleteMenus(String[] menuIds);
 }

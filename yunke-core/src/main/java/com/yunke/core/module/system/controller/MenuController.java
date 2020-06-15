@@ -77,7 +77,7 @@ public class MenuController {
   @ControllerEndpoint(operation = "删除角色", exceptionMessage = "删除菜单失败")
   public void deleteMenus(@NotBlank(message = "{required}") @PathVariable String menuIds) {
     String[] ids = menuIds.split(StrUtil.COMMA);
-    this.menuService.deleteMeuns(ids);
+    this.menuService.deleteMenus(ids);
   }
 
   @PutMapping
