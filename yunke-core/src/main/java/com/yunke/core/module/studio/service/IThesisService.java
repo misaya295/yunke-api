@@ -11,4 +11,12 @@ import com.yunke.common.core.entity.studio.Thesis;
  */
 public interface IThesisService extends IService<Thesis> {
 
+    /**
+     * 新增论文任务
+     *
+     * @param thesis 论文任务对象
+     */
+    void createJob(Thesis thesis);
+
+
 }

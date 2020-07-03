@@ -19,4 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("studio/copyright")
 public class CopyrightController {
 
+    //TODO
+
+
 }
