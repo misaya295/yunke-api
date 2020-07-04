@@ -20,7 +20,7 @@ public class Items implements Serializable {
    * 项目ID
    */
   @TableId(type = IdType.INPUT)
-  private String itemsUuid;
+  private String itemsId;
   /**
    * 标题
    */

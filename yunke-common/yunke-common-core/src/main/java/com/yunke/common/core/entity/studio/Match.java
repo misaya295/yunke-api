@@ -20,7 +20,7 @@ public class Match implements Serializable {
    * 比赛ID
    */
   @TableId(type = IdType.INPUT)
-  private String matchUuid;
+  private String matchId;
   /**
    * 比赛名称
    */
