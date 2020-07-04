@@ -16,7 +16,7 @@ public interface IThesisService extends IService<Thesis> {
      *
      * @param thesis 论文任务对象
      */
-    void createJob(Thesis thesis);
+    void createTask(Thesis thesis);
 
 
 }

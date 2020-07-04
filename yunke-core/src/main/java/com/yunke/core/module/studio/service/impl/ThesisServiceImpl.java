@@ -1,5 +1,6 @@
 package com.yunke.core.module.studio.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yunke.common.core.entity.studio.Thesis;
 import com.yunke.common.core.util.DateUtil;
@@ -24,7 +25,9 @@ public class ThesisServiceImpl extends ServiceImpl<ThesisMapper, Thesis> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void createJob(Thesis thesis) {
+    public void createTask(Thesis thesis) {
+        //生成uuid
+        thesis.setThesisUuid(IdUtil.fastSimpleUUID());
         //保存当前时间
         thesis.setTime(DateUtil.getDateFormat(new Date(),"yyyy-MM-dd- HH:mm:ss"));
         this.save(thesis);
