@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunke.core.module.studio.mapper.FundingMapper">
+
+  <sql id="baseSql">
+    SELECT  f.id,
+            f.verifier_id,
+            f.certifier_id,
+            f.name,
+            f.type,
+            f.apply_time,
+            f.success_time,
+            f.invoice,
+            f.cost,
+            f.card,
+            f.proposer_id,
+            f.state,
+            f.task_uuid
+    FROM t_funding f
+    where 1=1
+  </sql>
+
+  <select id="pageFundingDetail" parameterType="Funding" resultType="Funding">
+    <include refid="baseSql"/>
+      <if test="funding.id != null and funding.id != ''">
+          AND f.id like CONCAT('%',#{funding.id},'%')
+      </if>
+      <if test="funding.state != null and funding.state != ''">
+          AND f.state = #{funding.state}
+      </if>
+  </select>
+
+    <delete id="deleteByFundingid">
+        delete from t_funding where 1=1
+        <if test="array != null and array.length > 0">
+             <foreach collection="array" open=" and id in(" close=")" item="id" separator=",">
+                  #{id}
+              </foreach>
+        </if>
+    </delete>
+
+</mapper>

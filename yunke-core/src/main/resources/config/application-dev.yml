@@ -17,9 +17,9 @@ spring:
       datasource:
         base:
           username: ${mysql.username:root}
-          password: ${mysql.password:123456}
+          password: ${mysql.password:root}
           driver-class-name: ${mysql.driver:com.mysql.cj.jdbc.Driver}
-          url: jdbc:mysql://${mysql.url:123.207.61.33}:${mysql.port:3306}/db-yunke?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+          url: jdbc:mysql://${mysql.url:127.0.0.1}:${mysql.port:3306}/db-yunke?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
