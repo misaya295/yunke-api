@@ -46,10 +46,10 @@ public class FundingController {
     }
 
     /*
-    请求类型：GET
-       参数：经费id
-       作用：根据经费id删除数据
-  */
+     *   请求类型：GET
+     *  @param fundingIds 经费id
+     *  作用：根据经费id删除数据
+     */
     @DeleteMapping("/delete")
     @ControllerEndpoint(operation = "删除该经费数据", exceptionMessage = "删除该经费数据失败")
     public void deleteUsers(@NotBlank(message = "{required}") @PathVariable int[] fundingIds) {
