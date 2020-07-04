@@ -20,7 +20,7 @@ public class Thesis implements Serializable {
    * 论文ID
    */
   @TableId(type = IdType.INPUT)
-  private String thesisUuid;
+  private String thesisId;
   /**
    * 标题
    */
