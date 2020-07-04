@@ -52,7 +52,7 @@ public class Funding implements Serializable {
   /**
    * 费用
    */
-  private Object cost;
+  private Double cost;
   /**
    * 银行卡号
    */
@@ -68,7 +68,7 @@ public class Funding implements Serializable {
   /**
    * 对应的任务UUID
    */
-  private String taskUuid;
+  private String taskId;
 
 
 }

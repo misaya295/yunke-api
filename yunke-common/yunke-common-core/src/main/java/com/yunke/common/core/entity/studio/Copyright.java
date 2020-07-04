@@ -20,7 +20,7 @@ public class Copyright implements Serializable {
    * 软件著作权ID
    */
   @TableId(type = IdType.INPUT)
-  private String copyrightUuid;
+  private String copyrightId;
   /**
    * 标题
    */

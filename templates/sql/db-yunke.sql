@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 14/06/2020 14:52:42
+ Date: 04/07/2020 15:56:42
 */
 
 SET NAMES utf8mb4;
@@ -22,19 +22,19 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `oauth_client_details`;
 CREATE TABLE `oauth_client_details` (
-  `client_id` varchar(255) NOT NULL,
-  `resource_ids` varchar(255) DEFAULT NULL,
-  `client_secret` varchar(255) NOT NULL,
-  `scope` varchar(255) NOT NULL,
-  `authorized_grant_types` varchar(255) NOT NULL,
-  `web_server_redirect_uri` varchar(255) DEFAULT NULL,
-  `authorities` varchar(255) DEFAULT NULL,
-  `access_token_validity` int NOT NULL,
-  `refresh_token_validity` int DEFAULT NULL,
-  `additional_information` varchar(4096) DEFAULT NULL,
-  `autoapprove` tinyint DEFAULT NULL,
-  `origin_secret` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`client_id`) USING BTREE
+                                        `client_id` varchar(255) NOT NULL,
+                                        `resource_ids` varchar(255) DEFAULT NULL,
+                                        `client_secret` varchar(255) NOT NULL,
+                                        `scope` varchar(255) NOT NULL,
+                                        `authorized_grant_types` varchar(255) NOT NULL,
+                                        `web_server_redirect_uri` varchar(255) DEFAULT NULL,
+                                        `authorities` varchar(255) DEFAULT NULL,
+                                        `access_token_validity` int NOT NULL,
+                                        `refresh_token_validity` int DEFAULT NULL,
+                                        `additional_information` varchar(4096) DEFAULT NULL,
+                                        `autoapprove` tinyint DEFAULT NULL,
+                                        `origin_secret` varchar(255) DEFAULT NULL,
+                                        PRIMARY KEY (`client_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='OAuth2 认证授权客户端表';
 
 -- ----------------------------
@@ -50,11 +50,11 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `oauth_code`;
 CREATE TABLE `oauth_code` (
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `code` varchar(255) DEFAULT NULL,
-  `authentication` blob,
-  KEY `code_index` (`code`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='OAuth2认证授权授权码表';
+                              `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                              `code` varchar(255) DEFAULT NULL,
+                              `authentication` blob,
+                              KEY `code_index` (`code`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='OAuth2认证授权授权码表';
 
 -- ----------------------------
 -- Records of oauth_code
@@ -67,19 +67,19 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_certificate`;
 CREATE TABLE `t_certificate` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '考证ID',
-  `user_id` int NOT NULL COMMENT '考证人ID',
-  `type` varchar(32) DEFAULT NULL COMMENT '类型',
-  `title` varchar(60) NOT NULL COMMENT '证书名称',
-  `cost` double(10,2) DEFAULT NULL COMMENT '费用',
-  `time` varchar(32) DEFAULT NULL COMMENT '考证时间',
-  `invoice` varchar(255) DEFAULT NULL COMMENT '发票',
-  `certificate` varchar(255) DEFAULT NULL COMMENT '证书',
-  `success` int DEFAULT NULL COMMENT '通过状态(0:失败/1:成功)',
-  `reimbursement` int DEFAULT NULL COMMENT '是否已报销（0否/1是）',
-  `state` int NOT NULL COMMENT '状态（0正在考取/1已完成）',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `考证人` (`user_id`) USING BTREE
+                                 `id` int NOT NULL AUTO_INCREMENT COMMENT '考证ID',
+                                 `user_id` int NOT NULL COMMENT '考证人ID',
+                                 `type` varchar(32) DEFAULT NULL COMMENT '类型',
+                                 `title` varchar(60) NOT NULL COMMENT '证书名称',
+                                 `cost` double(10,2) DEFAULT NULL COMMENT '费用',
+                                 `time` varchar(32) DEFAULT NULL COMMENT '考证时间',
+                                 `invoice` varchar(255) DEFAULT NULL COMMENT '发票',
+                                 `certificate` varchar(255) DEFAULT NULL COMMENT '证书',
+                                 `success` int DEFAULT NULL COMMENT '通过状态(0:失败/1:成功)',
+                                 `reimbursement` int DEFAULT NULL COMMENT '是否已报销（0否/1是）',
+                                 `state` int NOT NULL COMMENT '状态（0正在考取/1已完成）',
+                                 PRIMARY KEY (`id`) USING BTREE,
+                                 KEY `考证人` (`user_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='资格证表';
 
 -- ----------------------------
@@ -93,21 +93,21 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_copyright`;
 CREATE TABLE `t_copyright` (
-  `copyright_uuid` varchar(32) NOT NULL COMMENT '软件著作权ID',
-  `title` varchar(100) NOT NULL COMMENT '标题',
-  `introduction` varchar(255) DEFAULT NULL COMMENT '简介',
-  `start_time` varchar(32) DEFAULT NULL COMMENT '开始时间',
-  `end_time` varchar(32) DEFAULT NULL COMMENT '结束时间',
-  `certificate` varchar(255) DEFAULT NULL COMMENT '证书',
-  `application_form` varchar(100) DEFAULT NULL COMMENT '申请书',
-  `origin_file` varchar(100) DEFAULT NULL COMMENT '源文件',
-  `agreement` varchar(100) DEFAULT NULL COMMENT '软件协议',
-  `cost` double(10,2) DEFAULT NULL COMMENT '费用',
-  `invoice` varchar(255) DEFAULT NULL COMMENT '发票',
-  `item_uuid` varchar(32) DEFAULT NULL COMMENT '项目ID',
-  `state` int DEFAULT NULL COMMENT '状态(1:进行中/2:已完成/3:申报中)',
-  `reimbursement` int DEFAULT NULL COMMENT '是否已报销（0否/1是）',
-  PRIMARY KEY (`copyright_uuid`) USING BTREE
+                               `copyright_id` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '软件著作权ID',
+                               `title` varchar(100) NOT NULL COMMENT '标题',
+                               `introduction` varchar(255) DEFAULT NULL COMMENT '简介',
+                               `start_time` varchar(32) DEFAULT NULL COMMENT '开始时间',
+                               `end_time` varchar(32) DEFAULT NULL COMMENT '结束时间',
+                               `certificate` varchar(255) DEFAULT NULL COMMENT '证书',
+                               `application_form` varchar(100) DEFAULT NULL COMMENT '申请书',
+                               `origin_file` varchar(100) DEFAULT NULL COMMENT '源文件',
+                               `agreement` varchar(100) DEFAULT NULL COMMENT '软件协议',
+                               `cost` double(10,2) DEFAULT NULL COMMENT '费用',
+                               `invoice` varchar(255) DEFAULT NULL COMMENT '发票',
+                               `item_uuid` varchar(32) DEFAULT NULL COMMENT '项目ID',
+                               `state` int DEFAULT NULL COMMENT '状态(1:进行中/2:已完成/3:申报中)',
+                               `reimbursement` int DEFAULT NULL COMMENT '是否已报销（0否/1是）',
+                               PRIMARY KEY (`copyright_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='软件著作权_任务表';
 
 -- ----------------------------
@@ -121,14 +121,14 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_dept`;
 CREATE TABLE `t_dept` (
-  `dept_id` bigint NOT NULL AUTO_INCREMENT COMMENT '部门ID',
-  `parent_id` bigint NOT NULL COMMENT '上级部门ID',
-  `dept_name` varchar(100) NOT NULL COMMENT '部门名称',
-  `order_num` int DEFAULT NULL COMMENT '排序',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  PRIMARY KEY (`dept_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 COMMENT='部门表';
+                          `dept_id` bigint NOT NULL AUTO_INCREMENT COMMENT '部门ID',
+                          `parent_id` bigint NOT NULL COMMENT '上级部门ID',
+                          `dept_name` varchar(100) NOT NULL COMMENT '部门名称',
+                          `order_num` int DEFAULT NULL COMMENT '排序',
+                          `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+                          `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+                          PRIMARY KEY (`dept_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='部门表';
 
 -- ----------------------------
 -- Records of t_dept
@@ -149,23 +149,23 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_funding`;
 CREATE TABLE `t_funding` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `verifier_id` int DEFAULT NULL COMMENT '审核人ID',
-  `certifier_id` int DEFAULT NULL COMMENT '证明人ID',
-  `name` varchar(60) NOT NULL COMMENT '名称',
-  `type` varchar(100) DEFAULT NULL COMMENT '类型',
-  `apply_time` varchar(32) NOT NULL COMMENT '申请时间',
-  `success_time` varchar(32) DEFAULT NULL COMMENT '报销成功时间',
-  `invoice` varchar(255) DEFAULT NULL COMMENT '发票',
-  `cost` double(10,2) DEFAULT NULL COMMENT '费用',
-  `card` varchar(32) DEFAULT NULL COMMENT '银行卡号',
-  `proposer_id` int NOT NULL COMMENT '申请人的ID',
-  `state` int DEFAULT NULL COMMENT '申请状态(1申请中/2报销中/3报销成功/4申请失败)',
-  `task_uuid` varchar(32) DEFAULT NULL COMMENT '对应的任务UUID',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `经手人` (`verifier_id`) USING BTREE,
-  KEY `proverUUID` (`certifier_id`) USING BTREE,
-  KEY `proposer_id` (`proposer_id`) USING BTREE
+                             `id` int NOT NULL AUTO_INCREMENT COMMENT '自增id',
+                             `verifier_id` int DEFAULT NULL COMMENT '审核人ID',
+                             `certifier_id` int DEFAULT NULL COMMENT '证明人ID',
+                             `name` varchar(60) NOT NULL COMMENT '名称',
+                             `type` varchar(100) DEFAULT NULL COMMENT '类型',
+                             `apply_time` varchar(32) NOT NULL COMMENT '申请时间',
+                             `success_time` varchar(32) DEFAULT NULL COMMENT '报销成功时间',
+                             `invoice` varchar(255) DEFAULT NULL COMMENT '发票',
+                             `cost` double(10,2) DEFAULT NULL COMMENT '费用',
+                             `card` varchar(32) DEFAULT NULL COMMENT '银行卡号',
+                             `proposer_id` int NOT NULL COMMENT '申请人的ID',
+                             `state` int DEFAULT NULL COMMENT '申请状态(1申请中/2报销中/3报销成功/4申请失败)',
+                             `task_id` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '对应的任务编号',
+                             PRIMARY KEY (`id`) USING BTREE,
+                             KEY `经手人` (`verifier_id`) USING BTREE,
+                             KEY `proverUUID` (`certifier_id`) USING BTREE,
+                             KEY `proposer_id` (`proposer_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='经费表';
 
 -- ----------------------------
@@ -179,18 +179,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_items`;
 CREATE TABLE `t_items` (
-  `items_uuid` varchar(32) NOT NULL COMMENT '项目ID',
-  `title` varchar(100) NOT NULL COMMENT '标题',
-  `introduction` varchar(1500) DEFAULT NULL COMMENT '简介',
-  `start_time` varchar(32) DEFAULT NULL COMMENT '开始时间',
-  `end_time` varchar(32) DEFAULT NULL COMMENT '结束时间',
-  `cost` double(10,2) DEFAULT NULL COMMENT '费用',
-  `invoice` varchar(255) DEFAULT NULL COMMENT '发票',
-  `specification` varchar(255) DEFAULT NULL COMMENT '项目说明书',
-  `url` varchar(255) DEFAULT NULL COMMENT '源文件',
-  `state` int DEFAULT NULL COMMENT '状态(1:进行中/2:已完成)',
-  `reimbursement` int DEFAULT NULL COMMENT '是否已报销（0否/1是）',
-  PRIMARY KEY (`items_uuid`) USING BTREE
+                           `items_id` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '项目ID',
+                           `title` varchar(100) NOT NULL COMMENT '标题',
+                           `introduction` varchar(1500) DEFAULT NULL COMMENT '简介',
+                           `start_time` varchar(32) DEFAULT NULL COMMENT '开始时间',
+                           `end_time` varchar(32) DEFAULT NULL COMMENT '结束时间',
+                           `cost` double(10,2) DEFAULT NULL COMMENT '费用',
+                           `invoice` varchar(255) DEFAULT NULL COMMENT '发票',
+                           `specification` varchar(255) DEFAULT NULL COMMENT '项目说明书',
+                           `url` varchar(255) DEFAULT NULL COMMENT '源文件',
+                           `state` int DEFAULT NULL COMMENT '状态(1:进行中/2:已完成)',
+                           `reimbursement` int DEFAULT NULL COMMENT '是否已报销（0否/1是）',
+                           PRIMARY KEY (`items_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='项目_任务表';
 
 -- ----------------------------
@@ -204,18 +204,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_log`;
 CREATE TABLE `t_log` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '日志ID',
-  `username` varchar(50) DEFAULT NULL COMMENT '操作用户',
-  `operation` text COMMENT '操作内容',
-  `time` decimal(11,0) DEFAULT NULL COMMENT '耗时',
-  `method` text COMMENT '操作方法',
-  `params` text COMMENT '方法参数',
-  `ip` varchar(64) DEFAULT NULL COMMENT '操作者IP',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `location` varchar(50) DEFAULT NULL COMMENT '操作地点',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `t_log_create_time` (`create_time`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=136 DEFAULT CHARSET=utf8 COMMENT='用户操作日志表';
+                         `id` bigint NOT NULL AUTO_INCREMENT COMMENT '日志ID',
+                         `username` varchar(50) DEFAULT NULL COMMENT '操作用户',
+                         `operation` text COMMENT '操作内容',
+                         `time` decimal(11,0) DEFAULT NULL COMMENT '耗时',
+                         `method` text COMMENT '操作方法',
+                         `params` text COMMENT '方法参数',
+                         `ip` varchar(64) DEFAULT NULL COMMENT '操作者IP',
+                         `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+                         `location` varchar(50) DEFAULT NULL COMMENT '操作地点',
+                         PRIMARY KEY (`id`) USING BTREE,
+                         KEY `t_log_create_time` (`create_time`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=138 DEFAULT CHARSET=utf8mb4 COMMENT='用户操作日志表';
 
 -- ----------------------------
 -- Records of t_log
@@ -356,6 +356,8 @@ INSERT INTO `t_log` VALUES (132, '201704044', '新增菜单', 140, 'com.yunke.co
 INSERT INTO `t_log` VALUES (133, '201704044', '更新角色', 300, 'com.yunke.core.module.system.controller.RoleController.updateRole()', ' role: \"Role(roleId=1, roleName=null, remark=管理员, createTime=null, updateTime=Sun Jun 14 13:39:40 CST 2020, menuIds=1,3,135,130,13,12,11,4,131,16,15,14,5,132,19,18,17,6,21,133,22,20,163,165,164,166,167,2,180,10,136,24,150,152,151,212,154,155,168,169,170,171,172)\"', '127.0.0.1', '2020-06-14 13:39:40', '内网IP|0|0|内网IP|内网IP');
 INSERT INTO `t_log` VALUES (134, '201704044', '新增菜单', 81, 'com.yunke.core.module.system.controller.MenuController.addMenu()', ' menu: \"Menu(menuId=213, parentId=212, menuName=证书管理, path=/studio/certificate, component=yunke/studio/role/Index, perms=, icon=, type=0, orderNum=1, createTime=Sun Jun 14 13:41:27 CST 2020, updateTime=null)\"', '127.0.0.1', '2020-06-14 13:41:27', '内网IP|0|0|内网IP|内网IP');
 INSERT INTO `t_log` VALUES (135, '201704044', '更新角色', 372, 'com.yunke.core.module.system.controller.RoleController.updateRole()', ' role: \"Role(roleId=1, roleName=null, remark=管理员, createTime=null, updateTime=Sun Jun 14 13:41:37 CST 2020, menuIds=1,3,135,130,13,12,11,4,131,16,15,14,5,19,132,18,17,6,133,22,21,20,163,164,165,166,167,2,180,10,136,24,150,152,151,212,213,154,155,168,169,170,171,172)\"', '127.0.0.1', '2020-06-14 13:41:38', '内网IP|0|0|内网IP|内网IP');
+INSERT INTO `t_log` VALUES (136, '陈岳欣', '更新用户', 167, 'com.yunke.core.module.system.controller.UserController.updateUser()', ' user: \"SystemUser(userId=2, username=null, fullName=李四, password=null, deptId=47, email=scott@hotmail.com, mobile=17720888888, status=1, createTime=null, updateTime=Sun Jun 14 16:07:53 CST 2020, lastLoginTime=null, sex=2, avatar=BiazfanxmamNRoxxVxka.png, description=null, noteId=1, noteName=教师, deptName=后端开发, createTimeFrom=null, createTimeTo=null, roleId=6,3, roleName=教师,系统监控员, deptIds=4,10,47,48,49)\"', '127.0.0.1', '2020-06-14 16:07:53', '内网IP|0|0|内网IP|内网IP');
+INSERT INTO `t_log` VALUES (137, '陈岳欣', '删除角色', 168, 'com.yunke.core.module.system.controller.MenuController.deleteMenus()', ' menuIds: \"183\"', '127.0.0.1', '2020-06-14 16:09:02', '内网IP|0|0|内网IP|内网IP');
 COMMIT;
 
 -- ----------------------------
@@ -363,22 +365,23 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_login_log`;
 CREATE TABLE `t_login_log` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `username` varchar(50) NOT NULL COMMENT '用户名',
-  `login_time` datetime NOT NULL COMMENT '登录时间',
-  `location` varchar(50) DEFAULT NULL COMMENT '登录地点',
-  `ip` varchar(50) DEFAULT NULL COMMENT 'IP地址',
-  `system` varchar(50) DEFAULT NULL COMMENT '操作系统',
-  `browser` varchar(50) DEFAULT NULL COMMENT '浏览器',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `t_login_log_login_time` (`login_time`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=75 DEFAULT CHARSET=utf8 COMMENT='登录日志表';
+                               `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+                               `username` varchar(50) NOT NULL COMMENT '用户名',
+                               `login_time` datetime NOT NULL COMMENT '登录时间',
+                               `location` varchar(50) DEFAULT NULL COMMENT '登录地点',
+                               `ip` varchar(50) DEFAULT NULL COMMENT 'IP地址',
+                               `system` varchar(50) DEFAULT NULL COMMENT '操作系统',
+                               `browser` varchar(50) DEFAULT NULL COMMENT '浏览器',
+                               PRIMARY KEY (`id`) USING BTREE,
+                               KEY `t_login_log_login_time` (`login_time`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COMMENT='登录日志表';
 
 -- ----------------------------
 -- Records of t_login_log
 -- ----------------------------
 BEGIN;
 INSERT INTO `t_login_log` VALUES (1, 'chachae', '2020-05-27 18:42:49', '内网IP|0|0|内网IP|内网IP', '127.0.0.1', 'OSX', 'MSEdge');
+INSERT INTO `t_login_log` VALUES (75, '陈岳欣', '2020-06-14 15:49:43', '内网IP|0|0|内网IP|内网IP', '127.0.0.1', 'Mac OS X 10.15.4', 'Microsoft Edge 83');
 INSERT INTO `t_login_log` VALUES (74, '陈岳欣', '2020-06-14 14:44:10', '内网IP|0|0|内网IP|内网IP', '127.0.0.1', 'Mac OS X 10.15.4', 'Microsoft Edge 83');
 INSERT INTO `t_login_log` VALUES (72, '201704044', '2020-06-14 13:49:54', '内网IP|0|0|内网IP|内网IP', '127.0.0.1', 'Mac OS X 10.15.4', 'Microsoft Edge 83');
 INSERT INTO `t_login_log` VALUES (73, '201704044', '2020-06-14 14:23:43', '内网IP|0|0|内网IP|内网IP', '127.0.0.1', 'Mac OS X 10.15.4', 'Microsoft Edge 83');
@@ -389,18 +392,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_match`;
 CREATE TABLE `t_match` (
-  `match_uuid` varchar(32) NOT NULL COMMENT '比赛ID',
-  `title` varchar(100) NOT NULL COMMENT '比赛名称',
-  `level` int DEFAULT NULL COMMENT '比赛等级(0:国家级/1:省级/2:校级)',
-  `type` int DEFAULT NULL COMMENT '比赛类型（0:个人/1:团队）',
-  `application_form` varchar(255) DEFAULT NULL COMMENT '申请书',
-  `time` varchar(32) DEFAULT NULL COMMENT '比赛时间',
-  `cost` double(10,2) DEFAULT NULL COMMENT '费用',
-  `invoice` varchar(255) DEFAULT NULL COMMENT '发票',
-  `certificate` varchar(255) DEFAULT NULL COMMENT '证书',
-  `state` int DEFAULT NULL COMMENT '状态(1:进行中/2:已结束)',
-  `reimbursement` int DEFAULT NULL COMMENT '是否已报销（0否/1是）',
-  PRIMARY KEY (`match_uuid`) USING BTREE
+                           `match_id` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '比赛ID',
+                           `title` varchar(100) NOT NULL COMMENT '比赛名称',
+                           `level` int DEFAULT NULL COMMENT '比赛等级(0:国家级/1:省级/2:校级)',
+                           `type` int DEFAULT NULL COMMENT '比赛类型（0:个人/1:团队）',
+                           `application_form` varchar(255) DEFAULT NULL COMMENT '申请书',
+                           `time` varchar(32) DEFAULT NULL COMMENT '比赛时间',
+                           `cost` double(10,2) DEFAULT NULL COMMENT '费用',
+                           `invoice` varchar(255) DEFAULT NULL COMMENT '发票',
+                           `certificate` varchar(255) DEFAULT NULL COMMENT '证书',
+                           `state` int DEFAULT NULL COMMENT '状态(1:进行中/2:已结束)',
+                           `reimbursement` int DEFAULT NULL COMMENT '是否已报销（0否/1是）',
+                           PRIMARY KEY (`match_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='比赛_任务表';
 
 -- ----------------------------
@@ -414,14 +417,14 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_match_member_awards`;
 CREATE TABLE `t_match_member_awards` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `user_id` int DEFAULT NULL COMMENT '用户id(为空是团队赛，团队奖)',
-  `rank_code` int DEFAULT NULL COMMENT '奖项(1：一等，2：二等，3：三等，4：特等，5：优胜，6、无)',
-  `task_uuid` varchar(32) NOT NULL COMMENT '关联 比赛UUID',
-  `certificate` varchar(255) DEFAULT NULL COMMENT '奖状',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `userUUID` (`user_id`) USING BTREE,
-  KEY `taskUUID` (`task_uuid`) USING BTREE
+                                         `id` int NOT NULL AUTO_INCREMENT COMMENT '自增id',
+                                         `user_id` int DEFAULT NULL COMMENT '用户id(为空是团队赛，团队奖)',
+                                         `rank_code` int DEFAULT NULL COMMENT '奖项(1：一等，2：二等，3：三等，4：特等，5：优胜，6、无)',
+                                         `task_uuid` varchar(32) NOT NULL COMMENT '关联 比赛UUID',
+                                         `certificate` varchar(255) DEFAULT NULL COMMENT '奖状',
+                                         PRIMARY KEY (`id`) USING BTREE,
+                                         KEY `userUUID` (`user_id`) USING BTREE,
+                                         KEY `taskUUID` (`task_uuid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='比赛人员奖项表';
 
 -- ----------------------------
@@ -435,14 +438,14 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_members`;
 CREATE TABLE `t_members` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '标识字段',
-  `user_id` int NOT NULL COMMENT '成员ID',
-  `task_uuid` varchar(32) NOT NULL COMMENT '任务ID',
-  `state` int NOT NULL COMMENT '1为负责人，2为成员，3为指导老师',
-  PRIMARY KEY (`id`,`user_id`,`task_uuid`) USING BTREE,
-  KEY `taskUUID` (`task_uuid`) USING BTREE,
-  KEY `id` (`id`) USING BTREE,
-  KEY `task_user` (`user_id`) USING BTREE
+                             `id` int NOT NULL AUTO_INCREMENT COMMENT '标识字段',
+                             `user_id` int NOT NULL COMMENT '成员ID',
+                             `task_uuid` varchar(32) NOT NULL COMMENT '任务ID',
+                             `state` int NOT NULL COMMENT '1为负责人，2为成员，3为指导老师',
+                             PRIMARY KEY (`id`,`user_id`,`task_uuid`) USING BTREE,
+                             KEY `taskUUID` (`task_uuid`) USING BTREE,
+                             KEY `id` (`id`) USING BTREE,
+                             KEY `task_user` (`user_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='任务成员的中间表';
 
 -- ----------------------------
@@ -456,21 +459,21 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_menu`;
 CREATE TABLE `t_menu` (
-  `menu_id` bigint NOT NULL AUTO_INCREMENT COMMENT '菜单/按钮ID',
-  `parent_id` bigint NOT NULL COMMENT '上级菜单ID',
-  `menu_name` varchar(50) NOT NULL COMMENT '菜单/按钮名称',
-  `path` varchar(255) DEFAULT NULL COMMENT '对应路由path',
-  `component` varchar(255) DEFAULT NULL COMMENT '对应路由组件component',
-  `perms` varchar(50) DEFAULT NULL COMMENT '权限表达式',
-  `icon` varchar(50) DEFAULT NULL COMMENT '图标',
-  `type` char(2) NOT NULL COMMENT '类型 0菜单 1按钮',
-  `order_num` double(20,0) DEFAULT NULL COMMENT '排序',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  PRIMARY KEY (`menu_id`) USING BTREE,
-  KEY `t_menu_parent_id` (`parent_id`) USING BTREE,
-  KEY `t_menu_menu_id` (`menu_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=214 DEFAULT CHARSET=utf8 COMMENT='菜单表';
+                          `menu_id` bigint NOT NULL AUTO_INCREMENT COMMENT '菜单/按钮ID',
+                          `parent_id` bigint NOT NULL COMMENT '上级菜单ID',
+                          `menu_name` varchar(50) NOT NULL COMMENT '菜单/按钮名称',
+                          `path` varchar(255) DEFAULT NULL COMMENT '对应路由path',
+                          `component` varchar(255) DEFAULT NULL COMMENT '对应路由组件component',
+                          `perms` varchar(50) DEFAULT NULL COMMENT '权限表达式',
+                          `icon` varchar(50) DEFAULT NULL COMMENT '图标',
+                          `type` char(2) NOT NULL COMMENT '类型 0菜单 1按钮',
+                          `order_num` double(20,0) DEFAULT NULL COMMENT '排序',
+                          `create_time` datetime NOT NULL COMMENT '创建时间',
+                          `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+                          PRIMARY KEY (`menu_id`) USING BTREE,
+                          KEY `t_menu_parent_id` (`parent_id`) USING BTREE,
+                          KEY `t_menu_menu_id` (`menu_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=214 DEFAULT CHARSET=utf8mb4 COMMENT='菜单表';
 
 -- ----------------------------
 -- Records of t_menu
@@ -520,7 +523,6 @@ INSERT INTO `t_menu` VALUES (172, 168, '富文本编辑器', '/components/tinymc
 INSERT INTO `t_menu` VALUES (180, 2, '监控面板', '/monitor/dashboard', 'yunke/monitor/dashboard/Index', 'monitor:dashboard', '', '0', 1, '2020-04-13 09:44:09', '2020-04-13 11:38:00');
 INSERT INTO `t_menu` VALUES (181, 154, '个人博客', '/others/blog', 'yunke/others/blog/Index', '', '', '0', 2, '2020-04-13 16:11:48', '2020-04-13 16:12:26');
 INSERT INTO `t_menu` VALUES (182, 154, '数据权限', '/others/datapermission', 'yunke/others/datapermission/Index', 'others:datapermission', '', '0', 3, '2020-04-14 14:51:35', '2020-04-14 15:37:19');
-INSERT INTO `t_menu` VALUES (183, 0, '任务调度', '/job', 'Layout', '', 'el-icon-alarm-clock', '0', 5, '2020-04-14 18:39:35', '2020-04-14 18:39:53');
 INSERT INTO `t_menu` VALUES (212, 0, '工作室管理', '/studio', 'Layout', '', 'el-icon-notebook-2', '0', 3, '2020-06-14 13:39:04', NULL);
 INSERT INTO `t_menu` VALUES (213, 212, '证书管理', '/studio/certificate', 'yunke/studio/certificate/Index', '', '', '0', 1, '2020-06-14 13:41:27', NULL);
 COMMIT;
@@ -530,9 +532,9 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_note`;
 CREATE TABLE `t_note` (
-  `note_id` int NOT NULL AUTO_INCREMENT COMMENT '备注主键',
-  `note_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注类型',
-  PRIMARY KEY (`note_id`)
+                          `note_id` int NOT NULL AUTO_INCREMENT COMMENT '备注主键',
+                          `note_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注类型',
+                          PRIMARY KEY (`note_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='备注表';
 
 -- ----------------------------
@@ -550,9 +552,9 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_orientation`;
 CREATE TABLE `t_orientation` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '方向ID',
-  `orientation` varchar(50) NOT NULL COMMENT '方向名',
-  PRIMARY KEY (`id`) USING BTREE
+                                 `id` int NOT NULL AUTO_INCREMENT COMMENT '方向ID',
+                                 `orientation` varchar(50) NOT NULL COMMENT '方向名',
+                                 PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='方向表';
 
 -- ----------------------------
@@ -566,16 +568,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_postgraduate`;
 CREATE TABLE `t_postgraduate` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '考研ID',
-  `user_id` int NOT NULL COMMENT '考研人ID',
-  `time` varchar(32) DEFAULT NULL COMMENT '报考时间',
-  `school` varchar(75) DEFAULT NULL COMMENT '报考学校',
-  `orientation` varchar(75) DEFAULT NULL COMMENT '报考方向',
-  `exam` varchar(10) DEFAULT NULL COMMENT '统考成绩',
-  `state` int NOT NULL COMMENT '状态（0:正在考取/1:已完成）',
-  `success` int DEFAULT NULL COMMENT '通过状态(0:失败/1:成功)',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `考研人` (`user_id`) USING BTREE
+                                  `id` int NOT NULL AUTO_INCREMENT COMMENT '考研ID',
+                                  `user_id` int NOT NULL COMMENT '考研人ID',
+                                  `time` varchar(32) DEFAULT NULL COMMENT '报考时间',
+                                  `school` varchar(75) DEFAULT NULL COMMENT '报考学校',
+                                  `orientation` varchar(75) DEFAULT NULL COMMENT '报考方向',
+                                  `exam` varchar(10) DEFAULT NULL COMMENT '统考成绩',
+                                  `state` int NOT NULL COMMENT '状态（0:正在考取/1:已完成）',
+                                  `success` int DEFAULT NULL COMMENT '通过状态(0:失败/1:成功)',
+                                  PRIMARY KEY (`id`) USING BTREE,
+                                  KEY `考研人` (`user_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='考研人员表';
 
 -- ----------------------------
@@ -589,13 +591,13 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_role`;
 CREATE TABLE `t_role` (
-  `role_id` bigint NOT NULL AUTO_INCREMENT COMMENT '角色ID',
-  `role_name` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色名称',
-  `remark` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '角色描述',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色表';
+                          `role_id` bigint NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+                          `role_name` varchar(10) CHARACTER SET utf8 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
+                          `remark` varchar(100) CHARACTER SET utf8 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '角色描述',
+                          `create_time` datetime NOT NULL COMMENT '创建时间',
+                          `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+                          PRIMARY KEY (`role_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='角色表';
 
 -- ----------------------------
 -- Records of t_role
@@ -613,10 +615,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_role_menu`;
 CREATE TABLE `t_role_menu` (
-  `role_id` bigint NOT NULL,
-  `menu_id` bigint NOT NULL,
-  PRIMARY KEY (`role_id`,`menu_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色菜单关联表';
+                               `role_id` bigint NOT NULL,
+                               `menu_id` bigint NOT NULL,
+                               PRIMARY KEY (`role_id`,`menu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色菜单关联表';
 
 -- ----------------------------
 -- Records of t_role_menu
@@ -715,14 +717,14 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_school_assets`;
 CREATE TABLE `t_school_assets` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '学校资产ID',
-  `inclusion_date` varchar(32) DEFAULT NULL COMMENT '收录日期',
-  `assets_name` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '资产名称',
-  `assets_num` varchar(10) DEFAULT NULL COMMENT '资产编号',
-  `price` double(10,2) DEFAULT NULL COMMENT '资产价格',
-  `scrap_date` varchar(32) DEFAULT NULL COMMENT '报废日期',
-  `scrap_detail` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '报废信息',
-  PRIMARY KEY (`id`) USING BTREE
+                                   `id` int NOT NULL AUTO_INCREMENT COMMENT '学校资产ID',
+                                   `inclusion_date` varchar(32) DEFAULT NULL COMMENT '收录日期',
+                                   `assets_name` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '资产名称',
+                                   `assets_num` varchar(10) DEFAULT NULL COMMENT '资产编号',
+                                   `price` double(10,2) DEFAULT NULL COMMENT '资产价格',
+                                   `scrap_date` varchar(32) DEFAULT NULL COMMENT '报废日期',
+                                   `scrap_detail` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '报废信息',
+                                   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='学校资产表\r\n';
 
 -- ----------------------------
@@ -736,15 +738,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_school_assets_repair`;
 CREATE TABLE `t_school_assets_repair` (
-  `id` int NOT NULL COMMENT '维修信息ID',
-  `repair_date` varchar(32) DEFAULT NULL COMMENT '维修日期',
-  `assets_name` int DEFAULT NULL COMMENT '学校资产ID',
-  `repair_price` double(10,2) DEFAULT NULL COMMENT '维修价格',
-  `repair_invoice` varchar(32) DEFAULT NULL COMMENT '发票',
-  `repair_prover_user_info_uuid` int NOT NULL COMMENT '维修证明人【userIndoUuid】',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `repair_school_prover` (`repair_prover_user_info_uuid`) USING BTREE,
-  KEY `学校资产ID` (`assets_name`) USING BTREE
+                                          `id` int NOT NULL COMMENT '维修信息ID',
+                                          `repair_date` varchar(32) DEFAULT NULL COMMENT '维修日期',
+                                          `assets_name` int DEFAULT NULL COMMENT '学校资产ID',
+                                          `repair_price` double(10,2) DEFAULT NULL COMMENT '维修价格',
+                                          `repair_invoice` varchar(32) DEFAULT NULL COMMENT '发票',
+                                          `repair_prover_user_info_uuid` int NOT NULL COMMENT '维修证明人【userIndoUuid】',
+                                          PRIMARY KEY (`id`) USING BTREE,
+                                          KEY `repair_school_prover` (`repair_prover_user_info_uuid`) USING BTREE,
+                                          KEY `学校资产ID` (`assets_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='维修信息表\r\n';
 
 -- ----------------------------
@@ -758,17 +760,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_thesis`;
 CREATE TABLE `t_thesis` (
-  `thesis_uuid` varchar(32) NOT NULL COMMENT '论文ID',
-  `title` varchar(50) NOT NULL COMMENT '标题',
-  `introduction` varchar(255) DEFAULT NULL COMMENT '摘要',
-  `paper_type` int DEFAULT NULL COMMENT '论文类型(1核心/ 2普通）',
-  `time` varchar(32) DEFAULT NULL COMMENT '更新时间',
-  `url` varchar(255) DEFAULT NULL COMMENT '论文下载',
-  `cost` double(10,2) DEFAULT NULL COMMENT '花费',
-  `state` int DEFAULT NULL COMMENT '状态（1进行中/2已完成）',
-  `invoice` varchar(255) DEFAULT NULL COMMENT '发票',
-  `reimbursement` int DEFAULT NULL COMMENT '是否已报销（0否/1是）',
-  PRIMARY KEY (`thesis_uuid`) USING BTREE
+                            `thesis_id` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '论文ID',
+                            `title` varchar(50) NOT NULL COMMENT '标题',
+                            `introduction` varchar(255) DEFAULT NULL COMMENT '摘要',
+                            `paper_type` int DEFAULT NULL COMMENT '论文类型(1核心/ 2普通）',
+                            `time` varchar(32) DEFAULT NULL COMMENT '更新时间',
+                            `url` varchar(255) DEFAULT NULL COMMENT '论文下载',
+                            `cost` double(10,2) DEFAULT NULL COMMENT '花费',
+                            `state` int DEFAULT NULL COMMENT '状态（1进行中/2已完成）',
+                            `invoice` varchar(255) DEFAULT NULL COMMENT '发票',
+                            `reimbursement` int DEFAULT NULL COMMENT '是否已报销（0否/1是）',
+                            PRIMARY KEY (`thesis_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='论文_任务表';
 
 -- ----------------------------
@@ -782,34 +784,34 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user` (
-  `user_id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `username` varchar(50) NOT NULL COMMENT '用户名',
-  `full_name` varchar(50) DEFAULT NULL COMMENT '真实姓名',
-  `password` varchar(128) NOT NULL COMMENT '密码',
-  `dept_id` bigint DEFAULT NULL COMMENT '部门ID',
-  `email` varchar(128) DEFAULT NULL COMMENT '邮箱',
-  `mobile` varchar(20) DEFAULT NULL COMMENT '联系电话',
-  `status` char(1) NOT NULL COMMENT '状态 1老师/2毕业生/3在校4考核/0禁用',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  `last_login_time` datetime DEFAULT NULL COMMENT '最近访问时间',
-  `ssex` char(1) DEFAULT NULL COMMENT '性别 0男 1女 2保密',
-  `is_tab` char(1) DEFAULT NULL COMMENT '是否开启tab，0关闭 1开启',
-  `theme` varchar(10) DEFAULT NULL COMMENT '主题',
-  `avatar` varchar(100) DEFAULT NULL COMMENT '头像',
-  `description` varchar(100) DEFAULT NULL COMMENT '描述',
-  `note_id` bigint DEFAULT NULL COMMENT '用户备注（1：教师，2：毕业，3：在校，4：考核）',
-  PRIMARY KEY (`user_id`) USING BTREE,
-  KEY `t_user_username` (`username`) USING BTREE,
-  KEY `t_user_mobile` (`mobile`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='用户表';
+                          `user_id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+                          `username` varchar(50) NOT NULL COMMENT '用户名',
+                          `full_name` varchar(50) DEFAULT NULL COMMENT '真实姓名',
+                          `password` varchar(128) NOT NULL COMMENT '密码',
+                          `dept_id` bigint DEFAULT NULL COMMENT '部门ID',
+                          `email` varchar(128) DEFAULT NULL COMMENT '邮箱',
+                          `mobile` varchar(20) DEFAULT NULL COMMENT '联系电话',
+                          `status` char(1) NOT NULL COMMENT '状态 1老师/2毕业生/3在校4考核/0禁用',
+                          `create_time` datetime NOT NULL COMMENT '创建时间',
+                          `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+                          `last_login_time` datetime DEFAULT NULL COMMENT '最近访问时间',
+                          `ssex` char(1) DEFAULT NULL COMMENT '性别 0男 1女 2保密',
+                          `is_tab` char(1) DEFAULT NULL COMMENT '是否开启tab，0关闭 1开启',
+                          `theme` varchar(10) DEFAULT NULL COMMENT '主题',
+                          `avatar` varchar(100) DEFAULT NULL COMMENT '头像',
+                          `description` varchar(100) DEFAULT NULL COMMENT '描述',
+                          `note_id` bigint DEFAULT NULL COMMENT '用户备注（1：教师，2：毕业，3：在校，4：考核）',
+                          PRIMARY KEY (`user_id`) USING BTREE,
+                          KEY `t_user_username` (`username`) USING BTREE,
+                          KEY `t_user_mobile` (`mobile`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_user` VALUES (1, '201704044', '陈岳欣', '$2a$10$eG9uK3ujGwqWZCIXRCZgPOv0Rmh9KiDxNCf/rzz.MvATAh9uhZZ6e', 1, 'chachae@qq.com', '13670459539', '1', '2019-06-14 20:39:22', '2020-06-14 12:16:15', '2020-06-14 14:44:10', '0', '1', 'white', 'c7c4ee7be3eb4e73a19887dc713505145.jpg', '我是作者。', 1);
-INSERT INTO `t_user` VALUES (2, 'scott', '李四', '$2a$10$VSZ8g8rmw5pvZzYn0cAGBOKvJBrmh5FNexpgzVkxSrVUrC2ViO99S', 47, 'scott@hotmail.com', '17720888888', '1', '2019-07-20 19:00:32', '2020-06-14 12:15:40', '2020-06-07 21:12:52', '0', NULL, NULL, 'BiazfanxmamNRoxxVxka.png', NULL, 1);
+INSERT INTO `t_user` VALUES (1, '201704044', '陈岳欣', '$2a$10$eG9uK3ujGwqWZCIXRCZgPOv0Rmh9KiDxNCf/rzz.MvATAh9uhZZ6e', 1, 'chachae@qq.com', '13670459539', '1', '2019-06-14 20:39:22', '2020-06-14 12:16:15', '2020-06-14 15:49:43', '0', '1', 'white', 'c7c4ee7be3eb4e73a19887dc713505145.jpg', '我是作者。', 1);
+INSERT INTO `t_user` VALUES (2, 'scott', '李四', '$2a$10$VSZ8g8rmw5pvZzYn0cAGBOKvJBrmh5FNexpgzVkxSrVUrC2ViO99S', 47, 'scott@hotmail.com', '17720888888', '1', '2019-07-20 19:00:32', '2020-06-14 16:07:53', '2020-06-07 21:12:52', '2', NULL, NULL, 'BiazfanxmamNRoxxVxka.png', NULL, 1);
 INSERT INTO `t_user` VALUES (3, 'Jane', '王五', '$2a$10$/YDnX1OPBCRcXHQx.aR3tu8f3JfM2ABdWv1fE.PZ32ijAbvqnPz5a', 1, 'Jane@hotmail.com', '13679554032', '1', '2019-09-01 10:31:21', '2020-06-13 18:37:31', '2020-06-08 16:29:00', '1', NULL, NULL, '2dd7a2d09fa94bf8b5c52e5318868b4d9.jpg', NULL, 3);
 COMMIT;
 
@@ -818,17 +820,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user_connection`;
 CREATE TABLE `t_user_connection` (
-  `user_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'cloudx系统用户名',
-  `provider_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '第三方平台名称',
-  `provider_user_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '第三方平台账户ID',
-  `provider_user_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '第三方平台用户名',
-  `nick_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '第三方平台昵称',
-  `image_url` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '第三方平台头像',
-  `location` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '地址',
-  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`user_name`,`provider_name`,`provider_user_id`) USING BTREE,
-  UNIQUE KEY `UserConnectionRank` (`user_name`,`provider_name`,`provider_user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统用户社交账户关联表';
+                                     `user_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'cloudx系统用户名',
+                                     `provider_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '第三方平台名称',
+                                     `provider_user_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '第三方平台账户ID',
+                                     `provider_user_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '第三方平台用户名',
+                                     `nick_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '第三方平台昵称',
+                                     `image_url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '第三方平台头像',
+                                     `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '地址',
+                                     `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+                                     PRIMARY KEY (`user_name`,`provider_name`,`provider_user_id`) USING BTREE,
+                                     UNIQUE KEY `UserConnectionRank` (`user_name`,`provider_name`,`provider_user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统用户社交账户关联表';
 
 -- ----------------------------
 -- Records of t_user_connection
@@ -843,10 +845,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user_data_permission`;
 CREATE TABLE `t_user_data_permission` (
-  `user_id` bigint NOT NULL,
-  `dept_id` bigint NOT NULL,
-  PRIMARY KEY (`user_id`,`dept_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户数据权限关联表';
+                                          `user_id` bigint NOT NULL,
+                                          `dept_id` bigint NOT NULL,
+                                          PRIMARY KEY (`user_id`,`dept_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户数据权限关联表';
 
 -- ----------------------------
 -- Records of t_user_data_permission
@@ -876,10 +878,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user_role`;
 CREATE TABLE `t_user_role` (
-  `user_id` bigint NOT NULL COMMENT '用户ID',
-  `role_id` bigint NOT NULL COMMENT '角色ID',
-  PRIMARY KEY (`role_id`,`user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色关联表';
+                               `user_id` bigint NOT NULL COMMENT '用户ID',
+                               `role_id` bigint NOT NULL COMMENT '角色ID',
+                               PRIMARY KEY (`role_id`,`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户角色关联表';
 
 -- ----------------------------
 -- Records of t_user_role
