@@ -22,8 +22,36 @@ public interface FundingMapper extends BaseMapper<Funding> {
     <T> IPage<Funding> pageFundingDetail(Page<T> page, @Param("funding") Funding funding);
 
     /*
-     * 通过id删除指定资金
+     * 查找满足条件的经费的总个数
+     * @param page 分页对象
+     * @return int 满足条件的总个数
+     */
+    int pageFundingCount(@Param("funding") Funding funding);
+
+    /*
+     * 通过id判断这个id是否存在
+     * @param fundingId
+     * @return int 存在该id的经费条数，返回1则存在，0则不存在，返回其他则数据有问题
+     */
+    int selectFundingCountById(@Param("fundingId")int fundingId);
+
+
+    /*
+     * 通过id查询该id的经费数据
+     * @param fundingId
+     * @return Funding对象
+     */
+    Funding selectFundingById(@Param("fundingId")int fundingId);
+
+    /*
+     * 通过id删除指定经费数据
      * @param fundingIds 资金id
      */
     void deleteByFundingid(int[] fundingIds);
+
+    /*
+     * 通过id修改指定经费数据
+     * @param fundingIds 资金id
+     */
+    void updateFunding(@Param("funding") Funding funding);
 }

@@ -40,8 +40,24 @@ public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> impl
     }
 
     @Override
+    public int pageFundingCount(Funding funding) {
+        return baseMapper.pageFundingCount(funding);
+    }
+
+    @Override
     public void deleteFundings(int[] fundingIds) {
-        // 删除这个基金数据
-        baseMapper.deleteByFundingid(fundingIds);
+        baseMapper.deleteByFundingid(fundingIds);// 删除这个基金数据
+    }
+
+    @Override
+    public void updateFunding(Funding funding) {
+        if(baseMapper.selectFundingCountById(funding.getId())==1){       //判断这个这个id的数据是否存在
+            baseMapper.updateFunding(funding);                      //修改这个经费对象的数据
+        }
+    }
+
+    @Override
+    public Funding selectFundingById(int fundingId) {
+        return baseMapper.selectFundingById(fundingId);
     }
 }
