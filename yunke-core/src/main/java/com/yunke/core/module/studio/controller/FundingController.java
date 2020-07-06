@@ -97,12 +97,7 @@ public class FundingController {
      *  作用：添加经费申请，经费对象的name,proposer_id和apply_time不能为空，proposer_id为当前登录的用户user_id
      */
     @PostMapping("/addFunding")
-    public void addFunding(/*Funding funding*/) {
-        Funding funding = new Funding();
-        funding.setName("zs");
-        funding.setProposerId(666);
-        funding.setCost(99.9);
-        funding.setApplyTime("2020/7/5");
+    public void addFunding(Funding funding) {
         fundingService.addFunding(funding);
 
     }
