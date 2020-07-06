@@ -4,6 +4,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.studio.Funding;
+import com.yunke.common.core.entity.system.SystemUser;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 经费表(Funding)表服务接口
@@ -44,4 +48,16 @@ public interface IFundingService extends IService<Funding> {
      * @param fundingId 经费id
      */
     Funding selectFundingById(int fundingId);
+
+    /*
+     * 通过该角色id下的用户，只返回用户id和真实姓名
+     * @param roleId 角色id数组
+     */
+    List<SystemUser> selectUserNameByRoleId (int[] roleId);
+
+    /*
+     * 添加经费申请
+     * @param funding 经费对象，里面的name,apply_time，proposer_id不能为空
+     */
+    void addFunding(@Param("funding") Funding funding);
 }

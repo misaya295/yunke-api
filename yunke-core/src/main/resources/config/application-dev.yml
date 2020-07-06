@@ -27,7 +27,7 @@ spring:
     time-zone: GMT+8
   redis:
     database: 0
-    host: ${redis.host:120.79.212.132}
+    host: ${redis.host:39.108.122.108}
     port: ${redis.port:6379}
     password: ${redis.password:}
     lettuce:

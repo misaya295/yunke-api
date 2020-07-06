@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yunke.common.core.constant.SystemConstant;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.studio.Funding;
+import com.yunke.common.core.entity.system.SystemUser;
 import com.yunke.common.core.exception.ApiException;
 import com.yunke.common.core.util.SortUtil;
 import com.yunke.core.module.studio.mapper.FundingMapper;
@@ -59,5 +60,18 @@ public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> impl
     @Override
     public Funding selectFundingById(int fundingId) {
         return baseMapper.selectFundingById(fundingId);
+    }
+
+    @Override
+    public List<SystemUser> selectUserNameByRoleId(int[] roleId) {
+        return baseMapper.selectUserNameByRoleId(roleId);
+    }
+
+    @Override
+    public void addFunding(Funding funding) {
+        //只有申请人,申请时间和申请事件名称都有的情况下才可以提交申请
+        if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0&&funding.getProposerId()!=null&&funding.getApplyTime()!=null&&funding.getApplyTime()!=""){
+            baseMapper.addFunding(funding);
+        }
     }
 }

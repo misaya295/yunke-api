@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -72,11 +74,37 @@ public class FundingController {
     /*
      *  请求类型：Get
      *  @param fundingId 经费id
-     *  作用：点击修改时，根据fundingID返回经费数据对象，可以选择的申请人和审核人对象供前端修改
+     *  作用：点击修改/查询时，根据fundingID返回经费数据对象，可以选择的申请人和审核人的对象（对象数据只有用户id和名字）
+     *      如果经费id为-1的话则只返回可以选择的申请人和审核人的对象（对象数据只有用户id和名字）
      */
     @GetMapping("/selectFundingById")
-    public Funding selectFundingById(@NotBlank(message = "{required}") @PathVariable int fundingId) {
-        return fundingService.selectFundingById(fundingId);
+    public R<List<Object>> selectFundingById(/*@NotBlank(message = "{required}") @PathVariable int fundingId*/) {
+        int fundingId=-1;
+        List<Object> message = new ArrayList<>();
+        //该经费id的数据
+        message.add(fundingService.selectFundingById(fundingId));
+        //可选择的申请人(所有人都可以申请)（只有id和真实名称）
+        int[] verifierRoleId = {1,2,3,4};
+        message.add(fundingService.selectUserNameByRoleId(verifierRoleId));
+        //可选择的审核人(只有管理员可以申请)（只有id和真实名称）
+        int[] certifierRoleId = {1};
+        message.add(fundingService.selectUserNameByRoleId(certifierRoleId));
+        return R.ok(message);
+    }
+    /*
+     *  请求类型：post
+     *  @param funding 经费对象
+     *  作用：添加经费申请，经费对象的name,proposer_id和apply_time不能为空，proposer_id为当前登录的用户user_id
+     */
+    @PostMapping("/addFunding")
+    public void addFunding(/*Funding funding*/) {
+        Funding funding = new Funding();
+        funding.setName("zs");
+        funding.setProposerId(666);
+        funding.setCost(99.9);
+        funding.setApplyTime("2020/7/5");
+        fundingService.addFunding(funding);
+
     }
 
 

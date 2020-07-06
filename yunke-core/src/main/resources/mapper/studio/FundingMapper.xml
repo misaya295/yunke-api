@@ -16,7 +16,7 @@
             f.card,
             f.proposer_id,
             f.state,
-            f.task_uuid
+            f.task_id
     FROM t_funding f
     where 1=1
   </sql>
@@ -123,9 +123,68 @@
         <if test="funding.state != null and funding.state != ''">
             , state=#{funding.state}
         </if>
-        <if test="funding.taskUuid != null and funding.taskUuid != ''">
-            , task_uuid=#{funding.taskUuid}
+        <if test="funding.taskId != null and funding.taskId != ''">
+            , task_id=#{funding.taskId}
         </if>
-        where id=#{funding.id}
+        where id=#{funding.id} and state!=3
     </update>
+
+    <insert id="addFunding" parameterType="Funding">
+        insert into t_funding(name,proposer_id,apply_time,state                   <!--非空3个属性和一个默认状态属性，状态刚刚添加默认为1申请中，id自增不写-->
+        <if test="funding.type != null and funding.type != ''">
+            ,type
+        </if>
+        <if test="funding.successTime != null and funding.successTime != ''">
+            ,success_time
+        </if>
+        <if test="funding.invoice != null and funding.invoice != ''">
+            ,invoice
+        </if>
+        <if test="funding.cost != null and funding.cost != ''">
+            , cost
+        </if>
+        <if test="funding.card != null and funding.card != ''">
+            , card
+        </if>
+        <if test="funding.taskId != null and funding.taskId != ''">
+            , task_id
+        </if>
+
+        )values (#{funding.name},#{funding.proposerId},#{funding.applyTime},1              <!--做个标记，方便一一对应-->
+
+        <if test="funding.type != null and funding.type != ''">
+            , #{funding.type}
+        </if>
+        <if test="funding.successTime != null and funding.successTime != ''">
+            , #{funding.successTime}
+        </if>
+        <if test="funding.invoice != null and funding.invoice != ''">
+            , #{funding.invoice}
+        </if>
+        <if test="funding.cost != null and funding.cost != ''">
+            , #{funding.cost}
+        </if>
+        <if test="funding.card != null and funding.card != ''">
+            , #{funding.card}
+        </if>
+        <if test="funding.taskId != null and funding.taskId != ''">
+            ,#{funding.taskId}
+        </if>
+        )
+    </insert>
+
+
+    <!--根据角色ID查询属性该角色的用户，后面会放到其他mapper文件下面，现在为了方便测试暂时放这里-->
+    <select id="selectUserNameByRoleId" resultType="SystemUser">
+        select u.user_id,u.full_name from t_user u where u.user_id in (
+        select ur.user_id from t_user_role ur where 1=1
+        <if test="array != null and array.length > 0">
+            <foreach collection="array" open=" and ur.role_id in(" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </if>
+        )
+    </select>
+
+
 </mapper>
