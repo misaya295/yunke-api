@@ -41,7 +41,7 @@ public interface IFundingService extends IService<Funding> {
      * 修改经费数据
      * @param funding 经费对象
      */
-    void updateFunding(Funding funding);
+    void updateFundingMessage(Funding funding);
 
     /**
      * 通过经费id返回该经费数据
@@ -60,4 +60,11 @@ public interface IFundingService extends IService<Funding> {
      * @param funding 经费对象，里面的name,apply_time，proposer_id不能为空
      */
     void addFunding(@Param("funding") Funding funding);
+
+    /*
+     * 修改指定经费申请转态，但无法修改申请数据
+     * @param funding 经费对象
+     */
+    void updateFundingState(Funding funding);
+
 }
