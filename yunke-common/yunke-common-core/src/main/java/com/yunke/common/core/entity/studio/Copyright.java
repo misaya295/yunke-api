@@ -7,7 +7,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * 软件著作权_任务表(Copyright)表实体类
+ * 软件著作权_任务表(Copyright)表实体类1
  *
  * @author chachae
  * @since 2020-06-14 14:09:04
