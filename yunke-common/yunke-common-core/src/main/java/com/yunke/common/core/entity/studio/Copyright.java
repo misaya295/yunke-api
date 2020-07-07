@@ -64,7 +64,7 @@ public class Copyright implements Serializable {
   /**
    * 项目ID
    */
-  private String itemUuid;
+  private String itemId;
   /**
    * 状态(1:进行中/2:已完成/3:申报中)
    */
