@@ -1,12 +1,28 @@
 package com.yunke.core.module.studio.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yunke.common.core.constant.SystemConstant;
+import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.studio.Items;
+import com.yunke.common.core.entity.studio.Members;
+import com.yunke.common.core.util.SortUtil;
+import com.yunke.core.module.studio.generator.IdGenerateUtil;
+import com.yunke.core.module.studio.generator.TaskTypeConstant;
 import com.yunke.core.module.studio.mapper.ItemsMapper;
 import com.yunke.core.module.studio.service.IItemsService;
+import com.yunke.core.module.studio.service.IMembersService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * 项目_任务表(Items)表服务实现类
@@ -15,7 +31,65 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 2020-06-14 14:04:56
  */
 @Service
+@RequiredArgsConstructor
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class ItemsServiceImpl extends ServiceImpl<ItemsMapper, Items> implements IItemsService {
+
+    private final IMembersService membersService;
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void createTask(Items items, String[] userId, String[] state) {
+        //生成带任务类型的id
+        items.setItemsId(IdGenerateUtil.nextId(TaskTypeConstant.ITEMS));
+        //保存任务
+        this.save(items);
+        //添加成员
+        ArrayList<Members> members = new ArrayList<>(userId.length);
+        IntStream.range(0, userId.length).forEach(index -> {
+            members.add(new Members(Integer.parseInt(userId[index]), Integer.parseInt(state[index]), items.getItemsId()));
+        });
+        this.membersService.saveBatch(members);
+
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteTask(String[] ids) {
+        //删除任务
+        this.removeByIds(Arrays.asList(ids));
+        //删除成员
+        Stream.of(ids).forEach(id -> this.membersService.remove(new LambdaQueryWrapper<Members>().eq(Members::getTaskId, id)));
+
+
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateTask(Items items) {
+        //进行中的任务
+        if (items.getState() == 1) {
+            this.updateById(items); //修改论文任务
+        }
+
+    }
+
+    @Override
+    public IPage<Items> pageTaskList(QueryParam param, Items items) {
+        Page<Items> page = new Page<>(param.getPageNum(), param.getPageSize());
+        SortUtil.handlePageSort(param, page, "title", SystemConstant.ORDER_ASC, true);
+        return baseMapper.pageTask(page,items);
+    }
+
+    @Override
+    public Map<String, Object> getTask(String itemsId) {
+        return baseMapper.getTask(itemsId);
+    }
+
+    @Override
+    public Integer getAllTaskCount() {
+        return this.count();
+    }
 
 }

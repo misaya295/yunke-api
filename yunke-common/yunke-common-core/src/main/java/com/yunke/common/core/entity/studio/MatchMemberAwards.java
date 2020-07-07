@@ -32,7 +32,7 @@ public class MatchMemberAwards implements Serializable {
   /**
    * 关联 比赛UUID
    */
-  private String taskUuid;
+  private String taskId;
   /**
    * 奖状
    */

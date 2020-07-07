@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunke.core.module.studio.mapper.MatchMapper">
+
+    <sql id="baseSql">
+        SELECT t.match_id,
+                t.title,
+                t.level,
+                t.type,
+                t.application_form,
+                t.time,
+                t.cost,
+                t.state,
+                t.invoice,
+                t.certificate,
+                t.reimbursement,
+                GROUP_CONCAT(m.user_id) userId ,
+                GROUP_CONCAT(m.state) user_state
+         FROM t_match t LEFT JOIN t_members m ON (t.match_id=m.task_id)
+         where 1=1
+  </sql>
+
+    <select id="pageTask" resultType="Match" parameterType="Match">
+        select match_id ,title from t_match where 1=1
+        <if test="match.title != null and match.title != ''">
+            AND  title like CONCAT('%',#{match.title},'%')
+        </if>
+        <if test="match.state != null and match.state != ''">
+            AND  state = #{match.state}
+        </if>
+        <if test="match.reimbursement != null and match.reimbursement != ''">
+            AND  reimbursement =#{match.reimbursement}
+        </if>
+    </select>
+
+    <select id="getTask" resultType="map" parameterType="string">
+        <include refid="baseSql"/>
+        <if test="matchId!=null and matchId!=''">
+            AND match_id = #{matchId}
+        </if>
+        GROUP BY match_id
+    </select>
+
+
+</mapper>

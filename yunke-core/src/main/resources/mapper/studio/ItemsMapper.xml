@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunke.core.module.studio.mapper.ItemsMapper">
+
+    <sql id="baseSql">
+        SELECT t.items_id,
+                t.title,
+                t.introduction,
+                t.start_time,
+                t.end_time,
+                t.url,
+                t.cost,
+                t.state,
+                t.invoice,
+                t.reimbursement,
+                t.specification,
+                t.url,
+                GROUP_CONCAT(m.user_id) userId ,
+                GROUP_CONCAT(m.state) user_state
+         FROM t_items t LEFT JOIN t_members m ON (t.items_id=m.task_id)
+         where 1=1
+  </sql>
+
+    <select id="pageTask" resultType="Items" parameterType="Items">
+        select items_id ,title from t_items where 1=1
+        <if test="items.title != null and items.title != ''">
+            AND  title like CONCAT('%',#{items.title},'%')
+        </if>
+        <if test="items.state != null and items.state != ''">
+            AND  state = #{items.state}
+        </if>
+        <if test="items.reimbursement != null and items.reimbursement != ''">
+            AND  reimbursement =#{items.reimbursement}
+        </if>
+    </select>
+
+    <select id="getTask" resultType="map" parameterType="string">
+        <include refid="baseSql"/>
+        <if test="itemsId!=null and itemsId!=''">
+            AND items_id = #{itemsId}
+        </if>
+        GROUP BY items_id
+    </select>
+
+
+</mapper>
