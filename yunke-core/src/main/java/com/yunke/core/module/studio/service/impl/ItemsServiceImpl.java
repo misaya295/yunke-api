@@ -1,17 +1,21 @@
 package com.yunke.core.module.studio.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yunke.common.core.constant.SystemConstant;
 import com.yunke.common.core.entity.QueryParam;
+import com.yunke.common.core.entity.studio.Copyright;
 import com.yunke.common.core.entity.studio.Items;
 import com.yunke.common.core.entity.studio.Members;
+import com.yunke.common.core.exception.ApiException;
 import com.yunke.common.core.util.SortUtil;
 import com.yunke.core.module.studio.generator.IdGenerateUtil;
 import com.yunke.core.module.studio.generator.TaskTypeConstant;
 import com.yunke.core.module.studio.mapper.ItemsMapper;
+import com.yunke.core.module.studio.service.ICopyrightService;
 import com.yunke.core.module.studio.service.IItemsService;
 import com.yunke.core.module.studio.service.IMembersService;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +62,19 @@ public class ItemsServiceImpl extends ServiceImpl<ItemsMapper, Items> implements
     @Transactional(rollbackFor = Exception.class)
     public void deleteTask(String[] ids) {
         //删除任务
-        this.removeByIds(Arrays.asList(ids));
+        //先判断项目是否被软件著作权绑定
+        Stream.of(ids).forEach( id ->
+                {
+                    if (baseMapper.getCopyright(id)!=null) {
+                        throw new ApiException("项目已经与软件著作权关联，请先删除相关软件著作权任务");
+                    } else {
+                        this.removeById(id);
+                    }
+                }
+        );
+
+
+
         //删除成员
         Stream.of(ids).forEach(id -> this.membersService.remove(new LambdaQueryWrapper<Members>().eq(Members::getTaskId, id)));
 

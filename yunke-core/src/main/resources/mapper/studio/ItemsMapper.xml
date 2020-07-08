@@ -43,5 +43,9 @@
         GROUP BY items_id
     </select>
 
+    <select id="getCopyright" resultType="Copyright" parameterType="string">
+        select copyright_id,item_id from t_copyright where item_id = #{itemId}
+    </select>
+
 
 </mapper>

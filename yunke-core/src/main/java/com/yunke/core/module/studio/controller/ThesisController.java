@@ -10,7 +10,6 @@ import com.yunke.core.annotation.ControllerEndpoint;
 import com.yunke.core.module.studio.service.IThesisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,80 +33,80 @@ public class ThesisController {
 
     private final IThesisService thesisService;
 
-    /**
-     * 新增论文任务_POST
-     *
-     * @param thesis  论文_任务 新增参数
-     * @param userId  任务成员id, ","分隔
-     * @param m_state 任务成员角色, ","分隔   1为负责人，2为成员，3为指导老师
-     */
-    @PostMapping
-    @PreAuthorize("hasAuthority('task:add')")
-    @ControllerEndpoint(operation = "新增任务", exceptionMessage = "新增任务失败")
-    public void addTask(@Valid Thesis thesis, String userId, String m_state) {
-        String[] split_userId = StrUtil.split(userId, StrUtil.COMMA); //成员id
-        String[] split_state = StrUtil.split(m_state, StrUtil.COMMA);//成员角色
-        this.thesisService.createTask(thesis, split_userId, split_state);
-    }
+        /**
+         * 新增论文任务_POST
+         *
+         * @param thesis  论文_任务 新增参数
+         * @param userId  任务成员id, ","分隔
+         * @param m_state 任务成员角色, ","分隔   1为负责人，2为成员，3为指导老师
+         */
+        @PostMapping
+        @PreAuthorize("hasAuthority('task:add')")
+        @ControllerEndpoint(operation = "新增任务", exceptionMessage = "新增任务失败")
+        public void addTask(@Valid Thesis thesis, String userId, String m_state) {
+            String[] split_userId = StrUtil.split(userId, StrUtil.COMMA); //成员id
+            String[] split_state = StrUtil.split(m_state, StrUtil.COMMA);//成员角色
+            this.thesisService.createTask(thesis, split_userId, split_state);
+        }
 
-    /**
-     * 删除论文任务_DELETE
-     *
-     * @param thesisIds 要删除任务的id
-     */
-    @DeleteMapping("{thesisIds}")
-    @PreAuthorize("hasAuthority('task:delete')")
-    @ControllerEndpoint(operation = "删除任务", exceptionMessage = "删除任务失败")
-    public void deleteTask(@NotBlank(message = "{required}") @PathVariable String thesisIds) {
-        String[] ids = thesisIds.split(StrUtil.COMMA);
-        this.thesisService.deleteTask(ids);
-    }
+        /**
+         * 删除论文任务_DELETE
+         *
+         * @param thesisIds 要删除任务的id
+         */
+        @DeleteMapping("{thesisIds}")
+        @PreAuthorize("hasAuthority('task:delete')")
+        @ControllerEndpoint(operation = "删除任务", exceptionMessage = "删除任务失败")
+        public void deleteTask(@NotBlank(message = "{required}") @PathVariable String thesisIds) {
+            String[] ids = thesisIds.split(StrUtil.COMMA);
+            this.thesisService.deleteTask(ids);
+        }
 
-    /**
-     * 更新论文任务_PUT
-     *
-     * @param thesis 要更新的对象
-     */
-    @PutMapping
-    @PreAuthorize("hasAuthority('task:update')")
-    @ControllerEndpoint(operation = "更新任务", exceptionMessage = "更新任务失败")
-    public void updateTask(@Valid Thesis thesis) {
-        this.thesisService.updateTask(thesis);
-    }
+        /**
+         * 更新论文任务_PUT
+         *
+         * @param thesis 要更新的对象
+         */
+        @PutMapping
+        @PreAuthorize("hasAuthority('task:update')")
+        @ControllerEndpoint(operation = "更新任务", exceptionMessage = "更新任务失败")
+        public void updateTask(@Valid Thesis thesis) {
+            this.thesisService.updateTask(thesis);
+        }
 
 
-    /**
-     * 查询论文任务列表_GET
-     *
-     * @param param  分页数据 (pageNum,pageSize,title,ascending/descending)
-     * @param thesis 模糊查询的对象 (title) ,条件待定
-     * @return Page ， Thesis（title，thesisId）
-     */
-    @GetMapping
-    public R<Map<String, Object>> taskList(QueryParam param, @Valid Thesis thesis) {
-        IPage<Thesis> result = this.thesisService.pageTaskList(param, thesis);
-        return R.ok(PageUtil.toPage(result));
-    }
+        /**
+         * 查询论文任务列表_GET
+         *
+         * @param param  分页数据 (pageNum,pageSize,title,ascending/descending)
+         * @param thesis 模糊查询的对象 (title) ,条件待定
+         * @return Page ， Thesis（title，thesisId）
+         */
+        @GetMapping
+        public R<Map<String, Object>> taskList(QueryParam param, @Valid Thesis thesis) {
+            IPage<Thesis> result = this.thesisService.pageTaskList(param, thesis);
+            return R.ok(PageUtil.toPage(result));
+        }
 
-    /**
-     * 查询论文任务_GET
-     *
-     * @param thesisId 论文id
-     * @return thesis 论文详细信息
-     */
-    @GetMapping("{thesisId}")
-    public R<Map<String,Object>> getTask(@NotBlank(message = "{required}") @PathVariable String thesisId) {
-        Map thesis = this.thesisService.getTask(thesisId);
-        return R.ok(thesis);
-    }
+        /**
+         * 查询论文任务_GET
+         *
+         * @param thesisId 论文id
+         * @return thesis 论文详细信息
+         */
+        @GetMapping("{thesisId}")
+        public R<Map<String,Object>> getTask(@NotBlank(message = "{required}") @PathVariable String thesisId) {
+            Map thesis = this.thesisService.getTask(thesisId);
+            return R.ok(thesis);
+        }
 
-    /**
-     * 论文任务总条数_GET
-     *
-     * @return 论文任务总条数
-     */
-    @GetMapping("count")
-    public R<Integer> getTaskCount() {
+        /**
+         * 论文任务总条数_GET
+         *
+         * @return 论文任务总条数
+         */
+        @GetMapping("count")
+        public R<Integer> getTaskCount() {
         return R.ok(this.thesisService.getAllTaskCount());
     }
 

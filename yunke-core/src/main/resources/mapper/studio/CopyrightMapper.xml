@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunke.core.module.studio.mapper.CopyrightMapper">
+
+    <sql id="baseSql">
+        SELECT t.copyright_id,
+                t.title,
+                t.introduction,
+                t.start_time,
+                t.end_time,
+                t.certificate,
+                t.cost,
+                t.application_form,
+                t.origin_file,
+                t.agreement,
+                t.cost,
+                t.invoice,
+                t.item_id,
+                t.state,
+                t.reimbursement,
+                GROUP_CONCAT(m.user_id) userId ,
+                GROUP_CONCAT(m.state) user_state
+         FROM t_copyright t LEFT JOIN t_members m ON (t.copyright_id=m.task_id)
+         where 1=1
+  </sql>
+
+    <select id="pageTask" resultType="Copyright" parameterType="Copyright">
+        select copyright_id ,title from t_copyright where 1=1
+        <if test="copyright.title != null and copyright.title != ''">
+            AND  title like CONCAT('%',#{copyright.title},'%')
+        </if>
+        <if test="copyright.state != null and copyright.state != ''">
+            AND  state = #{copyright.state}
+        </if>
+        <if test="copyright.reimbursement != null and copyright.reimbursement != ''">
+            AND  reimbursement =#{copyright.reimbursement}
+        </if>
+    </select>
+
+    <select id="getTask" resultType="map" parameterType="string">
+        <include refid="baseSql"/>
+        <if test="copyrightId!=null and copyrightId!=''">
+            AND copyright_id = #{copyrightId}
+        </if>
+        GROUP BY copyright_id
+    </select>
+
+
+</mapper>
