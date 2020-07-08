@@ -43,7 +43,6 @@ public class FundingController {
      */
     @GetMapping
     public R<Map<String, Object>> FundingListBypage(QueryParam param,Funding funding) {
-        funding.setName("1");
         IPage<Funding> result = fundingService.pageFunding(param,funding);
         //int count = fundingService.pageFundingCount(funding);//符合该条件的个数,page自己封装好了无需自己写，这里先留着，看后面会不会用到类似的,删了怪可惜的
         return R.ok(PageUtil.toPage(result));
