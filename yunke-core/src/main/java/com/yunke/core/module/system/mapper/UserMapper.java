@@ -36,4 +36,5 @@ public interface UserMapper extends BaseMapper<SystemUser> {
    */
   List<SystemUser> selectSystemUserDetail(@Param("user") SystemUser user);
 
+
 }

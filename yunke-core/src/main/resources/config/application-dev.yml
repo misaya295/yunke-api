@@ -9,6 +9,8 @@ spring:
     dynamic:
       p6spy: ${open.p6spy:true}
       hikari:
+        connection-timeout: 20000
+        max-lifetime: 1500000
         max-pool-size: 20
         min-idle: 5
         connection-test-query: SELECT 1
