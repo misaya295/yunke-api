@@ -84,7 +84,7 @@ public class MatchController {
      * @return Page ， Match（title，matchId）
      */
     @GetMapping
-    public R<Map<String, Object>> taskList(QueryParam param, @Valid Match match) {
+    public R<Map<String, Object>> taskList(QueryParam param, Match match) {
         IPage<Match> result = this.matchService.pageTaskList(param, match);
         return R.ok(PageUtil.toPage(result));
     }

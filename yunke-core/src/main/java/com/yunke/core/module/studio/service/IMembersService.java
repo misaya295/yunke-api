@@ -1,9 +1,12 @@
 package com.yunke.core.module.studio.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.studio.Members;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 任务成员的中间表(Members)表服务接口
@@ -33,4 +36,13 @@ public interface IMembersService extends IService<Members> {
      * @param taskId 要删除的任务成员的论文
      */
     void deleteMembers(String taskId, String[] userId);
+
+    /**
+     * 通过任务id查询成员列表
+     *
+     * @param param 分页信息
+     * @param taskId 任务id
+     * @return 成员列表
+     */
+    IPage<Map<String, Object>> pageMembersList(QueryParam param, String taskId);
 }

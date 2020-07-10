@@ -36,9 +36,9 @@ public class CopyrightController {
     /**
      * 新增软件著作权任务_POST
      *
-     * @param copyright  软件著作权_任务 新增参数
-     * @param userId  任务成员id, ","分隔
-     * @param m_state 任务成员角色, ","分隔   1为负责人，2为成员，3为指导老师
+     * @param copyright 软件著作权_任务 新增参数
+     * @param userId    任务成员id, ","分隔
+     * @param m_state   任务成员角色, ","分隔   1为负责人，2为成员，3为指导老师
      */
     @PostMapping
     @PreAuthorize("hasAuthority('task:add')")
@@ -78,12 +78,12 @@ public class CopyrightController {
     /**
      * 查询软件著作权任务列表_GET
      *
-     * @param param  分页数据 (pageNum,pageSize,title,ascending/descending)
+     * @param param     分页数据 (pageNum,pageSize,title,ascending/descending)
      * @param copyright 模糊查询的对象 (title) ,条件待定
      * @return Page ， copyright（title，copyrightId）
      */
     @GetMapping
-    public R<Map<String, Object>> taskList(QueryParam param, @Valid Copyright copyright) {
+    public R<Map<String, Object>> taskList(QueryParam param, Copyright copyright) {
         IPage<Copyright> result = this.copyrightService.pageTaskList(param, copyright);
         return R.ok(PageUtil.toPage(result));
     }
@@ -95,7 +95,7 @@ public class CopyrightController {
      * @return copyright 软件著作权详细信息
      */
     @GetMapping("{copyrightId}")
-    public R<Map<String,Object>> getTask(@NotBlank(message = "{required}") @PathVariable String copyrightId) {
+    public R<Map<String, Object>> getTask(@NotBlank(message = "{required}") @PathVariable String copyrightId) {
         Map copyright = this.copyrightService.getTask(copyrightId);
         return R.ok(copyright);
     }

@@ -83,7 +83,7 @@ public class ThesisController {
          * @return Page ， Thesis（title，thesisId）
          */
         @GetMapping
-        public R<Map<String, Object>> taskList(QueryParam param, @Valid Thesis thesis) {
+        public R<Map<String, Object>> taskList(QueryParam param, Thesis thesis) {
             IPage<Thesis> result = this.thesisService.pageTaskList(param, thesis);
             return R.ok(PageUtil.toPage(result));
         }

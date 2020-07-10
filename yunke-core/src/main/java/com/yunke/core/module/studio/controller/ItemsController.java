@@ -83,7 +83,7 @@ public class ItemsController {
      * @return Page ， Items（title，itemsId）
      */
     @GetMapping
-    public R<Map<String, Object>> taskList(QueryParam param, @Valid Items items) {
+    public R<Map<String, Object>> taskList(QueryParam param, Items items) {
         IPage<Items> result = this.iItemsService.pageTaskList(param, items);
         return R.ok(PageUtil.toPage(result));
     }

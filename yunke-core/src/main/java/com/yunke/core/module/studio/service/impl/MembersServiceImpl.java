@@ -3,8 +3,14 @@ package com.yunke.core.module.studio.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yunke.common.core.constant.SystemConstant;
+import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.studio.Members;
+import com.yunke.common.core.entity.studio.Thesis;
+import com.yunke.common.core.util.SortUtil;
 import com.yunke.core.module.studio.mapper.MembersMapper;
 import com.yunke.core.module.studio.service.IMembersService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 /**
@@ -61,6 +68,13 @@ public class MembersServiceImpl extends ServiceImpl<MembersMapper, Members> impl
         Stream.of(userId).forEach(id -> this.remove(new LambdaQueryWrapper<Members>()
                 .eq(Members::getTaskId, taskId)
                 .eq(Members::getUserId, id)));
+    }
+
+    @Override
+    public IPage<Map<String, Object>> pageMembersList(QueryParam param, String taskId) {
+        Page<Map<String,Object>> page = new Page<>(param.getPageNum(), param.getPageSize());
+        SortUtil.handlePageSort(param, page, "task_id", SystemConstant.ORDER_ASC, true);
+        return baseMapper.pageMembers(page,taskId);
     }
 
     //添加成员列表
