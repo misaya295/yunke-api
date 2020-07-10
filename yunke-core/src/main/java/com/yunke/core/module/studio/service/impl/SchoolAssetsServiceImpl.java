@@ -33,4 +33,31 @@ public class SchoolAssetsServiceImpl extends
         System.out.println( baseMapper.pageSchoolAssetsDetail(page,schoolAssets));
         return baseMapper.pageSchoolAssetsDetail(page,schoolAssets);
     }
+
+    @Override
+    public void addSchoolAssets(SchoolAssets schoolAssets) {
+        Boolean inserted = true;                                                        //判断是否符合添加条件：1.必填内容不为空，2.资产编号不重复
+        if(schoolAssets.getAssetsName()==""|| schoolAssets.getAssetsName()==null) {     //必填内容不为空
+           inserted = false;
+        }
+        if(schoolAssets.getAssetsNum()!=null&&schoolAssets.getAssetsNum()!="") {        //添加内容中存在资产编号
+            if(baseMapper.selectSchoolAssetsCountById(schoolAssets) != 0){              //该资产编号已存在
+                inserted = false;
+            }
+        }
+        if(inserted){
+            baseMapper.addSchoolAssets(schoolAssets);
+        }
+    }
+
+    @Override
+    public void deleteSchoolAssetsById(int[] schoolAssetsIds) {
+        baseMapper.deleteSchoolAssetsById(schoolAssetsIds);
+    }
+
+    @Override
+    public void updateSchoolAssetsMessage(SchoolAssets schoolAssets) {
+        baseMapper.updateSchoolAssetsMessage(schoolAssets);
+    }
+
 }

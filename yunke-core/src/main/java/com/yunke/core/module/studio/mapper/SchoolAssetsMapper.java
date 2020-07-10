@@ -22,4 +22,28 @@ public interface SchoolAssetsMapper extends BaseMapper<SchoolAssets> {
      * @return IPage<Founding>
      */
     <T> IPage<SchoolAssets> pageSchoolAssetsDetail(Page<T> page, @Param("schoolAssets") SchoolAssets schoolAssets);
+
+    /*
+     * 添加学校资产
+     * @param schoolAssets学校资产
+     */
+    void addSchoolAssets(@Param("schoolAssets")SchoolAssets schoolAssets);
+
+    /**
+     * 根据提供的id删除学校资产数据
+     * @param schoolAssetsIds 学校资产id数组
+     */
+    void deleteSchoolAssetsById(int[] schoolAssetsIds);
+
+    /**
+     * 根据提供的id修改学校资产数据
+     * @param schoolAssets 学校资产
+     */
+    void updateSchoolAssetsMessage(@Param("schoolAssets")SchoolAssets schoolAssets);
+
+    /**
+     * 根据学校资产的id或者编号判断这个资产是否存在，存在返回1，不存在返回0，其他为有问题
+     * @param schoolAssets 学校资产
+     */
+    int selectSchoolAssetsCountById(@Param("schoolAssets")SchoolAssets schoolAssets);
 }

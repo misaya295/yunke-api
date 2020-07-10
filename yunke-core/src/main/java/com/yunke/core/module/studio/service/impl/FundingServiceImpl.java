@@ -52,8 +52,10 @@ public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> impl
 
     @Override
     public void updateFundingMessage(Funding funding) {
-        if(baseMapper.selectFundingCountById(funding.getId())==1){       //判断这个这个id的数据是否存在
-            baseMapper.updateFundingMessage(funding);                      //修改这个经费对象的数据
+        if(funding.getId()!=null) {
+            if (baseMapper.selectFundingCountById(funding.getId()) == 1) {       //判断这个这个id的数据是否存在
+                baseMapper.updateFundingMessage(funding);                      //修改这个经费对象的数据
+            }
         }
     }
 

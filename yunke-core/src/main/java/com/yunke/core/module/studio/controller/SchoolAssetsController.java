@@ -6,14 +6,15 @@ import com.yunke.common.core.entity.R;
 import com.yunke.common.core.entity.studio.Funding;
 import com.yunke.common.core.entity.studio.SchoolAssets;
 import com.yunke.common.core.util.PageUtil;
+import com.yunke.core.annotation.ControllerEndpoint;
 import com.yunke.core.module.studio.service.ISchoolAssetsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.Map;
 
 
@@ -41,4 +42,38 @@ public class SchoolAssetsController {
         IPage<SchoolAssets> result = schoolAssetsService.pageSchoolAssets(param,schoolAssets);
         return R.ok(PageUtil.toPage(result));
     }
+
+    /*
+     *  请求类型：post
+     *  @param SchoolAssets 学校资产对象
+     *  作用：添加学校资产，SchoolAssets对象的name,proposer_id和apply_time不能为空，proposer_id为当前登录的用户user_id
+     */
+    @PostMapping("/addSchoolAssets")
+    @ControllerEndpoint(operation = "添加学校资产成功", exceptionMessage = "添加学校资产失败")
+    public void addSchoolAssets(SchoolAssets schoolAssets) {
+        schoolAssetsService.addSchoolAssets(schoolAssets);
+    }
+
+    /*
+     *  请求类型：Delete
+     *  @param fundingIds 经费id
+     *  作用：根据经费id删除数据
+     */
+    @DeleteMapping("/deleteSchoolAssets")
+    @ControllerEndpoint(operation = "删除该学校资产数据", exceptionMessage = "删除该学校资产数据失败")
+    public void deleteFundings(@NotBlank(message = "{required}") @PathVariable int[] schoolAssetsIds) {
+        schoolAssetsService.deleteSchoolAssetsById(schoolAssetsIds);
+    }
+
+    /*
+     *  请求类型：Put
+     *  @param funding 经费对象
+     *  作用：根据经费id修改经费数据
+     */
+    @PutMapping("/updateSchoolAssets")
+    @ControllerEndpoint(operation = "修改该该学校资产数据", exceptionMessage = "修改该学校资产数据")
+    public void updateSchoolAssets(@Valid SchoolAssets schoolAssets) {
+        schoolAssetsService.updateSchoolAssetsMessage(schoolAssets);
+    }
+
 }
