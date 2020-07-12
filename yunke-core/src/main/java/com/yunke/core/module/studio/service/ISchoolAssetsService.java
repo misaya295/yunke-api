@@ -24,6 +24,13 @@ public interface ISchoolAssetsService extends IService<SchoolAssets> {
     IPage<SchoolAssets> pageSchoolAssets(QueryParam param, SchoolAssets schoolAssets);
 
     /**
+     * 通过id查询该资产数据
+     * @param id 资产id
+     * @return SchoolAssets
+     */
+    SchoolAssets selectSchoolAssetsById(int id);
+
+    /**
      * 添加学校资产
      * @param schoolAssets 学校资产
      */

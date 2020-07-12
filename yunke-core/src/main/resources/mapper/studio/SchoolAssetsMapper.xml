@@ -40,6 +40,12 @@
       </if>
   </select>
 
+    <select id="selectSchoolAssetsById" parameterType="int" resultType="SchoolAssets">
+        <include refid="baseSql"/>
+        <if test="schoolAssetsId != null and schoolAssetsId != ''">
+            AND sa.id = #{schoolAssetsId}
+        </if>
+    </select>
 
     <insert id="addSchoolAssets" parameterType="SchoolAssets">
         insert into t_school_assets(assets_name

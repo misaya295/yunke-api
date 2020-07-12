@@ -30,8 +30,12 @@ public class SchoolAssetsServiceImpl extends
     public IPage<SchoolAssets> pageSchoolAssets(QueryParam param, SchoolAssets schoolAssets) {
         Page<SchoolAssets> page = new Page<>(param.getPageNum(), param.getPageSize());
         SortUtil.handlePageSort(param, page, "id", SystemConstant.ORDER_ASC, true);
-        System.out.println( baseMapper.pageSchoolAssetsDetail(page,schoolAssets));
         return baseMapper.pageSchoolAssetsDetail(page,schoolAssets);
+    }
+
+    @Override
+    public SchoolAssets selectSchoolAssetsById(int id) {
+        return baseMapper.selectSchoolAssetsById(id);
     }
 
     @Override

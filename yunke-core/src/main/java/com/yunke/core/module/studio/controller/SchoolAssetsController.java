@@ -31,21 +31,31 @@ import java.util.Map;
 @RequestMapping("studio/school/assets")
 public class SchoolAssetsController {
     private final ISchoolAssetsService schoolAssetsService;
-    /*
+    /**
      * 请求类型：GET
      * @param param 页数
-     * @param funding 模糊查询的条件
+     * @param schoolAssets 模糊查询的条件
      * 作用：根据页数param.pageNum查询满足条件的前10条的资产数据
      */
     @GetMapping
-    public R<Map<String, Object>> FundingListBypage(QueryParam param, SchoolAssets schoolAssets) {
+    public R<Map<String, Object>> SchoolAssetsListBypage(QueryParam param, SchoolAssets schoolAssets) {
         IPage<SchoolAssets> result = schoolAssetsService.pageSchoolAssets(param,schoolAssets);
         return R.ok(PageUtil.toPage(result));
     }
 
-    /*
+    /**
+     * 请求类型：GET
+     * @param id 资产id
+     * 作用：根据资产id查询该ID的数据，提供给前端修改
+     */
+    @GetMapping("/selectSchoolAssetsById")
+    public R<SchoolAssets> selectSchoolAssetsById(int id) {
+        SchoolAssets schoolAssets = schoolAssetsService.selectSchoolAssetsById(id);
+        return R.ok(schoolAssets);
+    }
+    /**
      *  请求类型：post
-     *  @param SchoolAssets 学校资产对象
+     *  @param schoolAssets 学校资产对象
      *  作用：添加学校资产，SchoolAssets对象的name,proposer_id和apply_time不能为空，proposer_id为当前登录的用户user_id
      */
     @PostMapping("/addSchoolAssets")
@@ -54,21 +64,21 @@ public class SchoolAssetsController {
         schoolAssetsService.addSchoolAssets(schoolAssets);
     }
 
-    /*
+    /**
      *  请求类型：Delete
-     *  @param fundingIds 经费id
+     *  @param schoolAssetsIds 资产id
      *  作用：根据经费id删除数据
      */
     @DeleteMapping("/deleteSchoolAssets")
     @ControllerEndpoint(operation = "删除该学校资产数据", exceptionMessage = "删除该学校资产数据失败")
-    public void deleteFundings(@NotBlank(message = "{required}") @PathVariable int[] schoolAssetsIds) {
+    public void deleteSchoolAssets(@NotBlank(message = "{required}") @PathVariable int[] schoolAssetsIds) {
         schoolAssetsService.deleteSchoolAssetsById(schoolAssetsIds);
     }
 
-    /*
+    /**
      *  请求类型：Put
-     *  @param funding 经费对象
-     *  作用：根据经费id修改经费数据
+     *  @param schoolAssets 资产对象
+     *  作用：根据经费id修改资产数据
      */
     @PutMapping("/updateSchoolAssets")
     @ControllerEndpoint(operation = "修改该该学校资产数据", exceptionMessage = "修改该学校资产数据")

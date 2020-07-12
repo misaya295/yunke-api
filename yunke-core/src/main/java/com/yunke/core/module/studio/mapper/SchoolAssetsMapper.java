@@ -15,17 +15,23 @@ import org.apache.ibatis.annotations.Param;
  * @since 2020-06-14 14:04:56
  */
 public interface SchoolAssetsMapper extends BaseMapper<SchoolAssets> {
-    /*
+    /**
      * 查找资金详细信息
      * @param page 分页对象
      * @param <T>  type
-     * @return IPage<Founding>
+     * @return <T> IPage<SchoolAssets>
      */
     <T> IPage<SchoolAssets> pageSchoolAssetsDetail(Page<T> page, @Param("schoolAssets") SchoolAssets schoolAssets);
 
-    /*
+    /**
+     * 通过资产id查询该资产的详细信息
+     * @param id 资产id
+     * @return SchoolAssets
+     */
+    SchoolAssets selectSchoolAssetsById(@Param("schoolAssetsId")int id);
+    /**
      * 添加学校资产
-     * @param schoolAssets学校资产
+     * @param schoolAssets 学校资产
      */
     void addSchoolAssets(@Param("schoolAssets")SchoolAssets schoolAssets);
 
