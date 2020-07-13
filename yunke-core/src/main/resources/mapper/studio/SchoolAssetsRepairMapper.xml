@@ -72,4 +72,27 @@
         </if>
         )
     </insert>
+
+    <update id="updateSchoolAssetsRepairsMessage" parameterType="SchoolAssetsRepair">
+        update t_school_assets_repair
+        <trim prefix="set" suffixOverrides=",">
+            <if test="schoolAssetsRepair.repairDate != null and schoolAssetsRepair.repairDate != ''">
+                repair_date = #{schoolAssetsRepair.repairDate},
+            </if>
+            <if test="schoolAssetsRepair.assetsName != null and schoolAssetsRepair.assetsName != ''">
+                assets_name = #{schoolAssetsRepair.assetsName},
+            </if>
+            <if test="schoolAssetsRepair.repairPrice != null and schoolAssetsRepair.repairPrice != ''">
+                repair_price = #{schoolAssetsRepair.repairPrice},
+            </if>
+            <if test="schoolAssetsRepair.repairInvoice != null and schoolAssetsRepair.repairInvoice != ''">
+                repair_invoice = #{schoolAssetsRepair.repairInvoice},
+            </if>
+            <if test="schoolAssetsRepair.repairProverUserInfoUuid != null and schoolAssetsRepair.repairProverUserInfoUuid != ''">
+                repair_prover_user_info_uuid =  #{schoolAssetsRepair.repairProverUserInfoUuid},
+            </if>
+        </trim>
+        where id=#{schoolAssetsRepair.id}
+    </update>
+
 </mapper>

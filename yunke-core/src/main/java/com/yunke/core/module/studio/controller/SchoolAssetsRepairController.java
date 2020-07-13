@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.Map;
 
@@ -53,22 +54,26 @@ public class SchoolAssetsRepairController {
         schoolAssetsRepairService.deleteSchoolAssetsRepairById(schoolAssetsRepairIds);
     }
 
+//下面接口缺少文件上传下载
     /**
      *  请求类型：post
      *  @param schoolAssetsRepair 学校资产对象
      *  作用：添加学校资产，SchoolAssets对象的name,proposer_id和apply_time不能为空，proposer_id为当前登录的用户user_id
      */
     @PostMapping("/addSchoolAssetsRepair")
-    @ControllerEndpoint(operation = "添加学校资产成功", exceptionMessage = "添加学校资产失败")
-    public void addSchoolAssets(SchoolAssetsRepair schoolAssetsRepair) {
-        schoolAssetsRepair = new SchoolAssetsRepair();
-        schoolAssetsRepair.setId(123);
-        schoolAssetsRepair.setRepairDate("1");
-        schoolAssetsRepair.setAssetsName(2);
-        schoolAssetsRepair.setRepairPrice(3.0);
-        schoolAssetsRepair.setRepairInvoice("4");
-        schoolAssetsRepair.setRepairProverUserInfoUuid(5);
+    @ControllerEndpoint(operation = "添加学校资产维修申请成功", exceptionMessage = "添加校资产维修申请失败")
+    public void addSchoolAssetsRepairs(SchoolAssetsRepair schoolAssetsRepair) {
         schoolAssetsRepairService.addSchoolAssetsRepair(schoolAssetsRepair);
     }
 
+    /**
+     *  请求类型：Put
+     *  @param schoolAssetsRepair 学校资产对象
+     *  作用：根据经费id修改资产数据
+     */
+    @PutMapping("/updateSchoolAssetsRepair")
+    @ControllerEndpoint(operation = "修改校资产维修申请数据成功", exceptionMessage = "修改校资产维修申请数据")
+    public void updateSchoolAssetsRepairs(@Valid SchoolAssetsRepair schoolAssetsRepair) {
+        schoolAssetsRepairService.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
+    }
 }

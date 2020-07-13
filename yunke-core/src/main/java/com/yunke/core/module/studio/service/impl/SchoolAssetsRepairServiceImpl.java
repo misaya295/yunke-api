@@ -42,4 +42,9 @@ public class SchoolAssetsRepairServiceImpl extends
     public void addSchoolAssetsRepair(SchoolAssetsRepair schoolAssetsRepair) {
         baseMapper.addSchoolAssetsRepair(schoolAssetsRepair);
     }
+
+    @Override
+    public void updateSchoolAssetsRepairsMessage(SchoolAssetsRepair schoolAssetsRepair) {
+        baseMapper.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
+    }
 }
