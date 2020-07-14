@@ -1,16 +1,16 @@
 # 开发配置
 server:
   port: 8300
-
 spring:
   application:
     name: YUNKE-CORE
+  servlet:
+    multipart:
+      max-file-size: 10MB
   datasource:
     dynamic:
       p6spy: ${open.p6spy:true}
       hikari:
-        connection-timeout: 20000
-        max-lifetime: 1500000
         max-pool-size: 20
         min-idle: 5
         connection-test-query: SELECT 1
@@ -19,9 +19,9 @@ spring:
       datasource:
         base:
           username: ${mysql.username:root}
-          password: ${mysql.password:Abc123!_}
+          password: ${mysql.password:123456}
           driver-class-name: ${mysql.driver:com.mysql.cj.jdbc.Driver}
-          url: jdbc:mysql://${mysql.url:120.78.0.140}:${mysql.port:3306}/db-yunke?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+          url: jdbc:mysql://${mysql.url:123.207.61.33}:${mysql.port:3306}/db-yunke?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -87,3 +87,9 @@ justauth:
     type: redis
     prefix: 'YUNKE::CLOUD::SOCIAL::STATE::'
     timeout: 1h
+
+#七牛云
+qiNiu:
+  # 文件大小 /M
+  max-size: 15
+  expire-in-second: 3600

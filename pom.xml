@@ -38,6 +38,7 @@
     <spring-admin.version>2.2.3</spring-admin.version>
     <easy-captcha.version>1.6.2</easy-captcha.version>
     <myabtis-plus.verison>3.3.2</myabtis-plus.verison>
+    <qiniu-java-sdk.version>7.2.29</qiniu-java-sdk.version>
     <security-jwt.version>1.1.1.RELEASE</security-jwt.version>
     <dynamic-datasource.version>3.1.1</dynamic-datasource.version>
   </properties>
