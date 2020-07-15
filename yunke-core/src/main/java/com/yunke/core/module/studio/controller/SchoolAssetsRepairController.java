@@ -54,7 +54,6 @@ public class SchoolAssetsRepairController {
         schoolAssetsRepairService.deleteSchoolAssetsRepairById(schoolAssetsRepairIds);
     }
 
-//下面接口缺少文件上传下载
     /**
      *  请求类型：post
      *  @param schoolAssetsRepair 学校资产对象
