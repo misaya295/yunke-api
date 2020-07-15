@@ -62,6 +62,15 @@ public class DateUtil {
   }
 
   /**
+   * 格式化当前时间，格式为 yyyyMMddHHmmss
+   *
+   * @return 格式化后的字符串
+   */
+  public static String formatFullTimeNow() {
+    return formatFullTime(LocalDateTime.now(), FULL_TIME_PATTERN);
+  }
+
+  /**
    * 格式化 CST类型的时间字符串
    *
    * @param date   CST类型的时间字符串
