@@ -40,4 +40,10 @@ public interface SchoolAssetsRepairMapper extends BaseMapper<SchoolAssetsRepair>
      * @param schoolAssetsRepair 维修申请对象
      */
     void updateSchoolAssetsRepairsMessage(@Param("schoolAssetsRepair")SchoolAssetsRepair schoolAssetsRepair);
+
+    /**
+     * 通过经费id返回该维修申请数据
+     * @param schoolAssetsRepairId 维修申请id
+     */
+    SchoolAssetsRepair selectSchoolAssetsRepairIdById(@Param("schoolAssetsRepairId")int schoolAssetsRepairId);
 }

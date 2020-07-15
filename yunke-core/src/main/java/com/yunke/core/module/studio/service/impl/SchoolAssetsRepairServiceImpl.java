@@ -47,4 +47,9 @@ public class SchoolAssetsRepairServiceImpl extends
     public void updateSchoolAssetsRepairsMessage(SchoolAssetsRepair schoolAssetsRepair) {
         baseMapper.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
     }
+
+    @Override
+    public SchoolAssetsRepair selectSchoolAssetsRepairIdById(int schoolAssetsRepairId) {
+        return baseMapper.selectSchoolAssetsRepairIdById(schoolAssetsRepairId);
+    }
 }

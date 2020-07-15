@@ -34,14 +34,24 @@ public class SchoolAssetsRepairController {
     /*
      * 请求类型：GET
      * @param param 页数
-     * @param funding 模糊查询的条件
+     * @param schoolAssetsRepair 模糊查询的条件
      * 作用：根据页数param.pageNum查询满足条件的前10条的资产数据
      */
     @GetMapping
-    public R<Map<String, Object>> FundingListBypage(QueryParam param, SchoolAssetsRepair schoolAssetsRepair) {
+    public R<Map<String, Object>> SchoolAssetsRepairListBypage(QueryParam param, SchoolAssetsRepair schoolAssetsRepair) {
         IPage<SchoolAssetsRepair> result = schoolAssetsRepairService.pageSchoolAssetsRepair(param,schoolAssetsRepair);
         return R.ok(PageUtil.toPage(result));
     }
+
+    /**
+     * 请求类型：GET
+     * @param schoolAssetsRepairId 维修申请id
+     */
+    @GetMapping("/selectSchoolAssetsRepairById")
+    public R<SchoolAssetsRepair> selectSchoolAssetsRepairById( int schoolAssetsRepairId) {
+        return R.ok(schoolAssetsRepairService.selectSchoolAssetsRepairIdById(schoolAssetsRepairId));
+    }
+
 
     /**
      *  请求类型：Delete

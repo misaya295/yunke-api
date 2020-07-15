@@ -3,6 +3,7 @@ package com.yunke.core.module.studio.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yunke.common.core.entity.QueryParam;
+import com.yunke.common.core.entity.studio.Funding;
 import com.yunke.common.core.entity.studio.SchoolAssets;
 import com.yunke.common.core.entity.studio.SchoolAssetsRepair;
 
@@ -41,4 +42,9 @@ public interface ISchoolAssetsRepairService extends IService<SchoolAssetsRepair>
      */
     void updateSchoolAssetsRepairsMessage(SchoolAssetsRepair schoolAssetsRepair);
 
+    /**
+     * 通过经费id返回该维修申请数据
+     * @param schoolAssetsRepairId 维修申请id
+     */
+    SchoolAssetsRepair selectSchoolAssetsRepairIdById(int schoolAssetsRepairId);
 }

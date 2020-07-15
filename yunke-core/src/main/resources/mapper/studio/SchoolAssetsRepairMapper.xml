@@ -33,6 +33,13 @@
       </if>
   </select>
 
+    <select id="selectSchoolAssetsRepairIdById" parameterType="int" resultType="SchoolAssetsRepair">
+        <include refid="baseSql"/>
+        <if test="schoolAssetsRepairId != null and schoolAssetsRepairId != ''">
+            AND sar.id=#{schoolAssetsRepairId}
+        </if>
+    </select>
+
     <delete id="deleteSchoolAssetsRepairById">
         delete from t_school_assets_repair where
         <if test="array != null and array.length > 0">
