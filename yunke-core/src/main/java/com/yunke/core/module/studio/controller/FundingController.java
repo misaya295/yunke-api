@@ -5,18 +5,16 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.R;
 import com.yunke.common.core.entity.studio.Funding;
-import com.yunke.common.core.entity.system.SystemUser;
+import com.yunke.common.core.exception.ApiException;
 import com.yunke.common.core.util.PageUtil;
 import com.yunke.core.annotation.ControllerEndpoint;
 import com.yunke.core.module.studio.service.IFundingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,13 +48,18 @@ public class FundingController {
 
     /*
      *  请求类型：Delete
-     *  @param fundingIds 经费id
+     *  @param fundingIds 经费id,每个id之间，连接
      *  作用：根据经费id删除数据
      */
-    @DeleteMapping("/deleteFundings")
+    @DeleteMapping("/{fundingIds}")
     @ControllerEndpoint(operation = "删除该经费数据", exceptionMessage = "删除该经费数据失败")
-    public void deleteFundings(@NotBlank(message = "{required}") @PathVariable int[] fundingIds) {
-         fundingService.deleteFundings(fundingIds);
+    public void deleteFundings(@PathVariable("fundingIds") String fundingIds) {
+        int[] split_fundingIds = StrUtil.splitToInt(fundingIds, StrUtil.COMMA);
+        if(split_fundingIds.length>0){
+            fundingService.deleteFundings(split_fundingIds);
+        }else if(split_fundingIds.length == 0){
+           throw new ApiException("前端传入的经费id为空，删除失败");
+        }
     }
 
     /*
@@ -76,30 +79,38 @@ public class FundingController {
      *  作用：点击修改/查询时，根据fundingID返回经费数据对象，可以选择的申请人和审核人的对象（对象数据只有用户id和名字）
      *      如果经费id为-1的话则只返回可以选择的申请人和审核人的对象（对象数据只有用户id和名字）
      */
-    @GetMapping("/selectFundingById")
+    @GetMapping("/{fundingId}")
     @ControllerEndpoint(operation = "查询经费申请数据和选择的申请人和审核人成功", exceptionMessage = "查询经费申请数据和选择的申请人和审核人失败")
-    public R<List<Object>> selectFundingById(/*@NotBlank(message = "{required}") @PathVariable int fundingId*/) {
-        int fundingId=-1;
+    public R<List<Object>> selectFundingById(@PathVariable("fundingId") int fundingId) {
         List<Object> message = new ArrayList<>();
         //该经费id的数据
-        message.add(fundingService.selectFundingById(fundingId));
-        //可选择的申请人(所有人都可以申请)（只有id和真实名称）
-        int[] verifierRoleId = {1,2,3,4};
-        message.add(fundingService.selectUserNameByRoleId(verifierRoleId));
-        //可选择的审核人(只有管理员可以申请)（只有id和真实名称）
-        int[] certifierRoleId = {1};
-        message.add(fundingService.selectUserNameByRoleId(certifierRoleId));
-        return R.ok(message);
+        Funding funding =fundingService.selectFundingById(fundingId);
+        if(funding!=null) {
+            message.add(funding);
+            //可选择的申请人(所有人都可以申请)（只有id和真实名称）
+            int[] verifierRoleId = {1, 2, 3, 4};
+            message.add(fundingService.selectUserNameByRoleId(verifierRoleId));
+            //可选择的审核人(只有管理员可以申请)（只有id和真实名称）
+            int[] certifierRoleId = {1};
+            message.add(fundingService.selectUserNameByRoleId(certifierRoleId));
+            return R.ok(message);
+        }else{
+            throw new ApiException("查询不到这个经费");
+        }
     }
     /*
      *  请求类型：post
      *  @param funding 经费对象
      *  作用：添加经费申请，经费对象的name,proposer_id和apply_time不能为空，proposer_id为当前登录的用户user_id
      */
-    @PostMapping("/addFunding")
+    @PostMapping("/{funding}")
     @ControllerEndpoint(operation = "添加经费申请", exceptionMessage = "添加经费申请失败")
-    public void addFunding(Funding funding) {
-        fundingService.addFunding(funding);
+    public void addFunding(@PathVariable("funding")Funding funding) {
+        if(funding!=null){
+            fundingService.addFunding(funding);
+        }else{
+            throw new ApiException("添加的经费申请里面什么数据都没有");
+        }
     }
 
     /*
@@ -107,10 +118,18 @@ public class FundingController {
      *  @param funding 经费对象
      *  作用：修改经费申请状态，1申请中/2报销中/3报销成功/4申请失败
      */
-    @PutMapping("/UpdateFundingState")
+    @PutMapping("/{funding}")
     @ControllerEndpoint(operation = "修改该经费申请状态", exceptionMessage = "修改该经费申请状态失败")
-    public void updateFundingState(@Valid Funding funding) {
-        fundingService.updateFundingState(funding);
+    public void updateFundingState(@PathVariable("funding") Funding funding) {
+        if(funding!=null){
+            if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0&&funding.getProposerId()!=null&&funding.getApplyTime()!=null&&funding.getApplyTime()!="") {
+                fundingService.updateFundingState(funding);
+            }else{
+                throw new ApiException("经费申请里面的必填数据为空，修改失败");
+            }
+        }else{
+            throw new ApiException("不能把所有数据都改为空");
+        }
     }
 
 }

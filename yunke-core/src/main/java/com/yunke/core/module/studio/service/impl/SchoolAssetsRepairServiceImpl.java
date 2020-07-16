@@ -7,6 +7,7 @@ import com.yunke.common.core.constant.SystemConstant;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.studio.SchoolAssets;
 import com.yunke.common.core.entity.studio.SchoolAssetsRepair;
+import com.yunke.common.core.exception.ApiException;
 import com.yunke.common.core.util.SortUtil;
 import com.yunke.core.module.studio.mapper.SchoolAssetsRepairMapper;
 import com.yunke.core.module.studio.service.ISchoolAssetsRepairService;
@@ -40,7 +41,11 @@ public class SchoolAssetsRepairServiceImpl extends
 
     @Override
     public void addSchoolAssetsRepair(SchoolAssetsRepair schoolAssetsRepair) {
-        baseMapper.addSchoolAssetsRepair(schoolAssetsRepair);
+        if(schoolAssetsRepair.getId() != null) {
+            baseMapper.addSchoolAssetsRepair(schoolAssetsRepair);
+        }else{
+            throw new ApiException("添加的维修申请id不能为空");
+        }
     }
 
     @Override

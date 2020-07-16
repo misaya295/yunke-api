@@ -1,10 +1,12 @@
 package com.yunke.core.module.studio.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.R;
 import com.yunke.common.core.entity.studio.Funding;
 import com.yunke.common.core.entity.studio.SchoolAssets;
+import com.yunke.common.core.exception.ApiException;
 import com.yunke.common.core.util.PageUtil;
 import com.yunke.core.annotation.ControllerEndpoint;
 import com.yunke.core.module.studio.service.ISchoolAssetsService;
@@ -45,13 +47,17 @@ public class SchoolAssetsController {
 
     /**
      * 请求类型：GET
-     * @param id 资产id
-     * 作用：根据资产id查询该ID的数据，提供给前端修改
+     * @param schoolAssetsId 资产id
+     * 作用：根据资产schoolAssetsId查询该资产ID的数据，提供给前端修改
      */
-    @GetMapping("/selectSchoolAssetsById")
-    public R<SchoolAssets> selectSchoolAssetsById(int id) {
-        SchoolAssets schoolAssets = schoolAssetsService.selectSchoolAssetsById(id);
-        return R.ok(schoolAssets);
+    @GetMapping("{schoolAssetsId}")
+    public R<SchoolAssets> selectSchoolAssetsById(@PathVariable("schoolAssetsId")int schoolAssetsId) {
+        SchoolAssets schoolAssets = schoolAssetsService.selectSchoolAssetsById(schoolAssetsId);
+        if(schoolAssets != null) {
+            return R.ok(schoolAssets);
+        }else{
+            throw new ApiException("查询不到这个资产");
+        }
     }
     /**
      *  请求类型：post
@@ -61,18 +67,27 @@ public class SchoolAssetsController {
     @PostMapping("/addSchoolAssets")
     @ControllerEndpoint(operation = "添加学校资产成功", exceptionMessage = "添加学校资产失败")
     public void addSchoolAssets(SchoolAssets schoolAssets) {
-        schoolAssetsService.addSchoolAssets(schoolAssets);
+        if(schoolAssets != null){
+            schoolAssetsService.addSchoolAssets(schoolAssets);
+        }else{
+            throw new ApiException("不能添加一个什么数据都没有的资产");
+        }
     }
 
     /**
      *  请求类型：Delete
      *  @param schoolAssetsIds 资产id
-     *  作用：根据经费id删除数据
+     *  作用：根据资产id删除数据
      */
-    @DeleteMapping("/deleteSchoolAssets")
+    @DeleteMapping("/{schoolAssetsIds}")
     @ControllerEndpoint(operation = "删除该学校资产数据", exceptionMessage = "删除该学校资产数据失败")
-    public void deleteSchoolAssets(@NotBlank(message = "{required}") @PathVariable int[] schoolAssetsIds) {
-        schoolAssetsService.deleteSchoolAssetsById(schoolAssetsIds);
+    public void deleteSchoolAssets(@PathVariable("schoolAssetsIds") String schoolAssetsIds) {
+        int[] split_schoolAssetsIds = StrUtil.splitToInt(schoolAssetsIds, StrUtil.COMMA);
+        if(split_schoolAssetsIds.length>0){
+            schoolAssetsService.deleteSchoolAssetsById(split_schoolAssetsIds);
+        }else if(split_schoolAssetsIds.length == 0){
+            throw new ApiException("前端传入资产id为空，删除失败");
+        }
     }
 
     /**
@@ -80,10 +95,14 @@ public class SchoolAssetsController {
      *  @param schoolAssets 资产对象
      *  作用：根据经费id修改资产数据
      */
-    @PutMapping("/updateSchoolAssets")
+    @PutMapping("/{schoolAssets}")
     @ControllerEndpoint(operation = "修改该该学校资产数据", exceptionMessage = "修改该学校资产数据")
-    public void updateSchoolAssets(@Valid SchoolAssets schoolAssets) {
-        schoolAssetsService.updateSchoolAssetsMessage(schoolAssets);
+    public void updateSchoolAssets(@PathVariable("schoolAssets")  SchoolAssets schoolAssets) {
+        if(schoolAssets != null){
+            schoolAssetsService.updateSchoolAssetsMessage(schoolAssets);
+        }else{
+            throw new ApiException("不能把这个资产的数据修都改为空");
+        }
     }
 
 }

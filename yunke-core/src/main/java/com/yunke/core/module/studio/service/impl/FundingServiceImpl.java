@@ -74,6 +74,8 @@ public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> impl
         //只有申请人,申请时间和申请事件名称都有的情况下才可以提交申请
         if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0&&funding.getProposerId()!=null&&funding.getApplyTime()!=null&&funding.getApplyTime()!=""){
             baseMapper.addFunding(funding);
+        }else{
+            throw new ApiException("添加的经费申请里必填数据为空");
         }
     }
 
