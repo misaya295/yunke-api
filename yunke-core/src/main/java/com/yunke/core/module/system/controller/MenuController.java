@@ -74,7 +74,7 @@ public class MenuController {
 
   @DeleteMapping("{menuIds}")
   @PreAuthorize("hasAuthority('menu:delete')")
-  @ControllerEndpoint(operation = "删除角色", exceptionMessage = "删除菜单失败")
+  @ControllerEndpoint(operation = "删除菜单", exceptionMessage = "删除菜单失败")
   public void deleteMenus(@NotBlank(message = "{required}") @PathVariable String menuIds) {
     String[] ids = menuIds.split(StrUtil.COMMA);
     this.menuService.deleteMenus(ids);

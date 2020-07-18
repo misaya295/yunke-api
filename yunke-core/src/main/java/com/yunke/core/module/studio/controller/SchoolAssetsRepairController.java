@@ -79,7 +79,7 @@ public class SchoolAssetsRepairController {
     /**
      *  请求类型：post
      *  @param schoolAssetsRepair 学校资产对象
-     *  作用：添加学校资产，SchoolAssets对象的name,proposer_id和apply_time不能为空，proposer_id为当前登录的用户user_id
+     *  作用：添加维修申请
      */
     @PostMapping("/{schoolAssetsRepair}")
     @ControllerEndpoint(operation = "添加学校资产维修申请成功", exceptionMessage = "添加校资产维修申请失败")

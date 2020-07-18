@@ -55,6 +55,8 @@ public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> impl
         if(funding.getId()!=null) {
             if (baseMapper.selectFundingCountById(funding.getId()) == 1) {       //判断这个这个id的数据是否存在
                 baseMapper.updateFundingMessage(funding);                      //修改这个经费对象的数据
+            }else{
+                throw new ApiException("所要需改的经费数据不存在");
             }
         }
     }
@@ -75,13 +77,17 @@ public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> impl
         if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0&&funding.getProposerId()!=null&&funding.getApplyTime()!=null&&funding.getApplyTime()!=""){
             baseMapper.addFunding(funding);
         }else{
-            throw new ApiException("添加的经费申请里必填数据为空");
+            throw new ApiException("添加的经费申请里必填数据不能为空");
         }
     }
 
     @Override
     public void updateFundingState(Funding funding) {
-        baseMapper.updateFundingState(funding);
+        if(funding.getState()>=1 &&funding.getState()<=4) {
+            baseMapper.updateFundingState(funding);
+        }else{
+            throw new ApiException("经费申请的状态修改值不在正常范围");
+        }
     }
 
 }

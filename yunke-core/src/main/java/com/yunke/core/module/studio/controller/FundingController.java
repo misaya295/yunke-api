@@ -48,7 +48,7 @@ public class FundingController {
 
     /*
      *  请求类型：Delete
-     *  @param fundingIds 经费id,每个id之间，连接
+     *  @param fundingIds 经费id,每个id之间逗号连接
      *  作用：根据经费id删除数据
      */
     @DeleteMapping("/{fundingIds}")
@@ -67,10 +67,18 @@ public class FundingController {
      *  @param funding 经费对象
      *  作用：根据经费id修改经费数据
      */
-    @PutMapping("/UpdateFunding")
+    @PutMapping("/{funding}")
     @ControllerEndpoint(operation = "修改该经费数据", exceptionMessage = "修改该经费数据失败")
-    public void updateFunding(@Valid Funding funding) {
-        fundingService.updateFundingMessage(funding);
+    public void updateFunding(@PathVariable("funding") Funding funding) {
+        if(funding!=null){
+            if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0&&funding.getProposerId()!=null&&funding.getApplyTime()!=null&&funding.getApplyTime()!="") {
+                fundingService.updateFundingMessage(funding);
+            }else{
+                throw new ApiException("经费申请里面的必填数据为空，修改失败");
+            }
+        }else{
+            throw new ApiException("不能把所有数据都改为空");
+        }
     }
 
     /*
@@ -118,17 +126,13 @@ public class FundingController {
      *  @param funding 经费对象
      *  作用：修改经费申请状态，1申请中/2报销中/3报销成功/4申请失败
      */
-    @PutMapping("/{funding}")
+    @PutMapping("/state/{funding}")
     @ControllerEndpoint(operation = "修改该经费申请状态", exceptionMessage = "修改该经费申请状态失败")
     public void updateFundingState(@PathVariable("funding") Funding funding) {
         if(funding!=null){
-            if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0&&funding.getProposerId()!=null&&funding.getApplyTime()!=null&&funding.getApplyTime()!="") {
                 fundingService.updateFundingState(funding);
-            }else{
-                throw new ApiException("经费申请里面的必填数据为空，修改失败");
-            }
         }else{
-            throw new ApiException("不能把所有数据都改为空");
+            throw new ApiException("经费申请状态不能改为空");
         }
     }
 

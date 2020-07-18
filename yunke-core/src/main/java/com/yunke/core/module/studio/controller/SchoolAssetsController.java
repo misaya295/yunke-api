@@ -47,10 +47,10 @@ public class SchoolAssetsController {
 
     /**
      * 请求类型：GET
-     * @param schoolAssetsId 资产id
+     * @param schoolAssetsId 资产 schoolAssetsId
      * 作用：根据资产schoolAssetsId查询该资产ID的数据，提供给前端修改
      */
-    @GetMapping("{schoolAssetsId}")
+    @GetMapping("{}")
     public R<SchoolAssets> selectSchoolAssetsById(@PathVariable("schoolAssetsId")int schoolAssetsId) {
         SchoolAssets schoolAssets = schoolAssetsService.selectSchoolAssetsById(schoolAssetsId);
         if(schoolAssets != null) {
