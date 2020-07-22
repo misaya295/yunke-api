@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunke.core.module.studio.mapper.FundingMapper">
+
+  <sql id="baseSql">
+    SELECT  f.id,
+            f.verifier_id,
+            f.certifier_id,
+            f.name,
+            f.type,
+            f.apply_time,
+            f.success_time,
+            f.invoice,
+            f.cost,
+            f.card,
+            f.proposer_id,
+            f.state,
+            f.task_id
+    FROM t_funding f
+    where 1=1
+  </sql>
+
+  <select id="pageFundingDetail" parameterType="Funding" resultType="Funding">
+    <include refid="baseSql"/>
+      <if test="funding.id != null and funding.id != 0">                         <!--申请id-->
+          AND f.id like CONCAT('%',#{funding.id},'%')
+      </if>
+      <if test="funding.state != null and funding.state != 0">                   <!--申请状态-->
+          AND f.state = #{funding.state}
+      </if>
+      <if test="funding.applyTime != null and funding.applyTime != ''">           <!--时间-->
+          AND f.apply_time=#{funding.applyTime}
+      </if>
+      <if test="funding.proposerId != null and funding.proposerId != 0">          <!--申请人-->
+          AND f.proposer_id like CONCAT('%',#{funding.proposerId},'%')
+      </if>
+      <if test="funding.verifierId != null and funding.verifierId != 0">          <!--审核人-->
+          AND f.verifier_id like CONCAT('%',#{funding.verifierId},'%')
+      </if>
+      <if test="funding.name != null and funding.name != ''">                      <!--报销名称-->
+          AND f.name  like '%${funding.name}%'
+      </if>
+  </select>
+
+    <select id="pageFundingCount" parameterType="Funding" resultType="Funding">
+        select count(*) from t_funding where 1=1
+        <if test="funding.id != null and funding.id != 0">
+            AND f.id like CONCAT('%',#{funding.id},'%')
+        </if>
+        <if test="funding.state != null and funding.state != 0">
+            AND f.state = #{funding.state}
+        </if>
+        <if test="funding.applyTime != null and funding.applyTime != ''">
+            AND f.apply_time=#{funding.applyTime}
+        </if>
+        <if test="funding.proposerId != null and funding.proposerId != 0">
+            AND f.proposer_id like CONCAT('%',#{funding.proposerId},'%')
+        </if>
+        <if test="funding.verifierId != null and funding.verifierId != 0">
+            AND f.verifier_id like CONCAT('%',#{funding.verifierId},'%')
+        </if>
+        <if test="funding.name != null and funding.name != ''">
+            AND f.name  like '%${funding.name}%'
+        </if>
+    </select>
+
+    <select id="selectFundingCountById" parameterType="int" resultType="int">
+        select COUNT(*) from t_funding where 1=1
+        <if test="fundingId != null and fundingId != ''">
+             id =#{fundingId}
+        </if>
+    </select>
+
+    <select id="selectFundingById" parameterType="int" resultType="Funding">
+        <include refid="baseSql"/>
+        <if test="fundingId != null and fundingId != 0">                         <!--申请id-->
+            AND f.id=#{fundingId}
+        </if>
+    </select>
+
+   <delete id="deleteByFundingid">
+    delete from t_funding where state=4
+       <if test="array != null and array.length > 0">
+          <foreach collection="array" open=" and id in(" close=")" item="id" separator=",">
+               #{id}
+          </foreach>
+       </if>
+    </delete>
+
+    <update id="updateFundingState" parameterType="Funding">
+        <if test="funding.state != null and funding.state != ''">
+            update t_funding set state=#{funding.state} where id=#{funding.id}
+        </if>
+    </update>
+
+    <update id="updateFundingMessage" parameterType="Funding">
+        update t_funding
+        <trim prefix="set" suffixOverrides=",">
+            <if test="funding.verifierId != null and funding.verifierId != ''">
+                verifier_id=#{funding.verifierId},
+            </if>
+            <if test="funding.certifierId != null and funding.certifierId != ''">
+                certifier_id=#{funding.certifierId},
+            </if>
+            <if test="funding.name != null and funding.name != ''">
+                name=#{funding.name},
+            </if>
+            <if test="funding.type != null and funding.type != ''">
+                type=#{funding.type},
+            </if>
+            <if test="funding.applyTime != null and funding.applyTime != ''">
+                apply_time=#{funding.applyTime},
+            </if>
+            <if test="funding.successTime != null and funding.successTime != ''">
+                success_time=#{funding.successTime},
+            </if>
+            <if test="funding.invoice != null and funding.invoice != ''">
+                invoice=#{funding.invoice},
+            </if>
+            <if test="funding.cost != null and funding.cost != ''">
+                cost=#{funding.cost},
+            </if>
+            <if test="funding.card != null and funding.card != ''">
+                card=#{funding.card},
+            </if>
+            <if test="funding.proposerId != null and funding.proposerId != ''">
+                proposer_id=#{funding.proposerId},
+            </if>
+            <if test="funding.taskId != null and funding.taskId != ''">
+                task_id=#{funding.taskId},
+            </if>
+        </trim>
+        where id=#{funding.id} and state!=3
+    </update>
+
+    <insert id="addFunding" parameterType="Funding">
+        insert into t_funding(name,proposer_id,apply_time,state                   <!--非空3个属性和一个默认状态属性，状态刚刚添加默认为1申请中，id自增不写-->
+        <if test="funding.type != null and funding.type != ''">
+            ,type
+        </if>
+        <if test="funding.successTime != null and funding.successTime != ''">
+            ,success_time
+        </if>
+        <if test="funding.invoice != null and funding.invoice != ''">
+            ,invoice
+        </if>
+        <if test="funding.cost != null and funding.cost != ''">
+            , cost
+        </if>
+        <if test="funding.card != null and funding.card != ''">
+            , card
+        </if>
+        <if test="funding.taskId != null and funding.taskId != ''">
+            , task_id
+        </if>
+
+        )values (#{funding.name},#{funding.proposerId},#{funding.applyTime},1              <!--做个标记，方便一一对应-->
+
+        <if test="funding.type != null and funding.type != ''">
+            , #{funding.type}
+        </if>
+        <if test="funding.successTime != null and funding.successTime != ''">
+            , #{funding.successTime}
+        </if>
+        <if test="funding.invoice != null and funding.invoice != ''">
+            , #{funding.invoice}
+        </if>
+        <if test="funding.cost != null and funding.cost != ''">
+            , #{funding.cost}
+        </if>
+        <if test="funding.card != null and funding.card != ''">
+            , #{funding.card}
+        </if>
+        <if test="funding.taskId != null and funding.taskId != ''">
+            ,#{funding.taskId}
+        </if>
+        )
+    </insert>
+
+
+    <!--根据角色ID查询属性该角色的用户，后面会放到其他mapper文件下面，现在为了方便测试暂时放这里-->
+    <select id="selectUserNameByRoleId" resultType="SystemUser">
+        select u.user_id,u.full_name from t_user u where u.user_id in (
+        select ur.user_id from t_user_role ur where 1=1
+        <if test="array != null and array.length > 0">
+            <foreach collection="array" open=" and ur.role_id in(" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </if>
+        )
+    </select>
+
+
+</mapper>

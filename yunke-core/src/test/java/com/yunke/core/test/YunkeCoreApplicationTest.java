@@ -1,6 +1,8 @@
 package com.yunke.core.test;
 
 import com.yunke.core.YunkeCoreApplication;
+import com.yunke.core.module.studio.service.IFundingService;
+import com.yunke.core.module.studio.service.impl.FundingServiceImpl;
 import junit.framework.TestCase;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -23,7 +25,10 @@ public class YunkeCoreApplicationTest {
    */
   @Test
   public void testCase1() {
-    TestCase.assertEquals(1, 1);
+    IFundingService fundingService = new FundingServiceImpl();
+    //TestCase.assertEquals(1, 1);
+    int[] arr = {1,2,3};
+    fundingService.deleteFundings(arr);
   }
 
 }

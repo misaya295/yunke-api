@@ -1,15 +1,25 @@
 package com.yunke.core.module.studio.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yunke.common.core.constant.SystemConstant;
+import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.studio.Funding;
-import com.yunke.core.module.studio.generator.IdGenerateUtil;
-import com.yunke.core.module.studio.generator.TaskTypeConstant;
+import com.yunke.common.core.entity.system.SystemUser;
+import com.yunke.common.core.exception.ApiException;
+import com.yunke.common.core.util.SortUtil;
 import com.yunke.core.module.studio.mapper.FundingMapper;
 import com.yunke.core.module.studio.service.IFundingService;
+import com.yunke.core.module.system.service.IUserDataPermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 经费表(Funding)表服务实现类
@@ -21,24 +31,55 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> implements
-    IFundingService {
+        IFundingService {
 
-
-  /**
-   * 一个例子
-   */
-  public Integer checkTaskType(String taskId) {
-    switch (IdGenerateUtil.getIdType(taskId)) {
-      case TaskTypeConstant.COPYRIGHT:
-        return 1;
-      case TaskTypeConstant.ITEMS:
-        return 2;
-      case TaskTypeConstant.MATCH:
-        return 3;
-      default:
-        return 4;
+    @Override
+    public IPage<Funding> pageFunding(QueryParam param, Funding funding) {
+        Page<Funding> page = new Page<>(param.getPageNum(), param.getPageSize());
+        SortUtil.handlePageSort(param, page, "id", SystemConstant.ORDER_ASC, true);
+        return baseMapper.pageFundingDetail(page, funding);
     }
 
-  }
+    @Override
+    public int pageFundingCount(Funding funding) {
+        return baseMapper.pageFundingCount(funding);
+    }
+
+    @Override
+    public void deleteFundings(int[] fundingIds) {
+        baseMapper.deleteByFundingid(fundingIds);// 删除这个基金数据
+    }
+
+    @Override
+    public void updateFundingMessage(Funding funding) {
+        if(funding.getId()!=null) {
+            if (baseMapper.selectFundingCountById(funding.getId()) == 1) {       //判断这个这个id的数据是否存在
+                baseMapper.updateFundingMessage(funding);                      //修改这个经费对象的数据
+            }
+        }
+    }
+
+    @Override
+    public Funding selectFundingById(int fundingId) {
+        return baseMapper.selectFundingById(fundingId);
+    }
+
+    @Override
+    public List<SystemUser> selectUserNameByRoleId(int[] roleId) {
+        return baseMapper.selectUserNameByRoleId(roleId);
+    }
+
+    @Override
+    public void addFunding(Funding funding) {
+        //只有申请人,申请时间和申请事件名称都有的情况下才可以提交申请
+        if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0&&funding.getProposerId()!=null&&funding.getApplyTime()!=null&&funding.getApplyTime()!=""){
+            baseMapper.addFunding(funding);
+        }
+    }
+
+    @Override
+    public void updateFundingState(Funding funding) {
+        baseMapper.updateFundingState(funding);
+    }
 
 }
