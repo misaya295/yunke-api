@@ -52,7 +52,7 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
     }
 
     @Override
-    public Map getCertificate(String id) {
+    public Map<String,Object> getCertificate(String id) {
         return baseMapper.getCertificate(id);
     }
 }

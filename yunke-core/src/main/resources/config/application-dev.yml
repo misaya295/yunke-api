@@ -87,3 +87,7 @@ justauth:
     type: redis
     prefix: 'YUNKE::CLOUD::SOCIAL::STATE::'
     timeout: 1h
+
+qiNiu:
+  max-size: 15
+  expire-in-second: 3600

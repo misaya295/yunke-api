@@ -17,5 +17,5 @@ import java.util.Map;
 public interface CertificateMapper extends BaseMapper<Certificate> {
     IPage<Certificate> pageCertificate(Page<Certificate> page, @Param("certificate") Certificate certificate);
 
-    Map getCertificate(@Param("id") String id);
+    Map<String,Object> getCertificate(@Param("id") String id);
 }

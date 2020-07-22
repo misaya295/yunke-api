@@ -21,6 +21,7 @@ public class Members implements Serializable {
     /**
      * 成员ID
      */
+    @TableId(type = IdType.INPUT)
     private Integer userId;
     /**
      * 任务ID
