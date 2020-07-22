@@ -3,7 +3,9 @@ package com.yunke.common.core.entity.studio;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -16,23 +18,24 @@ import lombok.Data;
 @TableName("t_members")
 public class Members implements Serializable {
 
-  /**
-   * 标识字段
-   */
-  @TableId(type = IdType.AUTO)
-  private Integer id;
-  /**
-   * 成员ID
-   */
-  private Integer userId;
-  /**
-   * 任务ID
-   */
-  private String taskUuid;
-  /**
-   * 1为负责人，2为成员，3为指导老师
-   */
-  private Integer state;
+    /**
+     * 成员ID
+     */
+    private Integer userId;
+    /**
+     * 任务ID
+     */
+    private String taskId;
+    /**
+     * 1为负责人，2为成员，3为指导老师
+     */
+    private Integer state;
 
+    public Members(){}
 
+    public Members(int userId, int state, String taskId) {
+        this.userId = userId;
+        this.state = state;
+        this.taskId = taskId;
+    }
 }

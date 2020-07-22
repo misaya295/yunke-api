@@ -43,6 +43,7 @@ public class FundingController {
      */
     @GetMapping
     public R<Map<String, Object>> FundingListBypage(QueryParam param,Funding funding) {
+        funding.setName("1");
         IPage<Funding> result = fundingService.pageFunding(param,funding);
         //int count = fundingService.pageFundingCount(funding);//符合该条件的个数,page自己封装好了无需自己写，这里先留着，看后面会不会用到类似的,删了怪可惜的
         return R.ok(PageUtil.toPage(result));
@@ -67,7 +68,7 @@ public class FundingController {
     @PutMapping("/UpdateFunding")
     @ControllerEndpoint(operation = "修改该经费数据", exceptionMessage = "修改该经费数据失败")
     public void updateFunding(@Valid Funding funding) {
-        fundingService.updateFundingMessage(funding);
+        fundingService.updateFunding(funding);
     }
 
     /*
@@ -77,7 +78,6 @@ public class FundingController {
      *      如果经费id为-1的话则只返回可以选择的申请人和审核人的对象（对象数据只有用户id和名字）
      */
     @GetMapping("/selectFundingById")
-    @ControllerEndpoint(operation = "查询经费申请数据和选择的申请人和审核人成功", exceptionMessage = "查询经费申请数据和选择的申请人和审核人失败")
     public R<List<Object>> selectFundingById(/*@NotBlank(message = "{required}") @PathVariable int fundingId*/) {
         int fundingId=-1;
         List<Object> message = new ArrayList<>();
@@ -97,20 +97,10 @@ public class FundingController {
      *  作用：添加经费申请，经费对象的name,proposer_id和apply_time不能为空，proposer_id为当前登录的用户user_id
      */
     @PostMapping("/addFunding")
-    @ControllerEndpoint(operation = "添加经费申请", exceptionMessage = "添加经费申请失败")
     public void addFunding(Funding funding) {
         fundingService.addFunding(funding);
+
     }
 
-    /*
-     *  请求类型：Put
-     *  @param funding 经费对象
-     *  作用：修改经费申请状态，1申请中/2报销中/3报销成功/4申请失败
-     */
-    @PutMapping("/UpdateFundingState")
-    @ControllerEndpoint(operation = "修改该经费申请状态", exceptionMessage = "修改该经费申请状态失败")
-    public void updateFundingState(@Valid Funding funding) {
-        fundingService.updateFundingState(funding);
-    }
 
 }

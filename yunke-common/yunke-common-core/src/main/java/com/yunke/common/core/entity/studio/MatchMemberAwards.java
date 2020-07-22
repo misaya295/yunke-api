@@ -30,9 +30,9 @@ public class MatchMemberAwards implements Serializable {
    */
   private Integer rankCode;
   /**
-   * 关联 比赛UUID
+   * 关联 比赛ID
    */
-  private String taskUuid;
+  private String taskId;
   /**
    * 奖状
    */

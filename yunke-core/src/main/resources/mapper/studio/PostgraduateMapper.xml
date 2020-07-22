@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunke.core.module.studio.mapper.PostgraduateMapper">
+
+    <sql id="baseSql">
+        SELECT p.id,
+        p.user_id,
+        p.time,
+        p.school,
+        p.orientation,
+        p.exam,
+        p.state,
+        p.success,
+        u.username,
+        u.full_name
+         FROM t_postgraduate p LEFT JOIN t_user u ON p.user_id = u.user_id
+         where 1=1
+  </sql>
+
+    <select id="pagePostgraduate" resultType="Postgraduate" parameterType="Postgraduate">
+        <include refid="baseSql"/>
+        <if test="postgraduate.state != null and postgraduate.state !=''">
+            AND state = #{postgraduate.state}
+        </if>
+        <if test="postgraduate.userId != null and postgraduate.userId !=''">
+            AND user_id = #{postgraduate.userId}
+        </if>
+    </select>
+
+    <select id="getPostgraduate" resultType="map" parameterType="string">
+        <include refid="baseSql"/>
+        <if test="id!=null and id!=''">
+            AND id = #{id}
+        </if>
+    </select>
+
+
+</mapper>
