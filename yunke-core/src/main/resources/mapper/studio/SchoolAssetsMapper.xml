@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunke.core.module.studio.mapper.SchoolAssetsMapper">
+
+  <sql id="baseSql">
+    SELECT  sa.id,
+            sa.inclusion_date,
+            sa.assets_name,
+            sa.assets_num,
+            sa.price,
+            sa.scrap_date,
+            sa.scrap_detail
+    FROM t_school_assets sa
+    where 1=1
+  </sql>
+
+  <select id="pageSchoolAssetsDetail" parameterType="SchoolAssets" resultType="SchoolAssets">
+    <include refid="baseSql"/>
+      <if test="schoolAssets.id != null and schoolAssets.id != ''">
+          AND sa.id like CONCAT('%',#{schoolAssets.id},'%')
+      </if>
+      <if test="schoolAssets.inclusionDate != null and schoolAssets.inclusionDate != ''">
+          AND sa.inclusion_date like CONCAT('%',#{schoolAssets.inclusionDate},'%')
+      </if>
+      <if test="schoolAssets.assetsName != null and schoolAssets.assetsName != ''">
+          AND sa.assets_name like CONCAT('%',#{schoolAssets.assetsName},'%')
+      </if>
+      <if test="schoolAssets.assetsNum != null and schoolAssets.assetsNum != ''">
+          AND sa.assets_num like CONCAT('%',#{schoolAssets.assetsNum},'%')
+      </if>
+      <if test="schoolAssets.price != null and schoolAssets.price != ''">
+          AND sa.price = #{schoolAssets.price}
+      </if>
+      <if test="schoolAssets.scrapDate != null and schoolAssets.scrapDate != ''">
+          AND sa.scrap_date like CONCAT('%',#{schoolAssets.scrapDate},'%')
+      </if>
+      <if test="schoolAssets.scrapDetail != null and schoolAssets.scrapDetail != ''">
+          AND sa.scrap_detail like CONCAT('%',#{schoolAssets.scrapDetail},'%')
+      </if>
+  </select>
+
+    <select id="selectSchoolAssetsById" parameterType="int" resultType="SchoolAssets">
+        <include refid="baseSql"/>
+        <if test="schoolAssetsId != null and schoolAssetsId != ''">
+            AND sa.id = #{schoolAssetsId}
+        </if>
+    </select>
+
+    <insert id="addSchoolAssets" parameterType="SchoolAssets">
+        insert into t_school_assets(assets_name
+            <if test="schoolAssets.inclusionDate != null and schoolAssets.inclusionDate != ''">
+                ,inclusion_date
+            </if>
+            <if test="schoolAssets.assetsNum != null and schoolAssets.assetsNum != ''">
+                ,assets_num
+            </if>
+            <if test="schoolAssets.price != null and schoolAssets.price != ''">
+                ,price
+            </if>
+            <if test="schoolAssets.scrapDate != null and schoolAssets.scrapDate != ''">
+                ,scrap_date
+            </if>
+            <if test="schoolAssets.scrapDetail != null and schoolAssets.scrapDetail != ''">
+                ,scrap_detail
+            </if>
+            )values (#{schoolAssets.assetsName}
+
+            <if test="schoolAssets.inclusionDate != null and schoolAssets.inclusionDate != ''">
+                , #{schoolAssets.inclusionDate}
+            </if>
+            <if test="schoolAssets.assetsNum != null and schoolAssets.assetsNum != ''">
+                , #{schoolAssets.assetsNum}
+            </if>
+            <if test="schoolAssets.price != null and schoolAssets.price != ''">
+                , #{schoolAssets.price}
+            </if>
+            <if test="schoolAssets.scrapDate != null and schoolAssets.scrapDate != ''">
+                , #{schoolAssets.scrapDate}
+            </if>
+            <if test="schoolAssets.scrapDetail != null and schoolAssets.scrapDetail != ''">
+                , #{schoolAssets.scrapDetail}
+            </if>
+            )
+    </insert>
+
+    <delete id="deleteSchoolAssetsById">
+        delete from t_school_assets where
+        <if test="array != null and array.length > 0">
+            <foreach collection="array" open=" id in(" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
+
+
+    <update id="updateSchoolAssetsMessage" parameterType="SchoolAssets">
+        update t_school_assets
+        <trim prefix="set" suffixOverrides=",">
+            <if test="schoolAssets.inclusionDate != null and schoolAssets.inclusionDate != ''">
+                inclusion_date =#{schoolAssets.inclusionDate},
+            </if>
+            <if test="schoolAssets.assetsName != null and schoolAssets.assetsName != ''">
+                assets_name =#{schoolAssets.assetsName},
+            </if>
+            <if test="schoolAssets.assetsNum != null and schoolAssets.assetsNum != ''">
+                assets_num =#{schoolAssets.assetsNum},
+            </if>
+            <if test="schoolAssets.price != null and schoolAssets.price != ''">
+                price =#{schoolAssets.price},
+            </if>
+            <if test="schoolAssets.scrapDate != null and schoolAssets.scrapDate != ''">
+                scrap_date =#{schoolAssets.scrapDate},
+            </if>
+            <if test="schoolAssets.scrapDetail != null and schoolAssets.scrapDetail != ''">
+                scrap_detail =#{schoolAssets.scrapDetail},
+            </if>
+        </trim>
+        where id=#{schoolAssets.id}
+    </update>
+
+
+    <select id="selectSchoolAssetsCountById" parameterType="SchoolAssets" resultType="int">
+        select COUNT(*) from t_school_assets where 1=1
+        <if test="schoolAssets.assetsNum != null and schoolAssets.assetsNum !=''">
+            and assets_num =#{schoolAssets.assetsNum}
+        </if>
+    </select>
+</mapper>
