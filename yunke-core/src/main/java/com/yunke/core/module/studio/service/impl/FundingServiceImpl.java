@@ -90,4 +90,14 @@ public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> impl
         }
     }
 
+    @Override
+    public double queryFundingCostByTime(String statrtTime, String endTime, String kind) {
+        if(kind.equals("1")||kind.equals("0")||kind.equals("-1")) {
+            return baseMapper.queryFundingCostByTime(statrtTime, endTime, kind);
+        }else{
+            throw new ApiException("经费账单查询异常");
+        }
+    }
+
+
 }

@@ -65,6 +65,21 @@
         </if>
     </select>
 
+    <select id="queryFundingCostByTime" resultType="double">
+        SELECT SUM(cost) FROM t_funding where state=3
+        <if test="#{statrtTime}!=null and #{statrtTime}!='' and  #{endTime}!=null and #{endTime}!=''">
+            and DATE_FORMAT(success_time,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
+        </if>
+        <if test="#{kind}!=null and #{kind}!=''">
+            <if test="kind == '1'.toString()">
+                  and cost &gt; 0
+            </if>
+            <if test="kind == '-1'.toString()">
+                  and cost &lt; 0
+            </if>
+        </if>
+    </select>
+
     <select id="selectFundingCountById" parameterType="int" resultType="int">
         select COUNT(*) from t_funding where 1=1
         <if test="fundingId != null and fundingId != ''">

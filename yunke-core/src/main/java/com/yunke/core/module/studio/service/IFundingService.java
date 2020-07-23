@@ -67,4 +67,12 @@ public interface IFundingService extends IService<Funding> {
      */
     void updateFundingState(Funding funding);
 
+    /**
+     * 查询时间范围内的花费/剩余资金/入账
+     * @param statrtTime 开始时间
+     * @param endTime    结束时间
+     * @param kind      查询类型:-1/0/1,分别对应:开销/剩余/入账
+     */
+    double queryFundingCostByTime(String statrtTime,String endTime,String kind);
+
 }

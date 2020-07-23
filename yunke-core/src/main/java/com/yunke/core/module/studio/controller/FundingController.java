@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,20 @@ public class FundingController {
         IPage<Funding> result = fundingService.pageFunding(param,funding);
         //int count = fundingService.pageFundingCount(funding);//符合该条件的个数,page自己封装好了无需自己写，这里先留着，看后面会不会用到类似的,删了怪可惜的
         return R.ok(PageUtil.toPage(result));
+    }
+
+    /**
+     * 查询时间范围内的花费/入账/剩余资金
+     * 请求类型：GET
+     * @param timeAndStata 开始时间,结束时间,查询类型:-1/0/1,分别对应:开销/剩余/入账
+     */
+    @GetMapping("/bill/{timeAndStata}")
+    @ControllerEndpoint(operation = "查询经费账单", exceptionMessage = "查询经费账单失败")
+    public R<Double> queryFundingBillByTime(@PathVariable("timeAndStata")String timeAndStata) {
+       String[] split_time = new String[3];
+       split_time = StrUtil.split(timeAndStata, StrUtil.COMMA);
+       System.out.println(Arrays.toString(split_time));
+       return R.ok(fundingService.queryFundingCostByTime(split_time[0],split_time[1],split_time[2]));
     }
 
     /*

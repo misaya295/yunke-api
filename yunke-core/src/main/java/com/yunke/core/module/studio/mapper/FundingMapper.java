@@ -76,4 +76,12 @@ public interface FundingMapper extends BaseMapper<Funding> {
      * @param funding 经费对象，里面的name，apply_time,proposer_id不能为空
      */
     void addFunding(@Param("funding") Funding funding);
+
+    /**
+     * 查询时间范围内的花费/入账/剩余资金
+     * @param statrtTime 开始时间
+     * @param endTime    结束时间
+     * @param kind      查询类型:-1/0/1,分别对应:开销/剩余/入账
+     */
+    double queryFundingCostByTime(@Param("statrtTime") String statrtTime,@Param("endTime")String endTime,@Param("kind")String kind);
 }
