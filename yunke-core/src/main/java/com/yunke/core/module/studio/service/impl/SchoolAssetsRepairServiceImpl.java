@@ -1,7 +1,14 @@
 package com.yunke.core.module.studio.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yunke.common.core.constant.SystemConstant;
+import com.yunke.common.core.entity.QueryParam;
+import com.yunke.common.core.entity.studio.SchoolAssets;
 import com.yunke.common.core.entity.studio.SchoolAssetsRepair;
+import com.yunke.common.core.exception.ApiException;
+import com.yunke.common.core.util.SortUtil;
 import com.yunke.core.module.studio.mapper.SchoolAssetsRepairMapper;
 import com.yunke.core.module.studio.service.ISchoolAssetsRepairService;
 import org.springframework.stereotype.Service;
@@ -20,4 +27,34 @@ public class SchoolAssetsRepairServiceImpl extends
     ServiceImpl<SchoolAssetsRepairMapper, SchoolAssetsRepair> implements
     ISchoolAssetsRepairService {
 
+    @Override
+    public IPage<SchoolAssetsRepair> pageSchoolAssetsRepair(QueryParam param, SchoolAssetsRepair schoolAssetsRepair) {
+        Page<SchoolAssets> page = new Page<>(param.getPageNum(), param.getPageSize());
+        SortUtil.handlePageSort(param, page, "id", SystemConstant.ORDER_ASC, true);
+        return baseMapper.pageschoolAssetsRepairDetail(page,schoolAssetsRepair);
+    }
+
+    @Override
+    public void deleteSchoolAssetsRepairById(int[] schoolAssetsRepairIds) {
+        baseMapper.deleteSchoolAssetsRepairById(schoolAssetsRepairIds);
+    }
+
+    @Override
+    public void addSchoolAssetsRepair(SchoolAssetsRepair schoolAssetsRepair) {
+        if(schoolAssetsRepair.getId() != null) {
+            baseMapper.addSchoolAssetsRepair(schoolAssetsRepair);
+        }else{
+            throw new ApiException("添加的维修申请id不能为空");
+        }
+    }
+
+    @Override
+    public void updateSchoolAssetsRepairsMessage(SchoolAssetsRepair schoolAssetsRepair) {
+        baseMapper.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
+    }
+
+    @Override
+    public SchoolAssetsRepair selectSchoolAssetsRepairIdById(int schoolAssetsRepairId) {
+        return baseMapper.selectSchoolAssetsRepairIdById(schoolAssetsRepairId);
+    }
 }

@@ -65,10 +65,25 @@
         </if>
     </select>
 
+    <select id="queryFundingCostByTime" resultType="double">
+        SELECT SUM(cost) FROM t_funding where state=3
+        <if test="#{statrtTime}!=null and #{statrtTime}!='' and  #{endTime}!=null and #{endTime}!=''">
+            and DATE_FORMAT(success_time,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
+        </if>
+        <if test="#{kind}!=null and #{kind}!=''">
+            <if test="kind == '1'.toString()">
+                  and cost &gt; 0
+            </if>
+            <if test="kind == '-1'.toString()">
+                  and cost &lt; 0
+            </if>
+        </if>
+    </select>
+
     <select id="selectFundingCountById" parameterType="int" resultType="int">
         select COUNT(*) from t_funding where 1=1
-        <if test="funding.id != null and funding.id != ''">
-            AND f.id =#{fundingId}
+        <if test="fundingId != null and fundingId != ''">
+             id =#{fundingId}
         </if>
     </select>
 
@@ -88,44 +103,49 @@
        </if>
     </delete>
 
-    <update id="updateFunding" parameterType="Funding">
-       update t_funding set id=#{funding.id}
-       <if test="funding.verifierId != null and funding.verifierId != ''">
-            ,verifier_id=#{funding.verifierId}
-       </if>
-        <if test="funding.certifierId != null and funding.certifierId != ''">
-            ,certifier_id=#{funding.certifierId}
-        </if>
-        <if test="funding.name != null and funding.name != ''">
-            ,name=#{funding.name}
-        </if>
-        <if test="funding.type != null and funding.type != ''">
-            ,type=#{funding.type}
-        </if>
-        <if test="funding.applyTime != null and funding.applyTime != ''">
-            ,apply_time=#{funding.applyTime}
-        </if>
-        <if test="funding.successTime != null and funding.successTime != ''">
-            ,success_time=#{funding.successTime}
-        </if>
-        <if test="funding.invoice != null and funding.invoice != ''">
-            ,invoice=#{funding.invoice}
-        </if>
-        <if test="funding.cost != null and funding.cost != ''">
-            , cost=#{funding.cost}
-        </if>
-        <if test="funding.card != null and funding.card != ''">
-            , card=#{funding.card}
-        </if>
-        <if test="funding.proposerId != null and funding.proposerId != ''">
-            , proposer_id=#{funding.proposerId}
-        </if>
+    <update id="updateFundingState" parameterType="Funding">
         <if test="funding.state != null and funding.state != ''">
-            , state=#{funding.state}
+            update t_funding set state=#{funding.state} where id=#{funding.id}
         </if>
-        <if test="funding.taskId != null and funding.taskId != ''">
-            , task_id=#{funding.taskId}
-        </if>
+    </update>
+
+    <update id="updateFundingMessage" parameterType="Funding">
+        update t_funding
+        <trim prefix="set" suffixOverrides=",">
+            <if test="funding.verifierId != null and funding.verifierId != ''">
+                verifier_id=#{funding.verifierId},
+            </if>
+            <if test="funding.certifierId != null and funding.certifierId != ''">
+                certifier_id=#{funding.certifierId},
+            </if>
+            <if test="funding.name != null and funding.name != ''">
+                name=#{funding.name},
+            </if>
+            <if test="funding.type != null and funding.type != ''">
+                type=#{funding.type},
+            </if>
+            <if test="funding.applyTime != null and funding.applyTime != ''">
+                apply_time=#{funding.applyTime},
+            </if>
+            <if test="funding.successTime != null and funding.successTime != ''">
+                success_time=#{funding.successTime},
+            </if>
+            <if test="funding.invoice != null and funding.invoice != ''">
+                invoice=#{funding.invoice},
+            </if>
+            <if test="funding.cost != null and funding.cost != ''">
+                cost=#{funding.cost},
+            </if>
+            <if test="funding.card != null and funding.card != ''">
+                card=#{funding.card},
+            </if>
+            <if test="funding.proposerId != null and funding.proposerId != ''">
+                proposer_id=#{funding.proposerId},
+            </if>
+            <if test="funding.taskId != null and funding.taskId != ''">
+                task_id=#{funding.taskId},
+            </if>
+        </trim>
         where id=#{funding.id} and state!=3
     </update>
 
