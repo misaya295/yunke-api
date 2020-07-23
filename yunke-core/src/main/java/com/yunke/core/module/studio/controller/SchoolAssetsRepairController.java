@@ -1,11 +1,13 @@
 package com.yunke.core.module.studio.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.R;
 import com.yunke.common.core.entity.studio.Funding;
 import com.yunke.common.core.entity.studio.SchoolAssets;
 import com.yunke.common.core.entity.studio.SchoolAssetsRepair;
+import com.yunke.common.core.exception.ApiException;
 import com.yunke.common.core.util.PageUtil;
 import com.yunke.core.annotation.ControllerEndpoint;
 import com.yunke.core.module.studio.service.ISchoolAssetsRepairService;
@@ -47,32 +49,46 @@ public class SchoolAssetsRepairController {
      * 请求类型：GET
      * @param schoolAssetsRepairId 维修申请id
      */
-    @GetMapping("/selectSchoolAssetsRepairById")
-    public R<SchoolAssetsRepair> selectSchoolAssetsRepairById( int schoolAssetsRepairId) {
-        return R.ok(schoolAssetsRepairService.selectSchoolAssetsRepairIdById(schoolAssetsRepairId));
+    @GetMapping("/{schoolAssetsRepairId}")
+    public R<SchoolAssetsRepair> selectSchoolAssetsRepairById(@PathVariable("schoolAssetsRepairId") int schoolAssetsRepairId) {
+        SchoolAssetsRepair schoolAssetsRepair = schoolAssetsRepairService.selectSchoolAssetsRepairIdById(schoolAssetsRepairId);
+        if(schoolAssetsRepair!=null){
+            return R.ok(schoolAssetsRepair);
+        }else{
+            throw new ApiException("查询不到这个维修申请");
+        }
     }
 
 
     /**
      *  请求类型：Delete
      *  @param schoolAssetsRepairIds 维修申请id
-     *  作用：根据经费id删除数据
+     *  作用：根据维修申请id删除维修申请数据
      */
-    @DeleteMapping("/deleteSchoolAssetsRepair")
+    @DeleteMapping("/{schoolAssetsRepairIds}")
     @ControllerEndpoint(operation = "删除该维修申请数据", exceptionMessage = "删除该维修申请数据失败")
-    public void deleteSchoolAssetsRepairs(@NotBlank(message = "{required}") @PathVariable int[] schoolAssetsRepairIds) {
-        schoolAssetsRepairService.deleteSchoolAssetsRepairById(schoolAssetsRepairIds);
+    public void deleteSchoolAssetsRepairs(@PathVariable("schoolAssetsRepairIds") String schoolAssetsRepairIds) {
+        int[] split_schoolAssetsRepairIds = StrUtil.splitToInt(schoolAssetsRepairIds, StrUtil.COMMA);
+        if(split_schoolAssetsRepairIds.length>0){
+            schoolAssetsRepairService.deleteSchoolAssetsRepairById(split_schoolAssetsRepairIds);
+        }else if(split_schoolAssetsRepairIds.length == 0){
+            throw new ApiException("前端传入维修申请id为空，删除失败");
+        }
     }
 
     /**
      *  请求类型：post
      *  @param schoolAssetsRepair 学校资产对象
-     *  作用：添加学校资产，SchoolAssets对象的name,proposer_id和apply_time不能为空，proposer_id为当前登录的用户user_id
+     *  作用：添加维修申请
      */
-    @PostMapping("/addSchoolAssetsRepair")
+    @PostMapping("/{schoolAssetsRepair}")
     @ControllerEndpoint(operation = "添加学校资产维修申请成功", exceptionMessage = "添加校资产维修申请失败")
-    public void addSchoolAssetsRepairs(SchoolAssetsRepair schoolAssetsRepair) {
-        schoolAssetsRepairService.addSchoolAssetsRepair(schoolAssetsRepair);
+    public void addSchoolAssetsRepairs(@PathVariable("schoolAssetsRepair") SchoolAssetsRepair schoolAssetsRepair) {
+        if(schoolAssetsRepair!=null){
+            schoolAssetsRepairService.addSchoolAssetsRepair(schoolAssetsRepair);
+        }else{
+            throw new ApiException("添加的维修申请数据不能为空");
+        }
     }
 
     /**
@@ -80,9 +96,14 @@ public class SchoolAssetsRepairController {
      *  @param schoolAssetsRepair 学校资产对象
      *  作用：根据经费id修改资产数据
      */
-    @PutMapping("/updateSchoolAssetsRepair")
+    @PutMapping("/{schoolAssetsRepair}")
     @ControllerEndpoint(operation = "修改校资产维修申请数据成功", exceptionMessage = "修改校资产维修申请数据")
-    public void updateSchoolAssetsRepairs(@Valid SchoolAssetsRepair schoolAssetsRepair) {
-        schoolAssetsRepairService.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
+    public void updateSchoolAssetsRepairs(@PathVariable("schoolAssetsRepair") SchoolAssetsRepair schoolAssetsRepair) {
+        if(schoolAssetsRepair!=null){
+            schoolAssetsRepairService.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
+        }else{
+            throw new ApiException("不能把资产维修申请的数据改为空");
+        }
+
     }
 }
