@@ -33,6 +33,12 @@
         <if test="items.reimbursement != null and items.reimbursement != ''">
             AND  reimbursement =#{items.reimbursement}
         </if>
+        <if test="items.startTime != null and items.startTime != ''">
+            AND  start_time &lt;= #{items.startTime}
+        </if>
+        <if test="items.endTime != null and items.endTime != ''">
+            AND  end_time &gt;= #{items.endTime}
+        </if>
     </select>
 
     <select id="getTask" resultType="map" parameterType="string">

@@ -32,6 +32,9 @@
         <if test="match.reimbursement != null and match.reimbursement != ''">
             AND  reimbursement =#{match.reimbursement}
         </if>
+        <if test="match.time != null and match.time != ''">
+            AND  time &lt;= #{match.time}
+        </if>
     </select>
 
     <select id="getTask" resultType="map" parameterType="string">

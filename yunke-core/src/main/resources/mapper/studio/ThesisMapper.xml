@@ -31,6 +31,9 @@
         <if test="thesis.reimbursement != null and thesis.reimbursement != ''">
             AND  reimbursement =#{thesis.reimbursement}
         </if>
+        <if test="thesis.time != null and thesis.time != ''">
+            AND  time  &lt;= #{thesis.time}
+        </if>
     </select>
 
     <select id="getTask" resultType="map" parameterType="string">

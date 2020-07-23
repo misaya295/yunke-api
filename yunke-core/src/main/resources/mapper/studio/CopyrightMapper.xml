@@ -38,6 +38,12 @@
         <if test="copyright.reimbursement != null and copyright.reimbursement != ''">
             AND  reimbursement =#{copyright.reimbursement}
         </if>
+        <if test="copyright.startTime != null and copyright.startTime != ''">
+            AND  start_time &lt;= #{copyright.startTime}
+        </if>
+        <if test="copyright.endTime != null and copyright.endTime != ''">
+            AND  end_time &gt;= #{copyright.endTime}
+        </if>
     </select>
 
     <select id="getTask" resultType="map" parameterType="string">

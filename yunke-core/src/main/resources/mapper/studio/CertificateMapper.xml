@@ -29,6 +29,9 @@
         <if test="certificate.userId != null and certificate.userId !=''">
             AND user_id = #{certificate.userId}
         </if>
+        <if test="certificate.time != null and certificate.time !=''">
+            AND time &lt;= #{certificate.time}
+        </if>
     </select>
 
     <select id="getCertificate" resultType="map" parameterType="string">

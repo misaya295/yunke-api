@@ -26,6 +26,9 @@
         <if test="postgraduate.userId != null and postgraduate.userId !=''">
             AND user_id = #{postgraduate.userId}
         </if>
+        <if test="postgraduate.time != null and postgraduate.time !=''">
+            AND time &lt;= #{postgraduate.time}
+        </if>
     </select>
 
     <select id="getPostgraduate" resultType="map" parameterType="string">
