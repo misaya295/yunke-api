@@ -20,9 +20,6 @@
       <if test="schoolAssets.id != null and schoolAssets.id != ''">
           AND sa.id like CONCAT('%',#{schoolAssets.id},'%')
       </if>
-      <if test="schoolAssets.inclusionDate != null and schoolAssets.inclusionDate != ''">
-          AND sa.inclusion_date like CONCAT('%',#{schoolAssets.inclusionDate},'%')
-      </if>
       <if test="schoolAssets.assetsName != null and schoolAssets.assetsName != ''">
           AND sa.assets_name like CONCAT('%',#{schoolAssets.assetsName},'%')
       </if>
@@ -32,11 +29,14 @@
       <if test="schoolAssets.price != null and schoolAssets.price != ''">
           AND sa.price = #{schoolAssets.price}
       </if>
-      <if test="schoolAssets.scrapDate != null and schoolAssets.scrapDate != ''">
-          AND sa.scrap_date like CONCAT('%',#{schoolAssets.scrapDate},'%')
-      </if>
       <if test="schoolAssets.scrapDetail != null and schoolAssets.scrapDetail != ''">
           AND sa.scrap_detail like CONCAT('%',#{schoolAssets.scrapDetail},'%')
+      </if>
+      <if test="statrtTime!=null and statrtTime!='' and  endTime!=null and endTime!=''">    <!--时间-->
+          AND (
+              DATE_FORMAT(sa.inclusion_date,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime} OR
+              DATE_FORMAT(sa.scrap_date,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
+          )
       </if>
   </select>
 

@@ -17,13 +17,15 @@ import java.util.List;
  * @since 2020-06-14 14:04:56
  */
 public interface FundingMapper extends BaseMapper<Funding> {
-    /*
+    /**
      * 查找资金详细信息
      * @param page 分页对象
      * @param <T>  type
+     * @param statrtTime 开始时间
+     * @param endTime     结束时间
      * @return IPage<Founding>
    */
-    <T> IPage<Funding> pageFundingDetail(Page<T> page, @Param("funding") Funding funding);
+    <T> IPage<Funding> pageFundingDetail(Page<T> page, @Param("funding") Funding funding,@Param("statrtTime") String statrtTime,@Param("endTime")String endTime);
 
     /*
      * 查找满足条件的经费的总个数

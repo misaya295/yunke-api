@@ -19,8 +19,8 @@
       <if test="schoolAssetsRepair.id != null and schoolAssetsRepair.id != 0">
           AND sar.id like CONCAT('%',#{schoolAssetsRepair.id},'%')
       </if>
-      <if test="schoolAssetsRepair.repairDate != null and schoolAssetsRepair.repairDate != 0">
-          AND sar.repair_date = like CONCAT('%',#{schoolAssetsRepair.repairDate},'%')
+      <if test="statrtTime!=null and statrtTime!='' and  endTime!=null and endTime!=''">    <!--时间-->
+          AND DATE_FORMAT(sar.repair_date,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
       </if>
       <if test="schoolAssetsRepair.assetsName != null and schoolAssetsRepair.assetsName != 0">
       AND sar.assets_name = like CONCAT('%',#{schoolAssetsRepair.assetsName},'%')

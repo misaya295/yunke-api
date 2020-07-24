@@ -1,5 +1,6 @@
 package com.yunke.core.module.studio.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -31,7 +32,16 @@ public class SchoolAssetsServiceImpl extends
     public IPage<SchoolAssets> pageSchoolAssets(QueryParam param, SchoolAssets schoolAssets) {
         Page<SchoolAssets> page = new Page<>(param.getPageNum(), param.getPageSize());
         SortUtil.handlePageSort(param, page, "id", SystemConstant.ORDER_ASC, true);
-        return baseMapper.pageSchoolAssetsDetail(page,schoolAssets);
+        String statrtTime = null;//查询开始时间
+        String endTime = null;//查询结束时间
+        if(schoolAssets.getInclusionDate()!=null&&(!"".equals(schoolAssets.getInclusionDate()))){ //funding存放的日期不为空
+            String[] split_time = StrUtil.split(schoolAssets.getInclusionDate(), StrUtil.COMMA);
+            if(split_time.length==2){
+                statrtTime = split_time[0];
+                endTime = split_time[1];
+            }
+        }
+        return baseMapper.pageSchoolAssetsDetail(page,schoolAssets,statrtTime,endTime);
     }
 
     @Override

@@ -55,10 +55,12 @@ public class FundingController {
     @GetMapping("/bill/{timeAndStata}")
     @ControllerEndpoint(operation = "查询经费账单", exceptionMessage = "查询经费账单失败")
     public R<Double> queryFundingBillByTime(@PathVariable("timeAndStata")String timeAndStata) {
-       String[] split_time = new String[3];
-       split_time = StrUtil.split(timeAndStata, StrUtil.COMMA);
-       System.out.println(Arrays.toString(split_time));
-       return R.ok(fundingService.queryFundingCostByTime(split_time[0],split_time[1],split_time[2]));
+       String[] split_time = StrUtil.split(timeAndStata, StrUtil.COMMA);
+       if(split_time.length==3) {
+           return R.ok(fundingService.queryFundingCostByTime(split_time[0], split_time[1], split_time[2]));
+       }else{
+           throw new ApiException("查询数据格式异常，资金账单查询失败");
+       }
     }
 
     /*
@@ -73,7 +75,7 @@ public class FundingController {
         if(split_fundingIds.length>0){
             fundingService.deleteFundings(split_fundingIds);
         }else if(split_fundingIds.length == 0){
-           throw new ApiException("前端传入的经费id为空，删除失败");
+           throw new ApiException("传入的经费id为空，删除失败");
         }
     }
 

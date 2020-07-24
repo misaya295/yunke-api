@@ -21,7 +21,7 @@
     where 1=1
   </sql>
 
-  <select id="pageFundingDetail" parameterType="Funding" resultType="Funding">
+  <select id="pageFundingDetail" resultType="Funding">
     <include refid="baseSql"/>
       <if test="funding.id != null and funding.id != 0">                         <!--申请id-->
           AND f.id like CONCAT('%',#{funding.id},'%')
@@ -29,8 +29,11 @@
       <if test="funding.state != null and funding.state != 0">                   <!--申请状态-->
           AND f.state = #{funding.state}
       </if>
-      <if test="funding.applyTime != null and funding.applyTime != ''">           <!--时间-->
-          AND f.apply_time=#{funding.applyTime}
+      <if test="statrtTime!=null and statrtTime!='' and  endTime!=null and endTime!=''">    <!--时间-->
+          AND (
+            DATE_FORMAT(f.success_time,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime} OR
+            DATE_FORMAT(f.apply_time,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
+          )
       </if>
       <if test="funding.proposerId != null and funding.proposerId != 0">          <!--申请人-->
           AND f.proposer_id like CONCAT('%',#{funding.proposerId},'%')
@@ -67,15 +70,15 @@
 
     <select id="queryFundingCostByTime" resultType="double">
         SELECT SUM(cost) FROM t_funding where state=3
-        <if test="#{statrtTime}!=null and #{statrtTime}!='' and  #{endTime}!=null and #{endTime}!=''">
-            and DATE_FORMAT(success_time,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
+        <if test="statrtTime!=null and statrtTime!='' and  endTime!=null and endTime!=''">
+            AND DATE_FORMAT(success_time,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
         </if>
-        <if test="#{kind}!=null and #{kind}!=''">
+        <if test="kind!=null and kind!=''">
             <if test="kind == '1'.toString()">
-                  and cost &gt; 0
+                AND cost &gt; 0
             </if>
             <if test="kind == '-1'.toString()">
-                  and cost &lt; 0
+                AND cost &lt; 0
             </if>
         </if>
     </select>

@@ -19,9 +19,11 @@ public interface SchoolAssetsRepairMapper extends BaseMapper<SchoolAssetsRepair>
      * 查找资产维修申请的详细信息
      * @param page 分页对象
      * @param <T>  type
+     * @param statrtTime 开始时间
+     * @param endTime     结束时间
      * @return <T> IPage<SchoolAssetsRepair>
      */
-    <T> IPage<SchoolAssetsRepair> pageschoolAssetsRepairDetail(Page<T> page, @Param("schoolAssetsRepair") SchoolAssetsRepair schoolAssetsRepair);
+    <T> IPage<SchoolAssetsRepair> pageschoolAssetsRepairDetail(Page<T> page, @Param("schoolAssetsRepair") SchoolAssetsRepair schoolAssetsRepair,@Param("statrtTime") String statrtTime,@Param("endTime")String endTime);
 
     /**
      * 根据提供的id删除资产维修申请数据
