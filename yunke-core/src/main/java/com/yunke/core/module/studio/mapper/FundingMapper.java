@@ -54,10 +54,16 @@ public interface FundingMapper extends BaseMapper<Funding> {
     void deleteByFundingid(int[] fundingIds);
 
     /*
-     * 修改指定经费数据
+     * 修改指定经费数据，但是无法修改申请状态
      * @param funding 经费对象
      */
-    void updateFunding(@Param("funding") Funding funding);
+    void updateFundingMessage(@Param("funding") Funding funding);
+
+    /*
+     * 修改指定经费申请转态，但无法修改申请数据
+     * @param funding 经费对象
+     */
+    void updateFundingState(@Param("funding") Funding funding);
 
     /*
      * 通过该角色id下的用户，只返回用户id和真实姓名
