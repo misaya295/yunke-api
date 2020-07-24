@@ -32,8 +32,16 @@
             AND  reimbursement =#{thesis.reimbursement}
         </if>
         <if test="thesis.time != null and thesis.time != ''">
-            AND  time  &lt;= #{thesis.time}
+            <foreach item="item" index="index" collection="thesis.time.split(',')"  open="AND" separator="AND" >
+                <if test="index == 0">
+                    time &gt;= '${item}'
+                </if>
+                <if test="index == 1">
+                    time &lt;= '${item}'
+                </if>
+            </foreach>
         </if>
+
     </select>
 
     <select id="getTask" resultType="map" parameterType="string">

@@ -27,7 +27,14 @@
             AND user_id = #{postgraduate.userId}
         </if>
         <if test="postgraduate.time != null and postgraduate.time !=''">
-            AND time &lt;= #{postgraduate.time}
+            <foreach item="item" index="index" collection="postgraduate.time.split(',')"  open="AND" separator="AND" >
+                <if test="index == 0">
+                    time &gt;= '${item}'
+                </if>
+                <if test="index == 1">
+                    time &lt;= '${item}'
+                </if>
+            </foreach>
         </if>
     </select>
 

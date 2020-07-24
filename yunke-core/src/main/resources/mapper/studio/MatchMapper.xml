@@ -33,7 +33,14 @@
             AND  reimbursement =#{match.reimbursement}
         </if>
         <if test="match.time != null and match.time != ''">
-            AND  time &lt;= #{match.time}
+            <foreach item="item" index="index" collection="match.time.split(',')"  open="AND" separator="AND" >
+                <if test="index == 0">
+                    time &gt;= '${item}'
+                </if>
+                <if test="index == 1">
+                    time &lt;= '${item}'
+                </if>
+            </foreach>
         </if>
     </select>
 
