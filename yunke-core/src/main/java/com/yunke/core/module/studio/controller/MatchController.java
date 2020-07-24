@@ -97,7 +97,7 @@ public class MatchController {
      */
     @GetMapping("{matchId}")
     public R<Map<String, Object>> getTask(@NotBlank(message = "{required}") @PathVariable String matchId) {
-        Map match = this.matchService.getTask(matchId);
+        Map<String, Object> match = this.matchService.getTask(matchId);
         return R.ok(match);
     }
 

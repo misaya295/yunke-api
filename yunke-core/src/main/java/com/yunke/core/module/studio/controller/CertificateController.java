@@ -76,7 +76,7 @@ public class CertificateController {
      */
     @GetMapping("{id}")
     public R<Map<String, Object>> getPostgraduate(@NotBlank(message = "{required}") @PathVariable String id) {
-        Map certificate = this.certificateService.getCertificate(id);
+        Map<String,Object> certificate = this.certificateService.getCertificate(id);
         return R.ok(certificate);
     }
 }

@@ -75,7 +75,7 @@ public class PostgraduateController {
      */
     @GetMapping("{id}")
     public R<Map<String, Object>> getPostgraduate(@NotBlank(message = "{required}") @PathVariable String id){
-       Map postgraduate =  this.postgraduateService.getPostgraduate(id);
+        Map<String,Object> postgraduate =  this.postgraduateService.getPostgraduate(id);
         return R.ok(postgraduate);
     }
 

@@ -51,13 +51,9 @@ public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> impl
     }
 
     @Override
-    public void updateFundingMessage(Funding funding) {
-        if(funding.getId()!=null) {
-            if (baseMapper.selectFundingCountById(funding.getId()) == 1) {       //判断这个这个id的数据是否存在
-                baseMapper.updateFundingMessage(funding);                      //修改这个经费对象的数据
-            }else{
-                throw new ApiException("所要需改的经费数据不存在");
-            }
+    public void updateFunding(Funding funding) {
+        if(baseMapper.selectFundingCountById(funding.getId())==1){       //判断这个这个id的数据是否存在
+            baseMapper.updateFunding(funding);                      //修改这个经费对象的数据
         }
     }
 
@@ -76,28 +72,6 @@ public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> impl
         //只有申请人,申请时间和申请事件名称都有的情况下才可以提交申请
         if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0&&funding.getProposerId()!=null&&funding.getApplyTime()!=null&&funding.getApplyTime()!=""){
             baseMapper.addFunding(funding);
-        }else{
-            throw new ApiException("添加的经费申请里必填数据不能为空");
         }
     }
-
-    @Override
-    public void updateFundingState(Funding funding) {
-        if(funding.getState()>=1 &&funding.getState()<=4) {
-            baseMapper.updateFundingState(funding);
-        }else{
-            throw new ApiException("经费申请的状态修改值不在正常范围");
-        }
-    }
-
-    @Override
-    public double queryFundingCostByTime(String statrtTime, String endTime, String kind) {
-        if(kind.equals("1")||kind.equals("0")||kind.equals("-1")) {
-            return baseMapper.queryFundingCostByTime(statrtTime, endTime, kind);
-        }else{
-            throw new ApiException("经费账单查询异常");
-        }
-    }
-
-
 }

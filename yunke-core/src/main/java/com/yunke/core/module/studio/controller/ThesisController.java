@@ -96,7 +96,7 @@ public class ThesisController {
          */
         @GetMapping("{thesisId}")
         public R<Map<String,Object>> getTask(@NotBlank(message = "{required}") @PathVariable String thesisId) {
-            Map thesis = this.thesisService.getTask(thesisId);
+            Map<String,Object> thesis = this.thesisService.getTask(thesisId);
             return R.ok(thesis);
         }
 

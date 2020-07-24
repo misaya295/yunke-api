@@ -44,5 +44,5 @@ public interface ICertificateService extends IService<Certificate> {
      * @param id 考证id
      * @return  考证信息
      */
-    Map getCertificate(String id);
+    Map<String,Object> getCertificate(String id);
 }

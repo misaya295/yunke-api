@@ -43,7 +43,7 @@ public interface IFundingService extends IService<Funding> {
      * 修改经费数据
      * @param funding 经费对象
      */
-    void updateFundingMessage(Funding funding);
+    void updateFunding(Funding funding);
 
     /**
      * 通过经费id返回该经费数据
@@ -61,20 +61,5 @@ public interface IFundingService extends IService<Funding> {
      * 添加经费申请
      * @param funding 经费对象，里面的name,apply_time，proposer_id不能为空
      */
-    void addFunding(Funding funding);
-
-    /*
-     * 修改指定经费申请转态，但无法修改申请数据
-     * @param funding 经费对象
-     */
-    void updateFundingState(Funding funding);
-
-    /**
-     * 查询时间范围内的花费/剩余资金/入账
-     * @param statrtTime 开始时间
-     * @param endTime    结束时间
-     * @param kind      查询类型:-1/0/1,分别对应:开销/剩余/入账
-     */
-    double queryFundingCostByTime(String statrtTime,String endTime,String kind);
-
+    void addFunding(@Param("funding") Funding funding);
 }

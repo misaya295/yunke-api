@@ -96,7 +96,7 @@ public class CopyrightController {
      */
     @GetMapping("{copyrightId}")
     public R<Map<String, Object>> getTask(@NotBlank(message = "{required}") @PathVariable String copyrightId) {
-        Map copyright = this.copyrightService.getTask(copyrightId);
+        Map<String,Object> copyright = this.copyrightService.getTask(copyrightId);
         return R.ok(copyright);
     }
 
