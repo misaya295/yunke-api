@@ -41,17 +41,9 @@ public class FundingController {
      * 作用：根据页数param.pageNum查询满足条件的前10条的经费数据
      */
     @GetMapping
-    public R<List<Object>> FundingListBypage(QueryParam param,Funding funding) {
-        List<Object> message = new ArrayList<>();
+    public R<Map<String, Object>> FundingListBypage(QueryParam param,Funding funding) {
         IPage<Funding> result = fundingService.pageFunding(param,funding);
-        message.add(PageUtil.toPage(result));
-        //可选择的申请人(所有人都可以申请)（只有id和真实名称）
-        int[] verifierRoleId = {1, 2, 3, 4};
-        message.add(fundingService.selectUserNameByRoleId(verifierRoleId));
-        //可选择的审核人(只有管理员可以审核)（只有id和真实名称）
-        int[] certifierRoleId = {1};
-        message.add(fundingService.selectUserNameByRoleId(certifierRoleId));
-        return R.ok(message);
+        return R.ok(PageUtil.toPage(result));
     }
 
     /**
