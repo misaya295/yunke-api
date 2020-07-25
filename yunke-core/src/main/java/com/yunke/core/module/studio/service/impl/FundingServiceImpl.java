@@ -52,11 +52,6 @@ public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> impl
     }
 
     @Override
-    public int pageFundingCount(Funding funding) {
-        return baseMapper.pageFundingCount(funding);
-    }
-
-    @Override
     public void deleteFundings(int[] fundingIds) {
         baseMapper.deleteByFundingid(fundingIds);// 删除这个基金数据
     }

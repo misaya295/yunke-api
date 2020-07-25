@@ -41,16 +41,23 @@ public class FundingController {
      * 作用：根据页数param.pageNum查询满足条件的前10条的经费数据
      */
     @GetMapping
-    public R<Map<String, Object>> FundingListBypage(QueryParam param,Funding funding) {
+    public R<List<Object>> FundingListBypage(QueryParam param,Funding funding) {
+        List<Object> message = new ArrayList<>();
         IPage<Funding> result = fundingService.pageFunding(param,funding);
-        //int count = fundingService.pageFundingCount(funding);//符合该条件的个数,page自己封装好了无需自己写，这里先留着，看后面会不会用到类似的,删了怪可惜的
-        return R.ok(PageUtil.toPage(result));
+        message.add(PageUtil.toPage(result));
+        //可选择的申请人(所有人都可以申请)（只有id和真实名称）
+        int[] verifierRoleId = {1, 2, 3, 4};
+        message.add(fundingService.selectUserNameByRoleId(verifierRoleId));
+        //可选择的审核人(只有管理员可以审核)（只有id和真实名称）
+        int[] certifierRoleId = {1};
+        message.add(fundingService.selectUserNameByRoleId(certifierRoleId));
+        return R.ok(message);
     }
 
     /**
      * 查询时间范围内的花费/入账/剩余资金
      * 请求类型：GET
-     * @param timeAndStata 开始时间,结束时间,查询类型:-1/0/1,分别对应:开销/剩余/入账
+     * @param timeAndStata 开始时间,结束时间,查询类型:-1/0/1,之间用逗号连接，查询类型:-1/0/1分别对应:开销/剩余/入账
      */
     @GetMapping("/bill/{timeAndStata}")
     @ControllerEndpoint(operation = "查询经费账单", exceptionMessage = "查询经费账单失败")
@@ -115,7 +122,7 @@ public class FundingController {
             //可选择的申请人(所有人都可以申请)（只有id和真实名称）
             int[] verifierRoleId = {1, 2, 3, 4};
             message.add(fundingService.selectUserNameByRoleId(verifierRoleId));
-            //可选择的审核人(只有管理员可以申请)（只有id和真实名称）
+            //可选择的审核人(只有管理员可以审核)（只有id和真实名称）
             int[] certifierRoleId = {1};
             message.add(fundingService.selectUserNameByRoleId(certifierRoleId));
             return R.ok(message);
@@ -123,6 +130,7 @@ public class FundingController {
             throw new ApiException("查询不到这个经费");
         }
     }
+
     /*
      *  请求类型：post
      *  @param funding 经费对象
