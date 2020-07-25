@@ -64,9 +64,9 @@ public class SchoolAssetsController {
      *  @param schoolAssets 学校资产对象
      *  作用：添加学校资产，SchoolAssets对象的name,proposer_id和apply_time不能为空，proposer_id为当前登录的用户user_id
      */
-    @PostMapping("/addSchoolAssets")
+    @PostMapping
     @ControllerEndpoint(operation = "添加学校资产成功", exceptionMessage = "添加学校资产失败")
-    public void addSchoolAssets(SchoolAssets schoolAssets) {
+    public void addSchoolAssets(@Valid SchoolAssets schoolAssets) {
         if(schoolAssets != null){
             schoolAssetsService.addSchoolAssets(schoolAssets);
         }else{
@@ -95,9 +95,9 @@ public class SchoolAssetsController {
      *  @param schoolAssets 资产对象
      *  作用：根据经费id修改资产数据
      */
-    @PutMapping("/{schoolAssets}")
+    @PutMapping
     @ControllerEndpoint(operation = "修改该该学校资产数据", exceptionMessage = "修改该学校资产数据")
-    public void updateSchoolAssets(@PathVariable("schoolAssets")  SchoolAssets schoolAssets) {
+    public void updateSchoolAssets(@Valid  SchoolAssets schoolAssets) {
         if(schoolAssets != null){
             schoolAssetsService.updateSchoolAssetsMessage(schoolAssets);
         }else{

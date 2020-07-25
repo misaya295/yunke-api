@@ -81,9 +81,9 @@ public class SchoolAssetsRepairController {
      *  @param schoolAssetsRepair 学校资产对象
      *  作用：添加维修申请
      */
-    @PostMapping("/{schoolAssetsRepair}")
+    @PostMapping
     @ControllerEndpoint(operation = "添加学校资产维修申请成功", exceptionMessage = "添加校资产维修申请失败")
-    public void addSchoolAssetsRepairs(@PathVariable("schoolAssetsRepair") SchoolAssetsRepair schoolAssetsRepair) {
+    public void addSchoolAssetsRepairs(@Valid SchoolAssetsRepair schoolAssetsRepair) {
         if(schoolAssetsRepair!=null){
             schoolAssetsRepairService.addSchoolAssetsRepair(schoolAssetsRepair);
         }else{
@@ -96,14 +96,14 @@ public class SchoolAssetsRepairController {
      *  @param schoolAssetsRepair 学校资产对象
      *  作用：根据经费id修改资产数据
      */
-    @PutMapping("/{schoolAssetsRepair}")
+    @PutMapping
     @ControllerEndpoint(operation = "修改校资产维修申请数据成功", exceptionMessage = "修改校资产维修申请数据")
-    public void updateSchoolAssetsRepairs(@PathVariable("schoolAssetsRepair") SchoolAssetsRepair schoolAssetsRepair) {
+    public void updateSchoolAssetsRepairs(@Valid SchoolAssetsRepair schoolAssetsRepair) {
+        System.out.println(schoolAssetsRepair.toString());
         if(schoolAssetsRepair!=null){
             schoolAssetsRepairService.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
         }else{
             throw new ApiException("不能把资产维修申请的数据改为空");
         }
-
     }
 }

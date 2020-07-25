@@ -89,10 +89,14 @@ public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> impl
 
     @Override
     public void updateFundingState(Funding funding) {
-        if(funding.getState()>=1 &&funding.getState()<=4) {
-            baseMapper.updateFundingState(funding);
+        if(funding.getState()!=null) {
+            if (funding.getState() >= 1 && funding.getState() <= 4) {
+                baseMapper.updateFundingState(funding);
+            } else {
+                throw new ApiException("经费申请的状态修改值不在正常范围");
+            }
         }else{
-            throw new ApiException("经费申请的状态修改值不在正常范围");
+            throw new ApiException("经费申请的状态修改值不能为空");
         }
     }
 

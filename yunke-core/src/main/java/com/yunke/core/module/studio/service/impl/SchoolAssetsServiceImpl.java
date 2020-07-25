@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 学校资产表 (SchoolAssets)表服务实现类
  *
- * @author chachae
+ * @author Pning
  * @since 2020-06-14 14:04:56
  */
 @Service

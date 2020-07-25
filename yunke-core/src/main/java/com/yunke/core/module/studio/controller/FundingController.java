@@ -84,9 +84,9 @@ public class FundingController {
      *  @param funding 经费对象
      *  作用：根据经费id修改经费数据
      */
-    @PutMapping("/{funding}")
+    @PutMapping
     @ControllerEndpoint(operation = "修改该经费数据", exceptionMessage = "修改该经费数据失败")
-    public void updateFunding(@PathVariable("funding") Funding funding) {
+    public void updateFunding(@Valid Funding funding) {
         if(funding!=null){
             if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0&&funding.getProposerId()!=null&&funding.getApplyTime()!=null&&funding.getApplyTime()!="") {
                 fundingService.updateFundingMessage(funding);
@@ -129,9 +129,9 @@ public class FundingController {
      *  @param funding 经费对象
      *  作用：添加经费申请，经费对象的name,proposer_id和apply_time不能为空，proposer_id为当前登录的用户user_id
      */
-    @PostMapping("/{funding}")
+    @PostMapping
     @ControllerEndpoint(operation = "添加经费申请", exceptionMessage = "添加经费申请失败")
-    public void addFunding(@PathVariable("funding")Funding funding) {
+    public void addFunding(@Valid Funding funding) {
         if(funding!=null){
             fundingService.addFunding(funding);
         }else{
@@ -144,9 +144,9 @@ public class FundingController {
      *  @param funding 经费对象
      *  作用：修改经费申请状态，1申请中/2报销中/3报销成功/4申请失败
      */
-    @PutMapping("/state/{funding}")
+    @PutMapping("/state")
     @ControllerEndpoint(operation = "修改该经费申请状态", exceptionMessage = "修改该经费申请状态失败")
-    public void updateFundingState(@PathVariable("funding") Funding funding) {
+    public void updateFundingState(@Valid Funding funding) {
         if(funding!=null){
                 fundingService.updateFundingState(funding);
         }else{

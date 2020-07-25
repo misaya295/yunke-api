@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 维修信息表 (SchoolAssetsRepair)表服务实现类
  *
- * @author chachae
+ * @author Pning
  * @since 2020-06-14 14:04:56
  */
 @Service
@@ -60,7 +60,11 @@ public class SchoolAssetsRepairServiceImpl extends
 
     @Override
     public void updateSchoolAssetsRepairsMessage(SchoolAssetsRepair schoolAssetsRepair) {
-        baseMapper.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
+        if(schoolAssetsRepair.getId() != null) {
+            baseMapper.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
+        }else{
+            throw new ApiException("修改的维修申请id不能为空");
+        }
     }
 
     @Override
