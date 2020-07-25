@@ -42,6 +42,7 @@ public class FundingController {
      */
     @GetMapping
     public R<Map<String, Object>> FundingListBypage(QueryParam param,Funding funding) {
+        System.out.println(funding.toString());
         IPage<Funding> result = fundingService.pageFunding(param,funding);
         return R.ok(PageUtil.toPage(result));
     }

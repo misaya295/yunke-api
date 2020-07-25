@@ -4,9 +4,11 @@
 <mapper namespace="com.yunke.core.module.studio.mapper.FundingMapper">
 
   <sql id="baseSql">
-    SELECT  f.id,
+      SELECT  f.id,
             f.verifier_id,
+            u1.full_name        as verifierName,
             f.certifier_id,
+            u2.full_name        as certifierName,
             f.name,
             f.type,
             f.apply_time,
@@ -15,10 +17,14 @@
             f.cost,
             f.card,
             f.proposer_id,
+            u3.full_name        as proposerName,
             f.state,
             f.task_id
     FROM t_funding f
-    where 1=1
+		LEFT JOIN t_user u1 ON (f.verifier_id=u1.user_id)
+		LEFT JOIN t_user u2 ON (f.certifier_id=u2.user_id)
+		LEFT JOIN t_user u3 ON (f.proposer_id=u3.user_id)
+	where 1=1
   </sql>
 
   <select id="pageFundingDetail" resultType="Funding">
@@ -35,14 +41,17 @@
             DATE_FORMAT(f.apply_time,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
           )
       </if>
-      <if test="funding.proposerId != null and funding.proposerId != 0">          <!--申请人-->
-          AND f.proposer_id like CONCAT('%',#{funding.proposerId},'%')
+      <if test="funding.name != null and funding.name != ''">                              <!--报销名称-->
+          AND f.name  like CONCAT('%',#{funding.name},'%')
       </if>
-      <if test="funding.verifierId != null and funding.verifierId != 0">          <!--审核人-->
-          AND f.verifier_id like CONCAT('%',#{funding.verifierId},'%')
+      <if test="funding.verifierName != null and funding.verifierName != ''">              <!--审核人-->
+          AND u1.full_name like CONCAT('%',#{funding.verifierName},'%')
       </if>
-      <if test="funding.name != null and funding.name != ''">                      <!--报销名称-->
-          AND f.name  like '%${funding.name}%'
+      <if test="funding.certifierName != null and funding.certifierName != ''">            <!--证明人-->
+          AND u2.full_name like CONCAT('%',#{funding.certifierName},'%')
+      </if>
+      <if test="funding.proposerName != null and funding.proposerName != ''">                  <!--申请人-->
+          AND u3.full_name like CONCAT('%',#{funding.proposerName},'%')
       </if>
   </select>
 
