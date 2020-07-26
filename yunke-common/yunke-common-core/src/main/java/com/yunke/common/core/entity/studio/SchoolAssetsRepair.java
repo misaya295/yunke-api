@@ -1,6 +1,7 @@
 package com.yunke.common.core.entity.studio;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -42,5 +43,17 @@ public class SchoolAssetsRepair implements Serializable {
    */
   private Integer repairProverUserInfoUuid;
 
+
+  /**
+   * 资产名称
+   */
+  @TableField(exist = false)
+  private String propertyName;
+
+  /**
+   * 维修证明人名称
+   */
+  @TableField(exist = false)
+  private String repairProverUserInfoName;
 
 }
