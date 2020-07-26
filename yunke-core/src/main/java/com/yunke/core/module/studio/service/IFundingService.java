@@ -25,13 +25,6 @@ public interface IFundingService extends IService<Funding> {
     IPage<Funding> pageFunding(QueryParam param, Funding funding);
 
     /**
-     * 满足查询条件的经费申请个数
-     * @param funding 查询对象
-     * @return int 满足查询条件的个数
-     */
-    int pageFundingCount(Funding funding);
-
-    /**
      * 根据提供的id删除转态为申请失败的经费数据
      * @param fundingIds 经费id数组
      */

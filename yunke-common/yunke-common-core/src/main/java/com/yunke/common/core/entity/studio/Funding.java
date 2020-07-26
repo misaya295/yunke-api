@@ -1,6 +1,7 @@
 package com.yunke.common.core.entity.studio;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -70,5 +71,19 @@ public class Funding implements Serializable {
    */
   private String taskId;
 
-
+  /**
+   * 审核人名称
+   */
+  @TableField(exist = false)
+  private String verifierName;
+  /**
+   * 证明人名称
+   */
+  @TableField(exist = false)
+  private String certifierName;
+  /**
+   * 申请人名称
+   */
+  @TableField(exist = false)
+  private String proposerName;
 }

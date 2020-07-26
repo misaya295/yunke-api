@@ -4,9 +4,11 @@
 <mapper namespace="com.yunke.core.module.studio.mapper.FundingMapper">
 
   <sql id="baseSql">
-    SELECT  f.id,
+      SELECT  f.id,
             f.verifier_id,
+            u1.full_name        as verifierName,
             f.certifier_id,
+            u2.full_name        as certifierName,
             f.name,
             f.type,
             f.apply_time,
@@ -15,13 +17,17 @@
             f.cost,
             f.card,
             f.proposer_id,
+            u3.full_name        as proposerName,
             f.state,
             f.task_id
     FROM t_funding f
-    where 1=1
+		LEFT JOIN t_user u1 ON (f.verifier_id=u1.user_id)
+		LEFT JOIN t_user u2 ON (f.certifier_id=u2.user_id)
+		LEFT JOIN t_user u3 ON (f.proposer_id=u3.user_id)
+	where 1=1
   </sql>
 
-  <select id="pageFundingDetail" parameterType="Funding" resultType="Funding">
+  <select id="pageFundingDetail" resultType="Funding">
     <include refid="baseSql"/>
       <if test="funding.id != null and funding.id != 0">                         <!--申请id-->
           AND f.id like CONCAT('%',#{funding.id},'%')
@@ -29,53 +35,38 @@
       <if test="funding.state != null and funding.state != 0">                   <!--申请状态-->
           AND f.state = #{funding.state}
       </if>
-      <if test="funding.applyTime != null and funding.applyTime != ''">           <!--时间-->
-          AND f.apply_time=#{funding.applyTime}
+      <if test="statrtTime!=null and statrtTime!='' and  endTime!=null and endTime!=''">    <!--时间-->
+          AND (
+            DATE_FORMAT(f.success_time,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime} OR
+            DATE_FORMAT(f.apply_time,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
+          )
       </if>
-      <if test="funding.proposerId != null and funding.proposerId != 0">          <!--申请人-->
-          AND f.proposer_id like CONCAT('%',#{funding.proposerId},'%')
+      <if test="funding.name != null and funding.name != ''">                              <!--报销名称-->
+          AND f.name  like CONCAT('%',#{funding.name},'%')
       </if>
-      <if test="funding.verifierId != null and funding.verifierId != 0">          <!--审核人-->
-          AND f.verifier_id like CONCAT('%',#{funding.verifierId},'%')
+      <if test="funding.verifierName != null and funding.verifierName != ''">              <!--审核人-->
+          AND u1.full_name like CONCAT('%',#{funding.verifierName},'%')
       </if>
-      <if test="funding.name != null and funding.name != ''">                      <!--报销名称-->
-          AND f.name  like '%${funding.name}%'
+      <if test="funding.certifierName != null and funding.certifierName != ''">            <!--证明人-->
+          AND u2.full_name like CONCAT('%',#{funding.certifierName},'%')
+      </if>
+      <if test="funding.proposerName != null and funding.proposerName != ''">                  <!--申请人-->
+          AND u3.full_name like CONCAT('%',#{funding.proposerName},'%')
       </if>
   </select>
 
-    <select id="pageFundingCount" parameterType="Funding" resultType="Funding">
-        select count(*) from t_funding where 1=1
-        <if test="funding.id != null and funding.id != 0">
-            AND f.id like CONCAT('%',#{funding.id},'%')
-        </if>
-        <if test="funding.state != null and funding.state != 0">
-            AND f.state = #{funding.state}
-        </if>
-        <if test="funding.applyTime != null and funding.applyTime != ''">
-            AND f.apply_time=#{funding.applyTime}
-        </if>
-        <if test="funding.proposerId != null and funding.proposerId != 0">
-            AND f.proposer_id like CONCAT('%',#{funding.proposerId},'%')
-        </if>
-        <if test="funding.verifierId != null and funding.verifierId != 0">
-            AND f.verifier_id like CONCAT('%',#{funding.verifierId},'%')
-        </if>
-        <if test="funding.name != null and funding.name != ''">
-            AND f.name  like '%${funding.name}%'
-        </if>
-    </select>
 
     <select id="queryFundingCostByTime" resultType="double">
         SELECT SUM(cost) FROM t_funding where state=3
-        <if test="#{statrtTime}!=null and #{statrtTime}!='' and  #{endTime}!=null and #{endTime}!=''">
-            and DATE_FORMAT(success_time,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
+        <if test="statrtTime!=null and statrtTime!='' and  endTime!=null and endTime!=''">
+            AND DATE_FORMAT(success_time,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
         </if>
-        <if test="#{kind}!=null and #{kind}!=''">
+        <if test="kind!=null and kind!=''">
             <if test="kind == '1'.toString()">
-                  and cost &gt; 0
+                AND cost &gt; 0
             </if>
             <if test="kind == '-1'.toString()">
-                  and cost &lt; 0
+                AND cost &lt; 0
             </if>
         </if>
     </select>

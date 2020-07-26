@@ -19,9 +19,11 @@ public interface SchoolAssetsMapper extends BaseMapper<SchoolAssets> {
      * 查找资金详细信息
      * @param page 分页对象
      * @param <T>  type
+     * @param statrtTime 开始时间
+     * @param endTime     结束时间
      * @return <T> IPage<SchoolAssets>
      */
-    <T> IPage<SchoolAssets> pageSchoolAssetsDetail(Page<T> page, @Param("schoolAssets") SchoolAssets schoolAssets);
+    <T> IPage<SchoolAssets> pageSchoolAssetsDetail(Page<T> page, @Param("schoolAssets") SchoolAssets schoolAssets,@Param("statrtTime") String statrtTime,@Param("endTime")String endTime);
 
     /**
      * 通过资产id查询该资产的详细信息

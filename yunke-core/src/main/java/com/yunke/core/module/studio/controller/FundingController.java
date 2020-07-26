@@ -42,23 +42,25 @@ public class FundingController {
      */
     @GetMapping
     public R<Map<String, Object>> FundingListBypage(QueryParam param,Funding funding) {
+        System.out.println(funding.toString());
         IPage<Funding> result = fundingService.pageFunding(param,funding);
-        //int count = fundingService.pageFundingCount(funding);//符合该条件的个数,page自己封装好了无需自己写，这里先留着，看后面会不会用到类似的,删了怪可惜的
         return R.ok(PageUtil.toPage(result));
     }
 
     /**
      * 查询时间范围内的花费/入账/剩余资金
      * 请求类型：GET
-     * @param timeAndStata 开始时间,结束时间,查询类型:-1/0/1,分别对应:开销/剩余/入账
+     * @param timeAndStata 开始时间,结束时间,查询类型:-1/0/1,之间用逗号连接，查询类型:-1/0/1分别对应:开销/剩余/入账
      */
     @GetMapping("/bill/{timeAndStata}")
     @ControllerEndpoint(operation = "查询经费账单", exceptionMessage = "查询经费账单失败")
     public R<Double> queryFundingBillByTime(@PathVariable("timeAndStata")String timeAndStata) {
-       String[] split_time = new String[3];
-       split_time = StrUtil.split(timeAndStata, StrUtil.COMMA);
-       System.out.println(Arrays.toString(split_time));
-       return R.ok(fundingService.queryFundingCostByTime(split_time[0],split_time[1],split_time[2]));
+       String[] split_time = StrUtil.split(timeAndStata, StrUtil.COMMA);
+       if(split_time.length==3) {
+           return R.ok(fundingService.queryFundingCostByTime(split_time[0], split_time[1], split_time[2]));
+       }else{
+           throw new ApiException("查询数据格式异常，资金账单查询失败");
+       }
     }
 
     /*
@@ -73,7 +75,7 @@ public class FundingController {
         if(split_fundingIds.length>0){
             fundingService.deleteFundings(split_fundingIds);
         }else if(split_fundingIds.length == 0){
-           throw new ApiException("前端传入的经费id为空，删除失败");
+           throw new ApiException("传入的经费id为空，删除失败");
         }
     }
 
@@ -82,9 +84,9 @@ public class FundingController {
      *  @param funding 经费对象
      *  作用：根据经费id修改经费数据
      */
-    @PutMapping("/{funding}")
+    @PutMapping
     @ControllerEndpoint(operation = "修改该经费数据", exceptionMessage = "修改该经费数据失败")
-    public void updateFunding(@PathVariable("funding") Funding funding) {
+    public void updateFunding(@Valid Funding funding) {
         if(funding!=null){
             if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0&&funding.getProposerId()!=null&&funding.getApplyTime()!=null&&funding.getApplyTime()!="") {
                 fundingService.updateFundingMessage(funding);
@@ -110,25 +112,24 @@ public class FundingController {
         Funding funding =fundingService.selectFundingById(fundingId);
         if(funding!=null) {
             message.add(funding);
-            //可选择的申请人(所有人都可以申请)（只有id和真实名称）
-            int[] verifierRoleId = {1, 2, 3, 4};
-            message.add(fundingService.selectUserNameByRoleId(verifierRoleId));
-            //可选择的审核人(只有管理员可以申请)（只有id和真实名称）
-            int[] certifierRoleId = {1};
-            message.add(fundingService.selectUserNameByRoleId(certifierRoleId));
-            return R.ok(message);
-        }else{
-            throw new ApiException("查询不到这个经费");
         }
+        //可选择的申请人(所有人都可以申请)（只有id和真实名称）
+        int[] verifierRoleId = {1, 2, 3, 4};
+        message.add(fundingService.selectUserNameByRoleId(verifierRoleId));
+        //可选择的审核人(只有管理员可以审核)（只有id和真实名称）
+        int[] certifierRoleId = {1};
+        message.add(fundingService.selectUserNameByRoleId(certifierRoleId));
+        return R.ok(message);
     }
+
     /*
      *  请求类型：post
      *  @param funding 经费对象
      *  作用：添加经费申请，经费对象的name,proposer_id和apply_time不能为空，proposer_id为当前登录的用户user_id
      */
-    @PostMapping("/{funding}")
+    @PostMapping
     @ControllerEndpoint(operation = "添加经费申请", exceptionMessage = "添加经费申请失败")
-    public void addFunding(@PathVariable("funding")Funding funding) {
+    public void addFunding(@Valid Funding funding) {
         if(funding!=null){
             fundingService.addFunding(funding);
         }else{
@@ -141,9 +142,9 @@ public class FundingController {
      *  @param funding 经费对象
      *  作用：修改经费申请状态，1申请中/2报销中/3报销成功/4申请失败
      */
-    @PutMapping("/state/{funding}")
+    @PutMapping("/state")
     @ControllerEndpoint(operation = "修改该经费申请状态", exceptionMessage = "修改该经费申请状态失败")
-    public void updateFundingState(@PathVariable("funding") Funding funding) {
+    public void updateFundingState(@Valid Funding funding) {
         if(funding!=null){
                 fundingService.updateFundingState(funding);
         }else{

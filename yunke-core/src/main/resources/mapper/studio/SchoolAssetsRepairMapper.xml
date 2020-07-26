@@ -7,11 +7,15 @@
     SELECT  sar.id,
             sar.repair_date,
             sar.assets_name,
+            sa.assets_name AS propertyName,
             sar.repair_price,
             sar.repair_invoice,
-            sar.repair_prover_user_info_uuid
+            sar.repair_prover_user_info_uuid,
+            u.full_name  AS  repairProverUserInfoName
     FROM t_school_assets_repair sar
-    where 1=1
+        LEFT JOIN t_user u ON (u.user_id=sar.repair_prover_user_info_uuid)
+        LEFT JOIN t_school_assets sa ON (sa.id=sar.assets_name)
+    WHERE 1=1
   </sql>
 
   <select id="pageschoolAssetsRepairDetail" parameterType="SchoolAssetsRepair" resultType="SchoolAssetsRepair">
@@ -19,17 +23,23 @@
       <if test="schoolAssetsRepair.id != null and schoolAssetsRepair.id != 0">
           AND sar.id like CONCAT('%',#{schoolAssetsRepair.id},'%')
       </if>
-      <if test="schoolAssetsRepair.repairDate != null and schoolAssetsRepair.repairDate != 0">
-          AND sar.repair_date = like CONCAT('%',#{schoolAssetsRepair.repairDate},'%')
+      <if test="statrtTime!=null and statrtTime!='' and  endTime!=null and endTime!=''">    <!--时间-->
+          AND DATE_FORMAT(sar.repair_date,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
       </if>
-      <if test="schoolAssetsRepair.assetsName != null and schoolAssetsRepair.assetsName != 0">
-      AND sar.assets_name = like CONCAT('%',#{schoolAssetsRepair.assetsName},'%')
+      <if test="schoolAssetsRepair.assetsName != null and schoolAssetsRepair.assetsName != ''">  <!--资产id模糊查询-->
+          AND sar.assets_name = like CONCAT('%',#{schoolAssetsRepair.assetsName},'%')
+      </if>
+      <if test="schoolAssetsRepair.propertyName != null and schoolAssetsRepair.propertyName != ''">  <!--资产名字模糊查询-->
+          AND sa.assets_name = like CONCAT('%',#{schoolAssetsRepair.propertyName},'%')
       </if>
       <if test="schoolAssetsRepair.repairPrice != null and schoolAssetsRepair.repairPrice != ''">
-          AND  sar.repair_price=#{schoolAssetsRepair.repairPrice}
+          AND sar.repair_price=#{schoolAssetsRepair.repairPrice}
       </if>
-      <if test="schoolAssetsRepair.repairProverUserInfoUuid != null and schoolAssetsRepair.repairProverUserInfoUuid != 0">
-          AND sar.SchoolAssetsRepair.repair_prover_user_info_uuid like CONCAT('%',#{schoolAssetsRepair.repairProverUserInfoUuid},'%')
+      <if test="schoolAssetsRepair.repairProverUserInfoUuid != null and schoolAssetsRepair.repairProverUserInfoUuid != ''">
+          AND sar.repair_prover_user_info_uuid like CONCAT('%',#{schoolAssetsRepair.repairProverUserInfoUuid},'%')
+      </if>
+      <if test="schoolAssetsRepair.repairProverUserInfoName != null and schoolAssetsRepair.repairProverUserInfoName != ''">
+          AND u.full_name like CONCAT('%',#{schoolAssetsRepair.repairProverUserInfoName},'%')
       </if>
   </select>
 

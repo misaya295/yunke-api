@@ -1,5 +1,6 @@
 package com.yunke.core.module.studio.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -18,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 维修信息表 (SchoolAssetsRepair)表服务实现类
  *
- * @author chachae
+ * @author Pning
  * @since 2020-06-14 14:04:56
  */
 @Service
@@ -31,7 +32,16 @@ public class SchoolAssetsRepairServiceImpl extends
     public IPage<SchoolAssetsRepair> pageSchoolAssetsRepair(QueryParam param, SchoolAssetsRepair schoolAssetsRepair) {
         Page<SchoolAssets> page = new Page<>(param.getPageNum(), param.getPageSize());
         SortUtil.handlePageSort(param, page, "id", SystemConstant.ORDER_ASC, true);
-        return baseMapper.pageschoolAssetsRepairDetail(page,schoolAssetsRepair);
+        String statrtTime = null;//查询开始时间
+        String endTime = null;//查询结束时间
+        if(schoolAssetsRepair.getRepairDate()!=null&&(!"".equals(schoolAssetsRepair.getRepairDate()))){ //funding存放的日期不为空
+            String[] split_time = StrUtil.split(schoolAssetsRepair.getRepairDate(), StrUtil.COMMA);
+            if(split_time.length==2){
+                statrtTime = split_time[0];
+                endTime = split_time[1];
+            }
+        }
+        return baseMapper.pageschoolAssetsRepairDetail(page,schoolAssetsRepair,statrtTime,endTime);
     }
 
     @Override
@@ -50,7 +60,11 @@ public class SchoolAssetsRepairServiceImpl extends
 
     @Override
     public void updateSchoolAssetsRepairsMessage(SchoolAssetsRepair schoolAssetsRepair) {
-        baseMapper.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
+        if(schoolAssetsRepair.getId() != null) {
+            baseMapper.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
+        }else{
+            throw new ApiException("修改的维修申请id不能为空");
+        }
     }
 
     @Override
