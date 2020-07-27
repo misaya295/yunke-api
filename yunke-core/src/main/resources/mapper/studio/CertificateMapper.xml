@@ -39,6 +39,9 @@
                 </if>
             </foreach>
         </if>
+        <if test="certificate.fullName != null and certificate.fullName !=''">
+            AND u.full_name like CONCAT('%',#{certificate.fullName},'%')
+        </if>
     </select>
 
     <select id="getCertificate" resultType="map" parameterType="string">

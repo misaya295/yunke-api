@@ -1,6 +1,7 @@
 package com.yunke.common.core.entity.studio;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -61,6 +62,10 @@ public class Items implements Serializable {
    * 是否已报销（0否/1是）
    */
   private Integer reimbursement;
-
+  /**
+   * 姓名
+   */
+  @TableField(exist = false)
+  private String fullName;
 
 }

@@ -22,7 +22,9 @@
   </sql>
 
     <select id="pageTask" resultType="Match" parameterType="Match">
-        select match_id ,title from t_match where 1=1
+        select match_id ,title from t_match t LEFT JOIN t_members m ON t.match_id = m.task_id
+                                              LEFT JOIN t_user u ON u.user_id = m.user_id
+        where 1=1
         <if test="match.title != null and match.title != ''">
             AND  title like CONCAT('%',#{match.title},'%')
         </if>
@@ -42,6 +44,10 @@
                 </if>
             </foreach>
         </if>
+        <if test="match.fullName != null and match.fullName != ''">
+            AND  u.full_name like CONCAT('%',#{match.fullName},'%')
+        </if>
+        GROUP BY t.match_id
     </select>
 
     <select id="getTask" resultType="map" parameterType="string">

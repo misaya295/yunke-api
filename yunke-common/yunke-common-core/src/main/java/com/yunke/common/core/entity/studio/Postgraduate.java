@@ -1,6 +1,7 @@
 package com.yunke.common.core.entity.studio;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -49,6 +50,10 @@ public class Postgraduate implements Serializable {
    * 通过状态(0:失败/1:成功)
    */
   private Integer success;
-
+  /**
+   * 姓名
+   */
+  @TableField(exist = false)
+  private String fullName;
 
 }
