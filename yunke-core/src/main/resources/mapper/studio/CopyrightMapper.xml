@@ -28,7 +28,9 @@
   </sql>
 
     <select id="pageTask" resultType="Copyright" parameterType="Copyright">
-        select copyright_id ,title from t_copyright where 1=1
+        select copyright_id ,title from t_copyright t LEFT JOIN t_members m ON t.copyright_id = m.task_id
+                                                      LEFT JOIN t_user u ON u.user_id = m.user_id
+         where 1=1
         <if test="copyright.title != null and copyright.title != ''">
             AND  title like CONCAT('%',#{copyright.title},'%')
         </if>
@@ -58,6 +60,11 @@
                 </if>
             </foreach>
         </if>
+        <if test="copyright.fullName != null and copyright.fullName != ''">
+            AND  u.full_name like CONCAT('%',#{copyright.fullName},'%')
+        </if>
+        GROUP BY t.copyright_id
+
     </select>
 
     <select id="getTask" resultType="map" parameterType="string">

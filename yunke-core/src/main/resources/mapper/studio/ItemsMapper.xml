@@ -23,7 +23,9 @@
   </sql>
 
     <select id="pageTask" resultType="Items" parameterType="Items">
-        select items_id ,title from t_items where 1=1
+        select items_id ,title from t_items t LEFT JOIN t_members m ON t.items_id = m.task_id
+                                              LEFT JOIN t_user u ON u.user_id = m.user_id
+        where 1=1
         <if test="items.title != null and items.title != ''">
             AND  title like CONCAT('%',#{items.title},'%')
         </if>
@@ -53,6 +55,10 @@
                 </if>
             </foreach>
         </if>
+        <if test="items.fullName != null and items.fullName != ''">
+            AND  u.full_name like CONCAT('%',#{items.fullName},'%')
+        </if>
+        GROUP BY t.items_id
     </select>
 
     <select id="getTask" resultType="map" parameterType="string">

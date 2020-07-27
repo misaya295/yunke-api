@@ -36,6 +36,9 @@
                 </if>
             </foreach>
         </if>
+        <if test="postgraduate.fullName != null and postgraduate.fullName !=''">
+            AND u.full_name like CONCAT('%',#{postgraduate.fullName},'%')
+        </if>
     </select>
 
     <select id="getPostgraduate" resultType="map" parameterType="string">

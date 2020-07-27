@@ -1,6 +1,7 @@
 package com.yunke.common.core.entity.studio;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -61,6 +62,11 @@ public class Certificate implements Serializable {
    * 状态（0正在考取/1已完成）
    */
   private Integer state;
+  /**
+   * 姓名
+   */
+  @TableField(exist = false)
+  private String fullName;
 
 
 }
