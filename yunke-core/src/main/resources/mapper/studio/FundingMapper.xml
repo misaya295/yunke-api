@@ -73,8 +73,8 @@
 
     <select id="selectFundingCountById" parameterType="int" resultType="int">
         select COUNT(*) from t_funding where 1=1
-        <if test="funding.id != null and funding.id != ''">
-            AND f.id =#{fundingId}
+        <if test="fundingId != null and fundingId != ''">
+            AND id=#{fundingId}
         </if>
     </select>
 
