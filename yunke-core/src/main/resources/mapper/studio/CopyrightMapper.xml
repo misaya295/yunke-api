@@ -38,6 +38,26 @@
         <if test="copyright.reimbursement != null and copyright.reimbursement != ''">
             AND  reimbursement =#{copyright.reimbursement}
         </if>
+        <if test="copyright.startTime != null and copyright.startTime != ''">
+            <foreach item="item" index="index" collection="copyright.startTime.split(',')"  open="AND" separator="AND" >
+                <if test="index == 0">
+                    start_time &gt;= '${item}'
+                </if>
+                <if test="index == 1">
+                    start_time &lt;= '${item}'
+                </if>
+            </foreach>
+        </if>
+        <if test="copyright.endTime != null and copyright.endTime != ''">
+            <foreach item="item" index="index" collection="copyright.endTime.split(',')"  open="AND" separator="AND" >
+                <if test="index == 0">
+                    end_time &gt;= '${item}'
+                </if>
+                <if test="index == 1">
+                    end_time &lt;= '${item}'
+                </if>
+            </foreach>
+        </if>
     </select>
 
     <select id="getTask" resultType="map" parameterType="string">

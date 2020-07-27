@@ -29,6 +29,16 @@
         <if test="certificate.userId != null and certificate.userId !=''">
             AND user_id = #{certificate.userId}
         </if>
+        <if test="certificate.time != null and certificate.time !=''">
+            <foreach item="item" index="index" collection="certificate.time.split(',')"  open="AND" separator="AND" >
+                <if test="index == 0">
+                    time &gt;= '${item}'
+                </if>
+                <if test="index == 1">
+                    time &lt;= '${item}'
+                </if>
+            </foreach>
+        </if>
     </select>
 
     <select id="getCertificate" resultType="map" parameterType="string">

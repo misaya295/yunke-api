@@ -33,6 +33,26 @@
         <if test="items.reimbursement != null and items.reimbursement != ''">
             AND  reimbursement =#{items.reimbursement}
         </if>
+        <if test="items.startTime != null and items.startTime != ''">
+            <foreach item="item" index="index" collection="items.startTime.split(',')"  open="AND" separator="AND" >
+                <if test="index == 0">
+                    start_time &gt;= '${item}'
+                </if>
+                <if test="index == 1">
+                    start_time &lt;= '${item}'
+                </if>
+            </foreach>
+        </if>
+        <if test="items.endTime != null and items.endTime != ''">
+            <foreach item="item" index="index" collection="items.endTime.split(',')"  open="AND" separator="AND" >
+                <if test="index == 0">
+                    end_time &gt;= '${item}'
+                </if>
+                <if test="index == 1">
+                    end_time &lt;= '${item}'
+                </if>
+            </foreach>
+        </if>
     </select>
 
     <select id="getTask" resultType="map" parameterType="string">
