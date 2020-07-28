@@ -32,7 +32,7 @@
         <if test="items.state != null and items.state != ''">
             AND  state = #{items.state}
         </if>
-        <if test="items.reimbursement != null and items.reimbursement != ''">
+        <if test="(items.reimbursement != null and items.reimbursement != '') or items.reimbursement == 0">
             AND  reimbursement =#{items.reimbursement}
         </if>
         <if test="items.startTime != null and items.startTime != ''">

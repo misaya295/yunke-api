@@ -20,7 +20,7 @@
 
     <select id="pagePostgraduate" resultType="Postgraduate" parameterType="Postgraduate">
         <include refid="baseSql"/>
-        <if test="postgraduate.state != null and postgraduate.state !=''">
+        <if test="(postgraduate.state != null and postgraduate.state !='') or postgraduate.state == 0 ">
             AND state = #{postgraduate.state}
         </if>
         <if test="postgraduate.userId != null and postgraduate.userId !=''">

@@ -37,7 +37,7 @@
         <if test="copyright.state != null and copyright.state != ''">
             AND  state = #{copyright.state}
         </if>
-        <if test="copyright.reimbursement != null and copyright.reimbursement != ''">
+        <if test="(copyright.reimbursement != null and copyright.reimbursement != '') or copyright.reimbursement == 0">
             AND  reimbursement =#{copyright.reimbursement}
         </if>
         <if test="copyright.startTime != null and copyright.startTime != ''">
