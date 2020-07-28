@@ -23,7 +23,7 @@
 
     <select id="pageCertificate" resultType="Certificate" parameterType="Certificate">
         <include refid="baseSql"/>
-        <if test="certificate.state != null and certificate.state !=''">
+        <if test="(certificate.state != null and certificate.state !='' ) or certificate.state == 0">
             AND state = #{certificate.state}
         </if>
         <if test="certificate.userId != null and certificate.userId !=''">
