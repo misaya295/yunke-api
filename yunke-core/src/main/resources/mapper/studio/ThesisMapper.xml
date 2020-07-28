@@ -30,7 +30,7 @@
         <if test="thesis.state != null and thesis.state != ''">
             AND  state = #{thesis.state}
         </if>
-        <if test="thesis.reimbursement != null and thesis.reimbursement != ''">
+        <if test="(thesis.reimbursement != null and thesis.reimbursement != '') or thesis.reimbursement==0">
             AND  reimbursement =#{thesis.reimbursement}
         </if>
         <if test="thesis.time != null and thesis.time != ''">

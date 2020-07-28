@@ -31,7 +31,7 @@
         <if test="match.state != null and match.state != ''">
             AND  state = #{match.state}
         </if>
-        <if test="match.reimbursement != null and match.reimbursement != ''">
+        <if test="(match.reimbursement != null and match.reimbursement != '') or match.reimbursement==0">
             AND  reimbursement =#{match.reimbursement}
         </if>
         <if test="match.time != null and match.time != ''">
