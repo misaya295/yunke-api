@@ -72,9 +72,6 @@ public class ItemsServiceImpl extends ServiceImpl<ItemsMapper, Items> implements
                     }
                 }
         );
-
-
-
         //删除成员
         Stream.of(ids).forEach(id -> this.membersService.remove(new LambdaQueryWrapper<Members>().eq(Members::getTaskId, id)));
 
@@ -85,8 +82,8 @@ public class ItemsServiceImpl extends ServiceImpl<ItemsMapper, Items> implements
     @Transactional(rollbackFor = Exception.class)
     public void updateTask(Items items) {
         //进行中的任务
-        if (items.getState() == 1) {
-            this.updateById(items); //修改论文任务
+        if (items.getState() == 1||(items.getReimbursement()!=null&&items.getReimbursement()==1)) {
+            this.updateById(items); //修改任务
         }
 
     }
