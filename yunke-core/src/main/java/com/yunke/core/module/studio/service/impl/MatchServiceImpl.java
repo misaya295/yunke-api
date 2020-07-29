@@ -76,10 +76,10 @@ public class MatchServiceImpl extends ServiceImpl<MatchMapper, Match> implements
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateTask(Match Match) {
-        //进行中的任务
-        if (Match.getState() == 1) {
-            this.updateById(Match); //修改论文任务
+    public void updateTask(Match match) {
+        //进行中的任务 or报销成功后的报销字段修改
+        if (match.getState() == 1||(match.getReimbursement()!=null&&match.getReimbursement()==1)) {
+            this.updateById(match); //修改论文任务
         }
 
     }

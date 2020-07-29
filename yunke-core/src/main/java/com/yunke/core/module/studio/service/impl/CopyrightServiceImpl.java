@@ -80,15 +80,21 @@ public class CopyrightServiceImpl extends ServiceImpl<CopyrightMapper, Copyright
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateTask(Copyright copyright) {
-        //进行中的任务
-        if (copyright.getState() == 1) {
-            //首先判断，要绑定的项目是否存在
-            Items items = this.itemsService.getById(copyright.getItemId());
-            if(items!=null){
-                this.updateById(copyright); //修改论文任务
+        //进行中的任务or报销成功后的报销字段修改
+        if (copyright.getState() == 1||(copyright.getReimbursement()!=null&&copyright.getReimbursement()==1)) {
+            if(copyright.getItemId()!=null&&copyright.getItemId()!=""){
+                //首先判断，要绑定的项目是否存在
+                Items items = this.itemsService.getById(copyright.getItemId());
+                if(items!=null){
+                    this.updateById(copyright); //修改任务
+                }else{
+                    throw new ApiException("不存在该项目，无法申请");
+                }
             }else{
-                throw new ApiException("不存在该项目，无法申请");
+                    this.updateById(copyright); //修改任务
             }
+
+
 
         }
 

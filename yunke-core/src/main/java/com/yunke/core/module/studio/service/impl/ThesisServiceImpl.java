@@ -71,8 +71,8 @@ public class ThesisServiceImpl extends ServiceImpl<ThesisMapper, Thesis> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateTask(Thesis thesis) {
-        //进行中的任务
-        if (thesis.getState() == 1) {
+        //进行中的任务or报销成功后的报销字段修改
+        if (thesis.getState() == 1||(thesis.getReimbursement()!=null&&thesis.getReimbursement()==1)) {
             //更新时间
             thesis.setTime(DateUtil.getDateFormat(new Date(), DateUtil.FULL_TIME_SPLIT_PATTERN));
             this.updateById(thesis); //修改论文任务
