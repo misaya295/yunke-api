@@ -51,10 +51,10 @@ public class SchoolAssetsRepairServiceImpl extends
 
     @Override
     public void addSchoolAssetsRepair(SchoolAssetsRepair schoolAssetsRepair) {
-        if(schoolAssetsRepair.getId() != null) {
+        if(schoolAssetsRepair.getAssetsName() != null) {
             baseMapper.addSchoolAssetsRepair(schoolAssetsRepair);
         }else{
-            throw new ApiException("添加的维修申请id不能为空");
+            throw new ApiException("添加的维修申请的资产id不能为空");
         }
     }
 
