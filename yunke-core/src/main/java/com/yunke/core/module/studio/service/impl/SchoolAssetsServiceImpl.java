@@ -51,27 +51,19 @@ public class SchoolAssetsServiceImpl extends
 
     @Override
     public void addSchoolAssets(SchoolAssets schoolAssets) {
-        Boolean inserted = true;                                                        //判断是否符合添加条件：1.必填内容不为空，2.资产编号不重复
+        //判断是否符合添加条件：1.必填内容不为空，2.资产编号不重复
         if(schoolAssets.getAssetsName()==""|| schoolAssets.getAssetsName()==null) {     //必填内容不为空
-           inserted = false;
-        }else {
             throw new ApiException("添加资产的名字不能为空");
         }
         if(schoolAssets.getAssetsNum()!=null&&schoolAssets.getAssetsNum()!="") {        //添加内容中存在资产编号
             if(baseMapper.selectSchoolAssetsCountById(schoolAssets) != 0){              //该资产编号已存在
-                inserted = false;
-            }else {
                 throw new ApiException("添加的资产编号是存在的，不能重复使用");
             }
         }else {
             throw new ApiException("添加资产的编号不能为空");
         }
 
-        if(inserted){
             baseMapper.addSchoolAssets(schoolAssets);
-        }else{
-            throw new ApiException("添加的支持数据缺失导致添加失败");
-        }
     }
 
     @Override
@@ -83,13 +75,13 @@ public class SchoolAssetsServiceImpl extends
     public void updateSchoolAssetsMessage(SchoolAssets schoolAssets) {
         Boolean updated = true;                                                        //判断是否符合添加条件：1.必填内容不为空，2.资产编号不重复
         if(schoolAssets.getAssetsName()==""|| schoolAssets.getAssetsName()==null) {     //必填内容不为空
+            throw new ApiException("资产的名字不能改为空");
+        }else {
             if(schoolAssets.getAssetsNum()!=null&&schoolAssets.getAssetsNum()!="") {
                 baseMapper.updateSchoolAssetsMessage(schoolAssets);
             }else {
                 throw new ApiException("资产的编号不能改为空");
             }
-        }else {
-            throw new ApiException("资产的名字不能改为空");
         }
     }
 

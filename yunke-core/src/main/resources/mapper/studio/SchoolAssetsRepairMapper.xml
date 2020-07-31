@@ -27,10 +27,10 @@
           AND DATE_FORMAT(sar.repair_date,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
       </if>
       <if test="schoolAssetsRepair.assetsName != null and schoolAssetsRepair.assetsName != ''">  <!--资产id模糊查询-->
-          AND sar.assets_name = like CONCAT('%',#{schoolAssetsRepair.assetsName},'%')
+          AND sar.assets_name like CONCAT('%',#{schoolAssetsRepair.assetsName},'%')
       </if>
       <if test="schoolAssetsRepair.propertyName != null and schoolAssetsRepair.propertyName != ''">  <!--资产名字模糊查询-->
-          AND sa.assets_name = like CONCAT('%',#{schoolAssetsRepair.propertyName},'%')
+          AND sa.assets_name like CONCAT('%',#{schoolAssetsRepair.propertyName},'%')
       </if>
       <if test="schoolAssetsRepair.repairPrice != null and schoolAssetsRepair.repairPrice != ''">
           AND sar.repair_price=#{schoolAssetsRepair.repairPrice}
@@ -60,7 +60,7 @@
     </delete>
 
     <insert id="addSchoolAssetsRepair" parameterType="SchoolAssetsRepair">
-        insert into t_school_assets_repair(assetsName,repair_prover_user_info_uuid
+        insert into t_school_assets_repair(assets_name,repair_prover_user_info_uuid
         <if test="schoolAssetsRepair.repairDate != null and schoolAssetsRepair.repairDate != ''">
             ,repair_date
         </if>
