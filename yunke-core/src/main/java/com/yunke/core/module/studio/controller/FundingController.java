@@ -88,7 +88,7 @@ public class FundingController {
     @ControllerEndpoint(operation = "修改该经费数据", exceptionMessage = "修改该经费数据失败")
     public void updateFunding(@Valid Funding funding) {
         if(funding!=null){
-            if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0&&funding.getProposerId()!=null&&funding.getApplyTime()!=null&&funding.getApplyTime()!="") {
+            if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0 && funding.getProposerId()!=null && funding.getApplyTime()!=null && funding.getApplyTime()!="") {
                 fundingService.updateFundingMessage(funding);
             }else{
                 throw new ApiException("经费申请里面的必填数据为空，修改失败");
