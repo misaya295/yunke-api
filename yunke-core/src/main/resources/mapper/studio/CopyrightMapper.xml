@@ -28,7 +28,9 @@
   </sql>
 
     <select id="pageTask" resultType="Copyright" parameterType="Copyright">
-        select copyright_id ,title from t_copyright t LEFT JOIN t_members m ON t.copyright_id = m.task_id
+        select copyright_id ,title,introduction,start_time,end_time,certificate,application_form,origin_file,
+        agreement,cost,invoice,item_id,state,reimbursement
+         from t_copyright t LEFT JOIN t_members m ON t.copyright_id = m.task_id
                                                       LEFT JOIN t_user u ON u.user_id = m.user_id
          where 1=1
         <if test="copyright.title != null and copyright.title != ''">

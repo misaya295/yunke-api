@@ -21,7 +21,8 @@
   </sql>
 
     <select id="pageTask" resultType="Thesis" parameterType="Thesis">
-        select thesis_id ,title from t_thesis t LEFT JOIN t_members m ON t.thesis_id = m.task_id
+        select thesis_id ,title, introduction,paper_type,time,url,cost,state,invoice,reimbursement
+        from t_thesis t LEFT JOIN t_members m ON t.thesis_id = m.task_id
                                                 LEFT JOIN t_user u ON u.user_id = m.user_id
         where 1=1
         <if test="thesis.title != null and thesis.title != ''">

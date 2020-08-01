@@ -17,13 +17,14 @@
                 t.specification,
                 t.url,
                 GROUP_CONCAT(m.user_id) userId ,
-                GROUP_CONCAT(m.state) user_state
+                GROUP_CONCAT(m.state) userState
          FROM t_items t LEFT JOIN t_members m ON (t.items_id=m.task_id)
          where 1=1
   </sql>
 
     <select id="pageTask" resultType="Items" parameterType="Items">
-        select items_id ,title from t_items t LEFT JOIN t_members m ON t.items_id = m.task_id
+        select items_id ,title,introduction,start_time,end_time,cost,invoice,specification,url,state,reimbursement
+         from t_items t LEFT JOIN t_members m ON t.items_id = m.task_id
                                               LEFT JOIN t_user u ON u.user_id = m.user_id
         where 1=1
         <if test="items.title != null and items.title != ''">
