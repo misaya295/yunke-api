@@ -28,8 +28,8 @@
   </sql>
 
     <select id="pageTask" resultType="Copyright" parameterType="Copyright">
-        select copyright_id ,title,introduction,start_time,end_time,certificate,application_form,origin_file,
-        agreement,cost,invoice,item_id,state,reimbursement
+        select t.copyright_id ,t.title,t.introduction,t.start_time,t.end_time,t.certificate,t.application_form,t.origin_file,
+        t.agreement,t.cost,t.invoice,t.item_id,t.state,t.reimbursement
          from t_copyright t LEFT JOIN t_members m ON t.copyright_id = m.task_id
                                                       LEFT JOIN t_user u ON u.user_id = m.user_id
          where 1=1

@@ -22,7 +22,7 @@
   </sql>
 
     <select id="pageTask" resultType="Match" parameterType="Match">
-        select match_id ,title,level,type,application_form,time,cost,invoice,certificate,state,reimbursement
+        select t.match_id ,t.title,t.level,t.type,t.application_form,t.time,t.cost,t.invoice,t.certificate,t.state,t.reimbursement
          from t_match t LEFT JOIN t_members m ON t.match_id = m.task_id
                                               LEFT JOIN t_user u ON u.user_id = m.user_id
         where 1=1

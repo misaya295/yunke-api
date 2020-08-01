@@ -23,7 +23,7 @@
   </sql>
 
     <select id="pageTask" resultType="Items" parameterType="Items">
-        select items_id ,title,introduction,start_time,end_time,cost,invoice,specification,url,state,reimbursement
+        select t.items_id ,t.title,t.introduction,t.start_time,t.end_time,t.cost,t.invoice,t.specification,t.url,t.state,t.reimbursement
          from t_items t LEFT JOIN t_members m ON t.items_id = m.task_id
                                               LEFT JOIN t_user u ON u.user_id = m.user_id
         where 1=1
