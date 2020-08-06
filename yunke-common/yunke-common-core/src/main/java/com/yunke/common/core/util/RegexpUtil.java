@@ -1,6 +1,5 @@
 package com.yunke.common.core.util;
 
-import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.ReUtil;
 import com.yunke.common.core.constant.RegexpConstant;
 import java.util.regex.Pattern;
@@ -29,8 +28,13 @@ public class RegexpUtil extends ReUtil {
     return match(RegexpConstant.ID_CARD_REG, idCardStr);
   }
 
+  /**
+   * 替换 HuTool 的 Validator#hasChinese，生产中抛出如下异常： org.springframework.web.util.NestedServletException:
+   * Handler dispatch failed; nested exception is java.lang.NoSuchMethodError:
+   * cn.hutool.core.lang.Validator.hasChinese(Ljava/lang/CharSequence;)Z
+   */
   public static boolean hasChinese(String value) {
-    return Validator.hasChinese(value);
+    return match(RegexpConstant.CONTAINS_CHINESE, value);
   }
 
 }
