@@ -1,6 +1,7 @@
 package com.yunke.core.module.studio.controller;
 
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.R;
@@ -64,6 +65,7 @@ public class CertificateController {
      */
     @GetMapping
     public R<Map<String, Object>> postgraduateList(QueryParam param, Certificate certificate) {
+        System.out.println(certificate.getState());
         IPage<Certificate> result = this.certificateService.certificateList(param, certificate);
         return R.ok(PageUtil.toPage(result));
     }
@@ -79,4 +81,17 @@ public class CertificateController {
         Map<String,Object> certificate = this.certificateService.getCertificate(id);
         return R.ok(certificate);
     }
+
+    /**
+     * 删除考证_DELETE
+     *
+     * @param ids 要删除的id
+     */
+    @DeleteMapping("{ids}")
+    public void deleteTask(@NotBlank(message = "{required}") @PathVariable String ids) {
+        String[] ids_split = ids.split(StrUtil.COMMA);
+        this.certificateService.deleteCertificate(ids_split);
+    }
+
+
 }
