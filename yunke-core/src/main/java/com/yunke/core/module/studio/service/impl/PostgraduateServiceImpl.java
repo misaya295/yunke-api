@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -58,4 +59,7 @@ public class PostgraduateServiceImpl extends
     public Map getPostgraduate(String id) {
         return baseMapper.getPostgraduate(id);
     }
+
+    @Override
+    public void deletePostgraduate(String[] ids) { this.removeByIds(Arrays.asList(ids)); }
 }

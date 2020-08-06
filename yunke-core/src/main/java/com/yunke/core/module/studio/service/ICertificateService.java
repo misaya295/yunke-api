@@ -45,4 +45,11 @@ public interface ICertificateService extends IService<Certificate> {
      * @return  考证信息
      */
     Map<String,Object> getCertificate(String id);
+
+    /**
+     * 删除考证_DELETE
+     *
+     * @param ids 要删除的id
+     */
+    void deleteCertificate(String[] ids);
 }

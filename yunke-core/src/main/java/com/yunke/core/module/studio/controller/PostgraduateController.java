@@ -1,5 +1,6 @@
 package com.yunke.core.module.studio.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.R;
@@ -79,5 +80,15 @@ public class PostgraduateController {
         return R.ok(postgraduate);
     }
 
+    /**
+     * 删除考研_DELETE
+     *
+     * @param ids 要删除的id
+     */
+    @DeleteMapping("{ids}")
+    public void deleteTask(@NotBlank(message = "{required}") @PathVariable String ids) {
+        String[] ids_split = ids.split(StrUtil.COMMA);
+        this.postgraduateService.deletePostgraduate(ids_split);
+    }
 
 }

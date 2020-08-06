@@ -46,4 +46,11 @@ public interface IPostgraduateService extends IService<Postgraduate> {
      * @return  考研信息
      */
     Map getPostgraduate(String id);
+
+    /**
+     * 删除考研_DELETE
+     *
+     * @param ids 要删除的id
+     */
+    void deletePostgraduate(String[] ids);
 }
