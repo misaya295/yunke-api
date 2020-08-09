@@ -25,7 +25,10 @@ public class DateUtil {
 
   public static final String FULL_TIME_SPLIT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
+  public static final String FULL_TIME_UNIFIED_PATTERN = "yyyy-MM-dd";
+
   public static final String CST_TIME_PATTERN = "EEE MMM dd HH:mm:ss zzz yyyy";
+
 
   /**
    * 格式化时间，格式为 yyyyMMddHHmmss

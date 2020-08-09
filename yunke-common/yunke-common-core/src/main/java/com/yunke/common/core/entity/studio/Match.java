@@ -67,5 +67,10 @@ public class Match implements Serializable {
    */
   @TableField(exist = false)
   private String fullName;
+  /**
+   * 奖项(1：一等，2：二等，3：三等，4：特等，5：优胜，6、无)
+   */
+  @TableField(exist = false)
+  private Integer rankCode;
 
 }

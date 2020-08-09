@@ -43,7 +43,7 @@ public class ThesisServiceImpl extends ServiceImpl<ThesisMapper, Thesis> impleme
         //生成带任务类型的id
         thesis.setThesisId(IdGenerateUtil.nextId(TaskTypeConstant.THESIS));
         //保存当前时间
-        thesis.setTime(DateUtil.getDateFormat(new Date(), DateUtil.FULL_TIME_SPLIT_PATTERN));
+        thesis.setTime(DateUtil.getDateFormat(new Date(), DateUtil.FULL_TIME_UNIFIED_PATTERN));
         //保存任务
         this.save(thesis);
 
