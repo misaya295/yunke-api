@@ -7,9 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yunke.common.core.constant.SystemConstant;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.studio.Copyright;
-import com.yunke.common.core.entity.studio.Items;
 import com.yunke.common.core.entity.studio.Members;
-import com.yunke.common.core.exception.ApiException;
 import com.yunke.common.core.util.SortUtil;
 import com.yunke.core.module.studio.generator.IdGenerateUtil;
 import com.yunke.core.module.studio.generator.TaskTypeConstant;
@@ -48,14 +46,14 @@ public class CopyrightServiceImpl extends ServiceImpl<CopyrightMapper, Copyright
     public void createTask(Copyright copyright, String[] userId, String[] state) {
         //生成带任务类型的id
         copyright.setCopyrightId(IdGenerateUtil.nextId(TaskTypeConstant.COPYRIGHT));
-        //首先判断，要绑定的项目是否存在
-        Items items = this.itemsService.getById(copyright.getItemId());
-        if(items!=null){
+//        //首先判断，要绑定的项目是否存在
+//        Items items = this.itemsService.getById(copyright.getItemId());
+//        if(items!=null){
             //保存任务
             this.save(copyright);
-        }else{
-            throw new ApiException("不存在该项目，无法申请");
-        }
+//        }else{
+//            throw new ApiException("不存在该项目，无法申请");
+//        }
         //添加成员
         ArrayList<Members> members = new ArrayList<>(userId.length);
         IntStream.range(0, userId.length).forEach(index -> {
@@ -82,17 +80,31 @@ public class CopyrightServiceImpl extends ServiceImpl<CopyrightMapper, Copyright
     public void updateTask(Copyright copyright) {
         //进行中的任务or报销成功后的报销字段修改
         if (copyright.getState() == 1||(copyright.getReimbursement()!=null&&copyright.getReimbursement()==1)) {
-            if(copyright.getItemId()!=null&&copyright.getItemId()!=""){
+//            if(copyright.getItemId()!=null&&copyright.getItemId()!=""){
                 //首先判断，要绑定的项目是否存在
-                Items items = this.itemsService.getById(copyright.getItemId());
-                if(items!=null){
+//                Items items = this.itemsService.getById(copyright.getItemId());
+//                if(items!=null){
+//                    this.updateById(copyright); //修改任务
+//                }else{
+//                    throw new ApiException("不存在该项目，无法申请");
+//                }
+//            }else{
                     this.updateById(copyright); //修改任务
-                }else{
-                    throw new ApiException("不存在该项目，无法申请");
-                }
-            }else{
-                    this.updateById(copyright); //修改任务
+//            }
+            if(copyright.getUserId()!=null&&copyright.getUserId()!=""){
+                //修改成员
+                //1,先删除原先成员列表
+                this.membersService.remove(new LambdaQueryWrapper<Members>().eq(Members::getTaskId, copyright.getCopyrightId()));
+                //添加成员
+                String[] userId = copyright.getUserId().split(",");
+                String[] state = copyright.getM_state().split(",");
+                ArrayList<Members> members = new ArrayList<>(userId.length);
+                IntStream.range(0, userId.length).forEach(index -> {
+                    members.add(new Members(Integer.parseInt(userId[index]), Integer.parseInt(state[index]), copyright.getCopyrightId()));
+                });
+                this.membersService.saveBatch(members);
             }
+
 
 
 

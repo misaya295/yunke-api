@@ -15,16 +15,20 @@
                 t.invoice,
                 t.certificate,
                 t.reimbursement,
+                a.rank_code AS rankCode,
+                a.certificate AS awardsCertificate,
                 GROUP_CONCAT(m.user_id) userId ,
                 GROUP_CONCAT(m.state) user_state
          FROM t_match t LEFT JOIN t_members m ON (t.match_id=m.task_id)
+                        LEFT JOIN t_match_member_awards a ON t.match_id = a.task_id
          where 1=1
   </sql>
 
     <select id="pageTask" resultType="Match" parameterType="Match">
-        select t.match_id ,t.title,t.level,t.type,t.application_form,t.time,t.cost,t.invoice,t.certificate,t.state,t.reimbursement
+        select t.match_id ,t.title,t.level,t.type,t.application_form,t.time,t.cost,t.invoice,t.certificate,t.state,t.reimbursement,a.rank_code
          from t_match t LEFT JOIN t_members m ON t.match_id = m.task_id
                                               LEFT JOIN t_user u ON u.user_id = m.user_id
+                                              LEFT JOIN t_match_member_awards a ON t.match_id = a.task_id
         where 1=1
         <if test="match.title != null and match.title != ''">
             AND  title like CONCAT('%',#{match.title},'%')
@@ -48,7 +52,6 @@
         <if test="match.fullName != null and match.fullName != ''">
             AND  u.full_name like CONCAT('%',#{match.fullName},'%')
         </if>
-        GROUP BY t.match_id
     </select>
 
     <select id="getTask" resultType="map" parameterType="string">
@@ -56,7 +59,7 @@
         <if test="matchId!=null and matchId!=''">
             AND match_id = #{matchId}
         </if>
-        GROUP BY match_id
+        GROUP BY t.match_id,a.rank_code,a.certificate
     </select>
 
 

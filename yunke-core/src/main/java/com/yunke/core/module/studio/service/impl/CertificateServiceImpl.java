@@ -32,11 +32,7 @@ public class CertificateServiceImpl extends ServiceImpl<CertificateMapper, Certi
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addCertificate(Certificate certificate) {
-        if(this.getOne(new LambdaQueryWrapper<Certificate>().eq(Certificate::getUserId,certificate.getUserId()).eq(Certificate::getState,0))!=null){
-            throw new ApiException("你已经有正在进行的考证任务，无法再添加");
-        }else {
             this.save(certificate);
-        }
     }
 
     @Override

@@ -48,16 +48,16 @@ public class MatchServiceImpl extends ServiceImpl<MatchMapper, Match> implements
 
         //添加成员
         //比赛类型：个人，只有一个成员且为负责人
-        if (match.getType() == 0) {
-            this.membersService.save(new Members(Integer.parseInt(userId[0]), Integer.parseInt(state[0]), match.getMatchId()));
-        } else {
+//        if (match.getType() == 0) {
+//            this.membersService.save(new Members(Integer.parseInt(userId[0]), Integer.parseInt(state[0]), match.getMatchId()));
+//        } else {
          //比赛类型：团队
             ArrayList<Members> members = new ArrayList<>(userId.length);
             IntStream.range(0, userId.length).forEach(index -> {
                 members.add(new Members(Integer.parseInt(userId[index]), Integer.parseInt(state[index]), match.getMatchId()));
             });
             this.membersService.saveBatch(members);
-        }
+//        }
 
 
     }
@@ -80,6 +80,19 @@ public class MatchServiceImpl extends ServiceImpl<MatchMapper, Match> implements
         //进行中的任务 or报销成功后的报销字段修改
         if (match.getState() == 1||(match.getReimbursement()!=null&&match.getReimbursement()==1)) {
             this.updateById(match); //修改论文任务
+            if (match.getUserId() != null && match.getUserId() != "") {
+                //修改成员
+                //1,先删除原先成员列表
+                this.membersService.remove(new LambdaQueryWrapper<Members>().eq(Members::getTaskId, match.getMatchId()));
+                //添加成员
+                String[] userId = match.getUserId().split(",");
+                String[] state = match.getM_state().split(",");
+                ArrayList<Members> members = new ArrayList<>(userId.length);
+                IntStream.range(0, userId.length).forEach(index -> {
+                    members.add(new Members(Integer.parseInt(userId[index]), Integer.parseInt(state[index]), match.getMatchId()));
+                });
+                this.membersService.saveBatch(members);
+            }
         }
 
     }
