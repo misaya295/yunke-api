@@ -37,15 +37,13 @@ public class ThesisController {
          * 新增论文任务_POST
          *
          * @param thesis  论文_任务 新增参数
-         * @param userId  任务成员id, ","分隔
-         * @param m_state 任务成员角色, ","分隔   1为负责人，2为成员，3为指导老师
          */
         @PostMapping
         @PreAuthorize("hasAuthority('task:add')")
         @ControllerEndpoint(operation = "新增任务", exceptionMessage = "新增任务失败")
-        public void addTask(@Valid Thesis thesis, String userId, String m_state) {
-            String[] split_userId = StrUtil.split(userId, StrUtil.COMMA); //成员id
-            String[] split_state = StrUtil.split(m_state, StrUtil.COMMA);//成员角色
+        public void addTask(@Valid Thesis thesis) {
+            String[] split_userId = StrUtil.split(thesis.getUserId(), StrUtil.COMMA); //成员id
+            String[] split_state = StrUtil.split(thesis.getM_state(), StrUtil.COMMA);//成员角色
             this.thesisService.createTask(thesis, split_userId, split_state);
         }
 

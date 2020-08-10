@@ -76,6 +76,19 @@ public class ThesisServiceImpl extends ServiceImpl<ThesisMapper, Thesis> impleme
             //更新时间
             thesis.setTime(DateUtil.getDateFormat(new Date(), DateUtil.FULL_TIME_SPLIT_PATTERN));
             this.updateById(thesis); //修改论文任务
+            if(thesis.getUserId()!=null&&thesis.getUserId()!="") {
+                //修改成员
+                //1,先删除原先成员列表
+                this.membersService.remove(new LambdaQueryWrapper<Members>().eq(Members::getTaskId, thesis.getThesisId()));
+                //添加成员
+                String[] userId = thesis.getUserId().split(",");
+                String[] state = thesis.getM_state().split(",");
+                ArrayList<Members> members = new ArrayList<>(userId.length);
+                IntStream.range(0, userId.length).forEach(index -> {
+                    members.add(new Members(Integer.parseInt(userId[index]), Integer.parseInt(state[index]), thesis.getThesisId()));
+                });
+                this.membersService.saveBatch(members);
+            }
         }
 
     }

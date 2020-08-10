@@ -37,15 +37,13 @@ public class CopyrightController {
      * 新增软件著作权任务_POST
      *
      * @param copyright 软件著作权_任务 新增参数
-     * @param userId    任务成员id, ","分隔
-     * @param m_state   任务成员角色, ","分隔   1为负责人，2为成员，3为指导老师
      */
     @PostMapping
     @PreAuthorize("hasAuthority('task:add')")
     @ControllerEndpoint(operation = "新增任务", exceptionMessage = "新增任务失败")
-    public void addTask(@Valid Copyright copyright, String userId, String m_state) {
-        String[] split_userId = StrUtil.split(userId, StrUtil.COMMA); //成员id
-        String[] split_state = StrUtil.split(m_state, StrUtil.COMMA);//成员角色
+    public void addTask(@Valid Copyright copyright) {
+        String[] split_userId = StrUtil.split(copyright.getUserId(), StrUtil.COMMA); //成员id
+        String[] split_state = StrUtil.split(copyright.getM_state(), StrUtil.COMMA);//成员角色
         this.copyrightService.createTask(copyright, split_userId, split_state);
     }
 

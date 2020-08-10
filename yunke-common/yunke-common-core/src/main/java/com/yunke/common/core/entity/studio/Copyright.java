@@ -79,5 +79,15 @@ public class Copyright implements Serializable {
    */
   @TableField(exist = false)
   private String fullName;
+  /**
+   * 成员id ","分隔
+   */
+  @TableField(exist = false)
+  private String userId;
+  /**
+   * 成员角色 ","分隔   1为负责人，2为成员，3为指导老师
+   */
+  @TableField(exist = false)
+  private String  m_state;
 
 }

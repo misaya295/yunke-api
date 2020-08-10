@@ -55,7 +55,6 @@ public class MembersController {
      * @param members 更新的数据
      */
     @PutMapping("charge")
-    @PreAuthorize("hasAuthority('task:charge')")
     @ControllerEndpoint(operation = "更新负责人", exceptionMessage = "更新负责人失败")
     public void updateCharge(@Valid Members members) {
         this.membersService.updateCharge(members);
@@ -68,7 +67,6 @@ public class MembersController {
      * @param members 添加的数据
      */
     @PostMapping("charge")
-    @PreAuthorize("hasAuthority('task:charge')")
     @ControllerEndpoint(operation = "添加负责人", exceptionMessage = "添加负责人失败")
     public void addCharge(@Valid Members members) {
         this.membersService.updateCharge(members);

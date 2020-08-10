@@ -38,15 +38,13 @@ public class MatchController {
      * 新增比赛任务_POST
      *
      * @param match   比赛_任务 新增参数
-     * @param userId  任务成员id, ","分隔
-     * @param m_state 任务成员角色, ","分隔   1为负责人，2为成员，3为指导老师
      */
     @PostMapping
     @PreAuthorize("hasAuthority('task:add')")
     @ControllerEndpoint(operation = "新增任务", exceptionMessage = "新增任务失败")
-    public void addTask(@Valid Match match, String userId, String m_state) {
-        String[] split_userId = StrUtil.split(userId, StrUtil.COMMA); //成员id
-        String[] split_state = StrUtil.split(m_state, StrUtil.COMMA);//成员角色
+    public void addTask(@Valid Match match) {
+        String[] split_userId = StrUtil.split(match.getUserId(), StrUtil.COMMA); //成员id
+        String[] split_state = StrUtil.split(match.getM_state(), StrUtil.COMMA);//成员角色
         this.matchService.createTask(match, split_userId, split_state);
     }
 
