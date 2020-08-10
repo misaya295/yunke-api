@@ -89,5 +89,12 @@ public class Copyright implements Serializable {
    */
   @TableField(exist = false)
   private String  m_state;
+  /**
+   * 项目名称
+   */
+  @TableField(exist = false)
+  private String  itemTitle;
+
+
 
 }
