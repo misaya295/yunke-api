@@ -21,7 +21,7 @@
                 t.reimbursement,
                 GROUP_CONCAT(m.user_id) userId ,
                 GROUP_CONCAT(m.state) user_state,
-                i.title
+                i.title AS itemTitle
          FROM t_copyright t LEFT JOIN t_members m ON (t.copyright_id=m.task_id)
                             LEFT JOIN t_items i ON  (i.items_id=t.item_id)
          where 1=1
