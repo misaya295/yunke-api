@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunke.core.module.studio.mapper.MatchMemberAwardsMapper">
+
+    <insert id="saveMatchMemberAwards" parameterType="MatchMemberAwards">
+            insert into t_match_member_awards (
+            task_id
+            <if test="memberAwards.userId != null and memberAwards.userId !='' and memberAwards.type == 0">
+             ,user_id
+            </if>
+            <if test="memberAwards.rankCode != null and memberAwards.rankCode !=''">
+             ,rank_code
+            </if>
+            <if test="memberAwards.certificate != null and memberAwards.certificate !=''">
+             ,certificate
+            </if>
+        )
+        values (#{memberAwards.taskId}
+        <if test="memberAwards.userId != null and memberAwards.userId !='' and memberAwards.type == 0">
+            ,#{memberAwards.userId}
+        </if>
+        <if test="memberAwards.rankCode != null and memberAwards.rankCode !=''">
+            ,#{memberAwards.rankCode}
+        </if>
+        <if test="memberAwards.certificate != null and memberAwards.certificate !=''">
+            ,#{memberAwards.certificate}
+        </if>
+        )
+    </insert>
+
+    <update id="updateMemberAwards" parameterType="MatchMemberAwards">
+        update t_match_member_awards
+        <set>
+            <if test="memberAwards.userId != null and memberAwards.userId !='' and memberAwards.type == 0">
+                user_id = #{memberAwards.userId} ,
+            </if>
+            <if test="memberAwards.type == 1 or memberAwards.type == '1'">
+                user_id = null ,
+            </if>
+            <if test="memberAwards.rankCode != null and memberAwards.rankCode !=''">
+                rank_code = #{memberAwards.rankCode} ,
+             </if>
+            <if test="memberAwards.certificate != null and memberAwards.certificate !=''">
+                certificate = #{memberAwards.certificate} ,
+            </if>
+        </set>
+        where  task_id = #{memberAwards.taskId}
+    </update>
+
+
+</mapper>

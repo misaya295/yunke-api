@@ -20,4 +20,13 @@ public class MatchMemberAwardsServiceImpl extends
     ServiceImpl<MatchMemberAwardsMapper, MatchMemberAwards> implements
     IMatchMemberAwardsService {
 
+    @Override
+    public void saveMatchMemberAwards(MatchMemberAwards memberAwards) {
+            this.baseMapper.saveMatchMemberAwards(memberAwards);
+    }
+
+    @Override
+    public void updateMemberAwards(MatchMemberAwards memberAwards) {
+            this.baseMapper.updateMemberAwards(memberAwards);
+    }
 }
