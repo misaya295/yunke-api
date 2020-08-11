@@ -173,4 +173,20 @@ public class SystemUser implements Serializable {
 
   @TableField(exist = false)
   private String deptIds;
+
+  /**
+   * 年级
+   */
+  @TableField(exist = false)
+  private String grade;
+  /**
+   * 专业
+   */
+  @TableField(exist = false)
+  private String profession;
+  /**
+   * 班级号
+   */
+  @TableField(exist = false)
+  private String clbum;
 }
