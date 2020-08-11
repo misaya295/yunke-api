@@ -1,5 +1,6 @@
 package com.yunke.core.module.studio.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -88,8 +89,8 @@ public class ItemsServiceImpl extends ServiceImpl<ItemsMapper, Items> implements
                 //1,先删除原先成员列表
                 this.membersService.remove(new LambdaQueryWrapper<Members>().eq(Members::getTaskId, items.getItemsId()));
                 //添加成员
-                String[] userId = items.getUserId().split(",");
-                String[] state = items.getM_state().split(",");
+                String[] userId = items.getUserId().split(StrUtil.COMMA);
+                String[] state = items.getM_state().split(StrUtil.COMMA);
                 ArrayList<Members> members = new ArrayList<>(userId.length);
                 IntStream.range(0, userId.length).forEach(index -> {
                     members.add(new Members(Integer.parseInt(userId[index]), Integer.parseInt(state[index]), items.getItemsId()));
