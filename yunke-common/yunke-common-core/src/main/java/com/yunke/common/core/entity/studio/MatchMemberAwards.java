@@ -1,6 +1,7 @@
 package com.yunke.common.core.entity.studio;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -37,6 +38,13 @@ public class MatchMemberAwards implements Serializable {
    * 奖状
    */
   private String certificate;
+   /**
+   * 比赛类型
+   **/
+   @TableField(exist = false)
+   private Integer type;
 
-
+    public MatchMemberAwards(String matchId) {
+        this.taskId = matchId;
+    }
 }

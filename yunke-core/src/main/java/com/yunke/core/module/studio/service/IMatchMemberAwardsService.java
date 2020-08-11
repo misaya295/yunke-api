@@ -11,4 +11,15 @@ import com.yunke.common.core.entity.studio.MatchMemberAwards;
  */
 public interface IMatchMemberAwardsService extends IService<MatchMemberAwards> {
 
+    /**
+     * 添加用户比赛获奖
+     * @param memberAwards
+     */
+    void saveMatchMemberAwards(MatchMemberAwards memberAwards);
+
+    /**
+     * 修改用户比赛获奖
+     * @param memberAwards
+     */
+    void updateMemberAwards(MatchMemberAwards memberAwards);
 }
