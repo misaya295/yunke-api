@@ -42,7 +42,6 @@ public class FundingController {
      */
     @GetMapping
     public R<Map<String, Object>> FundingListBypage(QueryParam param,Funding funding) {
-        System.out.println(funding.toString());
         IPage<Funding> result = fundingService.pageFunding(param,funding);
         return R.ok(PageUtil.toPage(result));
     }
@@ -73,9 +72,7 @@ public class FundingController {
     public void deleteFundings(@PathVariable("fundingIds") String fundingIds) {
         int[] split_fundingIds = StrUtil.splitToInt(fundingIds, StrUtil.COMMA);
         if(split_fundingIds.length>0){
-            fundingService.deleteFundings(split_fundingIds);
-        }else if(split_fundingIds.length == 0){
-           throw new ApiException("传入的经费id为空，删除失败");
+            fundingService.deleteFundingByFundingids(split_fundingIds);
         }
     }
 
@@ -87,14 +84,14 @@ public class FundingController {
     @PutMapping
     @ControllerEndpoint(operation = "修改该经费数据", exceptionMessage = "修改该经费数据失败")
     public void updateFunding(@Valid Funding funding) {
-        if(funding!=null){
-            if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0 && funding.getProposerId()!=null && funding.getApplyTime()!=null && funding.getApplyTime()!="") {
+        if(funding.getId()!=null) {
+            if (funding.getName() != "" && funding.getName() != null && funding.getProposerId() != 0 && funding.getProposerId() != null && funding.getApplyTime() != null && funding.getApplyTime() != "") {
                 fundingService.updateFundingMessage(funding);
-            }else{
+            } else {
                 throw new ApiException("经费申请里面的必填数据为空，修改失败");
             }
         }else{
-            throw new ApiException("不能把所有数据都改为空");
+            throw new ApiException("修改经费数据没有经费id传过来，修改失败");
         }
     }
 
@@ -112,14 +109,17 @@ public class FundingController {
         Funding funding =fundingService.selectFundingById(fundingId);
         if(funding!=null) {
             message.add(funding);
+            //可选择的申请人(所有人都可以申请)（只有id和真实名称）
+            int[] verifierRoleId = {1, 2, 3, 4};
+            message.add(fundingService.selectUserNameByRoleId(verifierRoleId));
+            //可选择的审核人(只有管理员可以审核)（只有id和真实名称）
+            int[] certifierRoleId = {1};
+            message.add(fundingService.selectUserNameByRoleId(certifierRoleId));
+            return R.ok(message);
+        }else{
+            throw new ApiException("查询不到这个经费");
         }
-        //可选择的申请人(所有人都可以申请)（只有id和真实名称）
-        int[] verifierRoleId = {1, 2, 3, 4};
-        message.add(fundingService.selectUserNameByRoleId(verifierRoleId));
-        //可选择的审核人(只有管理员可以审核)（只有id和真实名称）
-        int[] certifierRoleId = {1};
-        message.add(fundingService.selectUserNameByRoleId(certifierRoleId));
-        return R.ok(message);
+
     }
 
     /*
@@ -130,10 +130,11 @@ public class FundingController {
     @PostMapping
     @ControllerEndpoint(operation = "添加经费申请", exceptionMessage = "添加经费申请失败")
     public void addFunding(@Valid Funding funding) {
-        if(funding!=null){
+        //只有申请人,申请时间和申请事件名称都有的情况下才可以提交申请
+        if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0&&funding.getProposerId()!=null&&funding.getApplyTime()!=null&&funding.getApplyTime()!=""){
             fundingService.addFunding(funding);
         }else{
-            throw new ApiException("添加的经费申请里面什么数据都没有");
+            throw new ApiException("添加的经费申请里必填数据不能为空");
         }
     }
 
@@ -145,10 +146,14 @@ public class FundingController {
     @PutMapping("/state")
     @ControllerEndpoint(operation = "修改该经费申请状态", exceptionMessage = "修改该经费申请状态失败")
     public void updateFundingState(@Valid Funding funding) {
-        if(funding!=null){
+        if(funding.getId() != null) {
+            if (funding.getState() >= 1 && funding.getState() <= 4) {
                 fundingService.updateFundingState(funding);
+            } else {
+                throw new ApiException("经费申请的状态修改值不在正常范围");
+            }
         }else{
-            throw new ApiException("经费申请状态不能改为空");
+            throw new ApiException("修改的维修状态的id不能为空");
         }
     }
 

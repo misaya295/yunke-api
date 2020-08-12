@@ -28,13 +28,14 @@ public interface IFundingService extends IService<Funding> {
      * 根据提供的id删除转态为申请失败的经费数据
      * @param fundingIds 经费id数组
      */
-    void deleteFundings(int[] fundingIds);
+    void deleteFundingByFundingids(int[] fundingIds);
 
     /**
      * 修改经费数据
      * @param funding 经费对象
      */
     void updateFundingMessage(Funding funding);
+
 
     /**
      * 通过经费id返回该经费数据

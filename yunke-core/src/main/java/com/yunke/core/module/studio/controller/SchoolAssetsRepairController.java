@@ -71,8 +71,6 @@ public class SchoolAssetsRepairController {
         int[] split_schoolAssetsRepairIds = StrUtil.splitToInt(schoolAssetsRepairIds, StrUtil.COMMA);
         if(split_schoolAssetsRepairIds.length>0){
             schoolAssetsRepairService.deleteSchoolAssetsRepairById(split_schoolAssetsRepairIds);
-        }else if(split_schoolAssetsRepairIds.length == 0){
-            throw new ApiException("前端传入维修申请id为空，删除失败");
         }
     }
 
@@ -84,10 +82,10 @@ public class SchoolAssetsRepairController {
     @PostMapping
     @ControllerEndpoint(operation = "添加学校资产维修申请成功", exceptionMessage = "添加校资产维修申请失败")
     public void addSchoolAssetsRepairs(@Valid SchoolAssetsRepair schoolAssetsRepair) {
-        if(schoolAssetsRepair!=null){
+        if(schoolAssetsRepair.getAssetsName() != null) {
             schoolAssetsRepairService.addSchoolAssetsRepair(schoolAssetsRepair);
         }else{
-            throw new ApiException("添加的维修申请数据不能为空");
+            throw new ApiException("添加的维修申请的资产id不能为空");
         }
     }
 
@@ -97,13 +95,30 @@ public class SchoolAssetsRepairController {
      *  作用：根据经费id修改资产数据
      */
     @PutMapping
-    @ControllerEndpoint(operation = "修改校资产维修申请数据成功", exceptionMessage = "修改校资产维修申请数据")
-    public void updateSchoolAssetsRepairs(@Valid SchoolAssetsRepair schoolAssetsRepair) {
-        System.out.println(schoolAssetsRepair.toString());
-        if(schoolAssetsRepair!=null){
+    @ControllerEndpoint(operation = "修改校资产维修申请数据成功", exceptionMessage = "修改校资产维修申请数据失败")
+    public void updateSchoolAssetsRepairsMessage(@Valid SchoolAssetsRepair schoolAssetsRepair) {
+        if(schoolAssetsRepair.getId() != null) {
             schoolAssetsRepairService.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
         }else{
-            throw new ApiException("不能把资产维修申请的数据改为空");
+            throw new ApiException("修改的维修申请id不能为空");
+        }
+    }
+    /**
+     *  请求类型：Put
+     *  @param schoolAssetsRepair 学校资产对象
+     *  作用：根据经费id修改资产数据
+     */
+    @PutMapping("/state")
+    @ControllerEndpoint(operation = "修改校资产维修状态成功", exceptionMessage = "修改校资产维修状态失败")
+    public void updateSchoolAssetsRepairsState(@Valid SchoolAssetsRepair schoolAssetsRepair) {
+        if(schoolAssetsRepair.getId() != null) {
+            if (schoolAssetsRepair.getState() >= 1 && schoolAssetsRepair.getState() <= 3) {
+                schoolAssetsRepairService.updateSchoolAssetsRepairsState(schoolAssetsRepair);
+            } else {
+                throw new ApiException("经费申请的状态修改值不在正常范围");
+            }
+        }else{
+            throw new ApiException("修改的维修状态的id不能为空");
         }
     }
 }

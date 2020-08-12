@@ -51,24 +51,21 @@ public class SchoolAssetsRepairServiceImpl extends
 
     @Override
     public void addSchoolAssetsRepair(SchoolAssetsRepair schoolAssetsRepair) {
-        if(schoolAssetsRepair.getAssetsName() != null) {
-            baseMapper.addSchoolAssetsRepair(schoolAssetsRepair);
-        }else{
-            throw new ApiException("添加的维修申请的资产id不能为空");
-        }
+        baseMapper.addSchoolAssetsRepair(schoolAssetsRepair);
     }
 
     @Override
     public void updateSchoolAssetsRepairsMessage(SchoolAssetsRepair schoolAssetsRepair) {
-        if(schoolAssetsRepair.getId() != null) {
-            baseMapper.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
-        }else{
-            throw new ApiException("修改的维修申请id不能为空");
-        }
+        baseMapper.updateSchoolAssetsRepairsMessage(schoolAssetsRepair);
     }
 
     @Override
     public SchoolAssetsRepair selectSchoolAssetsRepairIdById(int schoolAssetsRepairId) {
         return baseMapper.selectSchoolAssetsRepairIdById(schoolAssetsRepairId);
+    }
+
+    @Override
+    public void updateSchoolAssetsRepairsState(SchoolAssetsRepair schoolAssetsRepair) {
+        baseMapper.updateSchoolAssetsRepairsState(schoolAssetsRepair);
     }
 }

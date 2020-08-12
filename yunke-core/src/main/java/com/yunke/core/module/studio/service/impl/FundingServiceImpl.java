@@ -12,22 +12,19 @@ import com.yunke.common.core.exception.ApiException;
 import com.yunke.common.core.util.SortUtil;
 import com.yunke.core.module.studio.mapper.FundingMapper;
 import com.yunke.core.module.studio.service.IFundingService;
-import com.yunke.core.module.system.service.IUserDataPermissionService;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 经费表(Funding)表服务实现类
  *
- * @author chachae
- * @since 2020-06-14 14:04:56
+ * @author Pning
+ * @since 2020-07-14 14:04:56
  */
 @Service
 @RequiredArgsConstructor
@@ -52,18 +49,16 @@ public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> impl
     }
 
     @Override
-    public void deleteFundings(int[] fundingIds) {
-        baseMapper.deleteByFundingid(fundingIds);// 删除这个基金数据
+    public void deleteFundingByFundingids(int[] fundingIds) {
+        baseMapper.deleteFundingByFundingids(fundingIds);// 删除这个基金数据
     }
 
     @Override
     public void updateFundingMessage(Funding funding) {
-        if(funding.getId()!=null) {
-            if (baseMapper.selectFundingCountById(funding.getId()) == 1) {       //判断这个这个id的数据是否存在
-                baseMapper.updateFundingMessage(funding);                      //修改这个经费对象的数据
-            }else{
-                throw new ApiException("所要需改的经费数据不存在");
-            }
+        if (baseMapper.selectFundingCountById(funding.getId()) == 1) {       //判断这个这个id的数据是否存在
+            baseMapper.updateFundingMessage(funding);                      //修改这个经费对象的数据
+        }else{
+            throw new ApiException("所要需改的经费数据不存在");
         }
     }
 
@@ -79,25 +74,12 @@ public class FundingServiceImpl extends ServiceImpl<FundingMapper, Funding> impl
 
     @Override
     public void addFunding(Funding funding) {
-        //只有申请人,申请时间和申请事件名称都有的情况下才可以提交申请
-        if(funding.getName()!=""&&funding.getName()!=null && funding.getProposerId()!=0&&funding.getProposerId()!=null&&funding.getApplyTime()!=null&&funding.getApplyTime()!=""){
-            baseMapper.addFunding(funding);
-        }else{
-            throw new ApiException("添加的经费申请里必填数据不能为空");
-        }
+        baseMapper.addFunding(funding);
     }
 
     @Override
     public void updateFundingState(Funding funding) {
-        if(funding.getState()!=null) {
-            if (funding.getState() >= 1 && funding.getState() <= 4) {
-                baseMapper.updateFundingState(funding);
-            } else {
-                throw new ApiException("经费申请的状态修改值不在正常范围");
-            }
-        }else{
-            throw new ApiException("经费申请的状态修改值不能为空");
-        }
+        baseMapper.updateFundingState(funding);
     }
 
     @Override

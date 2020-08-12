@@ -67,11 +67,13 @@ public class SchoolAssetsController {
     @PostMapping
     @ControllerEndpoint(operation = "添加学校资产成功", exceptionMessage = "添加学校资产失败")
     public void addSchoolAssets(@Valid SchoolAssets schoolAssets) {
-        if(schoolAssets != null){
-            schoolAssetsService.addSchoolAssets(schoolAssets);
-        }else{
-            throw new ApiException("不能添加一个什么数据都没有的资产");
+        //判断是否符合添加条件：1.必填内容不为空，2.资产编号不重复
+        if(schoolAssets.getAssetsName()!=""&&schoolAssets.getAssetsName()!=null) {     //必填内容不为空
+                schoolAssetsService.addSchoolAssets(schoolAssets);
+        }else {
+            throw new ApiException("添加资产的名字不能为空");
         }
+
     }
 
     /**
@@ -85,8 +87,6 @@ public class SchoolAssetsController {
         int[] split_schoolAssetsIds = StrUtil.splitToInt(schoolAssetsIds, StrUtil.COMMA);
         if(split_schoolAssetsIds.length>0){
             schoolAssetsService.deleteSchoolAssetsById(split_schoolAssetsIds);
-        }else if(split_schoolAssetsIds.length == 0){
-            throw new ApiException("前端传入资产id为空，删除失败");
         }
     }
 
@@ -98,10 +98,10 @@ public class SchoolAssetsController {
     @PutMapping
     @ControllerEndpoint(operation = "修改该该学校资产数据", exceptionMessage = "修改该学校资产数据")
     public void updateSchoolAssets(@Valid  SchoolAssets schoolAssets) {
-        if(schoolAssets != null){
+        if(schoolAssets.getAssetsName()!=""&&schoolAssets.getAssetsName()!=null) {     //必填内容不为空
             schoolAssetsService.updateSchoolAssetsMessage(schoolAssets);
-        }else{
-            throw new ApiException("不能把这个资产的数据修都改为空");
+        }else {
+            throw new ApiException("资产的名字不能改为空");
         }
     }
 
