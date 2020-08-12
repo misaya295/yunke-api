@@ -59,4 +59,10 @@ public interface IThesisService extends IService<Thesis> {
     Integer getAllTaskCount();
 
 
+    /**
+     * 修改任务状态
+     *
+     * @param thesis
+     */
+    void updateState(Thesis thesis);
 }

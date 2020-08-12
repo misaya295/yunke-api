@@ -108,5 +108,16 @@ public class ItemsController {
         return R.ok(this.iItemsService.getAllTaskCount());
     }
 
+    /**
+     * 修改任务状态
+     *
+     * @param items
+     */
+    @PutMapping("state")
+    @PreAuthorize("hasAuthority('task:update')")
+    @ControllerEndpoint(operation = "更新任务状态", exceptionMessage = "更新任务状态")
+    public void updateState(@Valid Items items) {
+        this.iItemsService.updateState(items);
+    }
 
 }

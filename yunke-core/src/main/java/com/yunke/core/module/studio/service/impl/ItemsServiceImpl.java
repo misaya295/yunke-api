@@ -2,13 +2,11 @@ package com.yunke.core.module.studio.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yunke.common.core.constant.SystemConstant;
 import com.yunke.common.core.entity.QueryParam;
-import com.yunke.common.core.entity.studio.Copyright;
 import com.yunke.common.core.entity.studio.Items;
 import com.yunke.common.core.entity.studio.Members;
 import com.yunke.common.core.exception.ApiException;
@@ -81,7 +79,7 @@ public class ItemsServiceImpl extends ServiceImpl<ItemsMapper, Items> implements
     @Transactional(rollbackFor = Exception.class)
     public void updateTask(Items items) {
         //进行中的任务
-//        if (items.getState() == 1||(items.getReimbursement()!=null&&items.getReimbursement()==1)) {
+        if (items.getState() == 1) {
 
             this.updateById(items); //修改任务
             if(items.getUserId()!=null&&items.getUserId()!="") {
@@ -97,7 +95,15 @@ public class ItemsServiceImpl extends ServiceImpl<ItemsMapper, Items> implements
                 });
                 this.membersService.saveBatch(members);
             }
-//        }
+        }else if(items.getState() == 2){  //已完成的任务
+            Items items1 = new Items();
+            items1.setItemsId(items.getItemsId());
+            if(items.getReimbursement()!=null&&items.getReimbursement()!=-1){
+                items1.setReimbursement(items.getReimbursement());
+                this.updateById(items1);
+            }
+
+        }
 
     }
 
@@ -116,6 +122,11 @@ public class ItemsServiceImpl extends ServiceImpl<ItemsMapper, Items> implements
     @Override
     public Integer getAllTaskCount() {
         return this.count();
+    }
+
+    @Override
+    public void updateState(Items items) {
+        this.baseMapper.updateState(items);
     }
 
 }

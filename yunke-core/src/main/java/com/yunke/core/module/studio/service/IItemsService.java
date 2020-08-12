@@ -58,4 +58,11 @@ public interface IItemsService extends IService<Items> {
      * @return 返回所有项目条数
      */
     Integer getAllTaskCount();
+
+    /**
+     * 修改任务状态
+     *
+     * @param items
+     */
+    void updateState(Items items);
 }

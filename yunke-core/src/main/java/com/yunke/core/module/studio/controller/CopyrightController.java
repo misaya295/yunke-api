@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.R;
 import com.yunke.common.core.entity.studio.Copyright;
+import com.yunke.common.core.entity.studio.Items;
 import com.yunke.common.core.util.PageUtil;
 import com.yunke.core.annotation.ControllerEndpoint;
 import com.yunke.core.module.studio.service.ICopyrightService;
@@ -108,5 +109,15 @@ public class CopyrightController {
         return R.ok(this.copyrightService.getAllTaskCount());
     }
 
-
+    /**
+     * 修改任务状态
+     *
+     * @param copyright
+     */
+    @PutMapping("state")
+    @PreAuthorize("hasAuthority('task:update')")
+    @ControllerEndpoint(operation = "更新任务状态", exceptionMessage = "更新任务状态")
+    public void updateState(@Valid Copyright copyright) {
+        this.copyrightService.updateState(copyright);
+    }
 }

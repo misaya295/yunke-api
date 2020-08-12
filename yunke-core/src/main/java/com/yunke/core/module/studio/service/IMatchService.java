@@ -58,4 +58,11 @@ public interface IMatchService extends IService<Match> {
      * @return 返回所有项目条数
      */
     Integer getAllTaskCount();
+
+    /**
+     * 修改任务状态
+     *
+     * @param match
+     */
+    void updateState(Match match);
 }

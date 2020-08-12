@@ -20,4 +20,5 @@ public interface MatchMapper extends BaseMapper<Match> {
 
     Map<String,Object> getTask(@Param("matchId") String matchId);
 
+    void updateState(@Param("match") Match match);
 }
