@@ -1,5 +1,6 @@
 package com.yunke.core.module.studio.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -79,7 +80,7 @@ public class CopyrightServiceImpl extends ServiceImpl<CopyrightMapper, Copyright
     @Transactional(rollbackFor = Exception.class)
     public void updateTask(Copyright copyright) {
         //进行中的任务or报销成功后的报销字段修改
-        if (copyright.getState() == 1||(copyright.getReimbursement()!=null&&copyright.getReimbursement()==1)) {
+//        if (copyright.getState() == 1||(copyright.getReimbursement()!=null&&copyright.getReimbursement()==1)) {
 //            if(copyright.getItemId()!=null&&copyright.getItemId()!=""){
                 //首先判断，要绑定的项目是否存在
 //                Items items = this.itemsService.getById(copyright.getItemId());
@@ -96,8 +97,8 @@ public class CopyrightServiceImpl extends ServiceImpl<CopyrightMapper, Copyright
                 //1,先删除原先成员列表
                 this.membersService.remove(new LambdaQueryWrapper<Members>().eq(Members::getTaskId, copyright.getCopyrightId()));
                 //添加成员
-                String[] userId = copyright.getUserId().split(",");
-                String[] state = copyright.getM_state().split(",");
+                String[] userId = copyright.getUserId().split(StrUtil.COMMA);
+                String[] state = copyright.getM_state().split(StrUtil.COMMA);
                 ArrayList<Members> members = new ArrayList<>(userId.length);
                 IntStream.range(0, userId.length).forEach(index -> {
                     members.add(new Members(Integer.parseInt(userId[index]), Integer.parseInt(state[index]), copyright.getCopyrightId()));
@@ -108,7 +109,7 @@ public class CopyrightServiceImpl extends ServiceImpl<CopyrightMapper, Copyright
 
 
 
-        }
+//        }
 
     }
 

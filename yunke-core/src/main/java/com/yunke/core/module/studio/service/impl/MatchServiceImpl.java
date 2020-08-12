@@ -98,9 +98,9 @@ public class MatchServiceImpl extends ServiceImpl<MatchMapper, Match> implements
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateTask(Match match) {
-        //进行中的任务 or报销成功后的报销字段修改
-        if (match.getState() == 1||(match.getReimbursement()!=null&&match.getReimbursement()==1)) {
-            this.updateById(match); //修改论文任务
+
+            this.updateById(match); //修改任务
+
             if (match.getUserId() != null && match.getUserId() != "") {
                 //修改成员
                 //1,先删除原先成员列表
@@ -123,15 +123,13 @@ public class MatchServiceImpl extends ServiceImpl<MatchMapper, Match> implements
             if(match.getCertificate()!=null&&match.getCertificate()!=""){
                 memberAwards.setCertificate(match.getCertificate());
             }
-            if (match.getType() != null && match.getType() != -1) {
+            if (match.getType() != null ) {
                 if(match.getType()==0&&match.getUserId()!=null&&match.getUserId()!=""){
                     memberAwards.setUserId(Integer.parseInt(match.getUserId().split(StrUtil.COMMA)[0]));
                 }
                 memberAwards.setType(match.getType());
             }
-            System.out.println(memberAwards);
             this.matchMemberAwardsService.updateMemberAwards(memberAwards);
-        }
 
 
 

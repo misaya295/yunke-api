@@ -4,23 +4,23 @@
 <mapper namespace="com.yunke.core.module.studio.mapper.CopyrightMapper">
 
     <sql id="baseSql">
-        SELECT t.copyright_id,
+        SELECT t.copyright_id AS copyrightId,
                 t.title,
                 t.introduction,
-                t.start_time,
-                t.end_time,
+                t.start_time AS startTime,
+                t.end_time AS endTime,
                 t.certificate,
                 t.cost,
-                t.application_form,
-                t.origin_file,
+                t.application_form AS applicationForm,
+                t.origin_file AS originFile,
                 t.agreement,
                 t.cost,
                 t.invoice,
-                t.item_id,
+                t.item_id AS itemId,
                 t.state,
                 t.reimbursement,
                 GROUP_CONCAT(m.user_id) userId ,
-                GROUP_CONCAT(m.state) user_state,
+                GROUP_CONCAT(m.state) userState,
                 i.title AS itemTitle
          FROM t_copyright t LEFT JOIN t_members m ON (t.copyright_id=m.task_id)
                             LEFT JOIN t_items i ON  (i.items_id=t.item_id)
