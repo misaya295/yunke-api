@@ -81,7 +81,7 @@ public class ItemsServiceImpl extends ServiceImpl<ItemsMapper, Items> implements
     @Transactional(rollbackFor = Exception.class)
     public void updateTask(Items items) {
         //进行中的任务
-        if (items.getState() == 1||(items.getReimbursement()!=null&&items.getReimbursement()==1)) {
+//        if (items.getState() == 1||(items.getReimbursement()!=null&&items.getReimbursement()==1)) {
 
             this.updateById(items); //修改任务
             if(items.getUserId()!=null&&items.getUserId()!="") {
@@ -97,7 +97,7 @@ public class ItemsServiceImpl extends ServiceImpl<ItemsMapper, Items> implements
                 });
                 this.membersService.saveBatch(members);
             }
-        }
+//        }
 
     }
 

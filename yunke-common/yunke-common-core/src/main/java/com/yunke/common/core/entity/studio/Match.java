@@ -83,4 +83,5 @@ public class Match implements Serializable {
   @TableField(exist = false)
   private String  m_state;
 
+
 }

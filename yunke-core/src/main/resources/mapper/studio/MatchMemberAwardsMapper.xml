@@ -32,10 +32,11 @@
     <update id="updateMemberAwards" parameterType="MatchMemberAwards">
         update t_match_member_awards
         <set>
-            <if test="memberAwards.userId != null and memberAwards.userId !='' and memberAwards.type == 0">
+            task_id = #{memberAwards.taskId},
+            <if test="memberAwards.userId != null and memberAwards.userId !=''  and memberAwards.type == 0">
                 user_id = #{memberAwards.userId} ,
             </if>
-            <if test="memberAwards.type == 1 or memberAwards.type == '1'">
+            <if test="memberAwards.type == 1 ">
                 user_id = null ,
             </if>
             <if test="memberAwards.rankCode != null and memberAwards.rankCode !=''">

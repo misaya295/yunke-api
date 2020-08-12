@@ -4,11 +4,11 @@
 <mapper namespace="com.yunke.core.module.studio.mapper.MatchMapper">
 
     <sql id="baseSql">
-        SELECT t.match_id,
+        SELECT t.match_id AS matchId,
                 t.title,
                 t.level,
                 t.type,
-                t.application_form,
+                t.application_form AS applicationForm,
                 t.time,
                 t.cost,
                 t.state,
@@ -18,7 +18,7 @@
                 a.rank_code AS rankCode,
                 a.certificate AS awardsCertificate,
                 GROUP_CONCAT(m.user_id) userId ,
-                GROUP_CONCAT(m.state) user_state
+                GROUP_CONCAT(m.state) userState
          FROM t_match t LEFT JOIN t_members m ON (t.match_id=m.task_id)
                         LEFT JOIN t_match_member_awards a ON t.match_id = a.task_id
          where 1=1
@@ -26,9 +26,9 @@
 
     <select id="pageTask" resultType="Match" parameterType="Match">
         select t.match_id ,t.title,t.level,t.type,t.application_form,t.time,t.cost,t.invoice,t.certificate,t.state,t.reimbursement,a.rank_code
-         from t_match t LEFT JOIN t_members m ON t.match_id = m.task_id
-                                              LEFT JOIN t_user u ON u.user_id = m.user_id
-                                              LEFT JOIN t_match_member_awards a ON t.match_id = a.task_id
+        from t_match t LEFT JOIN t_members m ON t.match_id = m.task_id
+        LEFT JOIN t_user u ON u.user_id = m.user_id
+        LEFT JOIN t_match_member_awards a ON t.match_id = a.task_id
         where 1=1
         <if test="match.title != null and match.title != ''">
             AND  title like CONCAT('%',#{match.title},'%')

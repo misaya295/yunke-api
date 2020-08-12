@@ -19,4 +19,5 @@ public interface MatchMapper extends BaseMapper<Match> {
     <T> IPage<Match> pageTask(Page<T> page, @Param("match") Match match);
 
     Map<String,Object> getTask(@Param("matchId") String matchId);
+
 }

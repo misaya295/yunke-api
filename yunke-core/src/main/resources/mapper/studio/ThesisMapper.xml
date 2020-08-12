@@ -4,10 +4,10 @@
 <mapper namespace="com.yunke.core.module.studio.mapper.ThesisMapper">
 
     <sql id="baseSql">
-        SELECT t.thesis_id,
+        SELECT t.thesis_id AS thesisId,
                 t.title,
                 t.introduction,
-                t.paper_type,
+                t.paper_type AS paperType,
                 t.time,
                 t.url,
                 t.cost,
@@ -15,15 +15,14 @@
                 t.invoice,
                 t.reimbursement,
                 GROUP_CONCAT(m.user_id) userId ,
-                GROUP_CONCAT(m.state) user_state
+                GROUP_CONCAT(m.state) userState
          FROM t_thesis t LEFT JOIN t_members m ON (t.thesis_id=m.task_id)
          where 1=1
   </sql>
 
     <select id="pageTask" resultType="Thesis" parameterType="Thesis">
-        select t.thesis_id ,t.title, t.introduction,t.paper_type,t.time,t.url,t.cost,t.state,t.invoice,t.reimbursement
+        select DISTINCT t.thesis_id ,t.title, t.introduction,t.paper_type,t.time,t.url,t.cost,t.state,t.invoice,t.reimbursement
         from t_thesis t LEFT JOIN t_members m ON t.thesis_id = m.task_id
-                                                LEFT JOIN t_user u ON u.user_id = m.user_id
         where 1=1
         <if test="thesis.title != null and thesis.title != ''">
             AND  title like CONCAT('%',#{thesis.title},'%')

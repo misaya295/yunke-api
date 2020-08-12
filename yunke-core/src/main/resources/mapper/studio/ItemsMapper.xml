@@ -4,11 +4,11 @@
 <mapper namespace="com.yunke.core.module.studio.mapper.ItemsMapper">
 
     <sql id="baseSql">
-        SELECT t.items_id,
+        SELECT t.items_id AS itemsId,
                 t.title,
                 t.introduction,
-                t.start_time,
-                t.end_time,
+                t.start_time AS startTime,
+                t.end_time AS endTime,
                 t.url,
                 t.cost,
                 t.state,
@@ -23,9 +23,8 @@
   </sql>
 
     <select id="pageTask" resultType="Items" parameterType="Items">
-        select t.items_id ,t.title,t.introduction,t.start_time,t.end_time,t.cost,t.invoice,t.specification,t.url,t.state,t.reimbursement
+        select DISTINCT t.items_id ,t.title,t.introduction,t.start_time,t.end_time,t.cost,t.invoice,t.specification,t.url,t.state,t.reimbursement
          from t_items t LEFT JOIN t_members m ON t.items_id = m.task_id
-                                              LEFT JOIN t_user u ON u.user_id = m.user_id
         where 1=1
         <if test="items.title != null and items.title != ''">
             AND  title like CONCAT('%',#{items.title},'%')
