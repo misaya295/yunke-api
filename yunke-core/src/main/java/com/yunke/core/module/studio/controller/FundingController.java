@@ -105,21 +105,20 @@ public class FundingController {
     @ControllerEndpoint(operation = "查询经费申请数据和选择的申请人和审核人成功", exceptionMessage = "查询经费申请数据和选择的申请人和审核人失败")
     public R<List<Object>> selectFundingById(@PathVariable("fundingId") int fundingId) {
         List<Object> message = new ArrayList<>();
-        //该经费id的数据
-        Funding funding =fundingService.selectFundingById(fundingId);
-        if(funding!=null) {
-            message.add(funding);
-            //可选择的申请人(所有人都可以申请)（只有id和真实名称）
-            int[] verifierRoleId = {1, 2, 3, 4};
-            message.add(fundingService.selectUserNameByRoleId(verifierRoleId));
-            //可选择的审核人(只有管理员可以审核)（只有id和真实名称）
-            int[] certifierRoleId = {1};
-            message.add(fundingService.selectUserNameByRoleId(certifierRoleId));
-            return R.ok(message);
-        }else{
-            throw new ApiException("查询不到这个经费");
+        if(fundingId==-1) {
+            //该经费id的数据
+            Funding funding = fundingService.selectFundingById(fundingId);
+            if (funding != null) {
+                message.add(funding);
+            }
         }
-
+        //可选择的申请人(所有人都可以申请)（只有id和真实名称）
+        int[] verifierRoleId = {1, 2, 3, 4};
+        message.add(fundingService.selectUserNameByRoleId(verifierRoleId));
+        //可选择的审核人(只有管理员可以审核)（只有id和真实名称）
+        int[] certifierRoleId = {1};
+        message.add(fundingService.selectUserNameByRoleId(certifierRoleId));
+        return R.ok(message);
     }
 
     /*
