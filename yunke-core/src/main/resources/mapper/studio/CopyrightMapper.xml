@@ -16,7 +16,7 @@
                 t.agreement,
                 t.cost,
                 t.invoice,
-                t.item_id,
+                t.item_id AS itemId,
                 t.state,
                 t.reimbursement,
                 GROUP_CONCAT(m.user_id) userId ,
