@@ -58,7 +58,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, SystemUser> impleme
   @Override
   public IPage<SystemUser> pageSystemUser(QueryParam param, SystemUser user) {
     Page<SystemUser> page = new Page<>(param.getPageNum(), param.getPageSize());
-    SortUtil.handlePageSort(param, page, "userId", SystemConstant.ORDER_ASC, true);
+    SortUtil.handlePageSort(param, page, "username", SystemConstant.ORDER_ASC, true);
     return baseMapper.pageSystemUserDetail(page, user);
   }
 

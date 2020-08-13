@@ -47,7 +47,7 @@ public class GraduatedCorporationController {
      */
     @GetMapping
     public R<Map<String, Object>> GraduatedCorporationListBypage(QueryParam param, GraduatedCorporation graduatedCorporation) {
-        IPage<GraduatedCorporation> result = iGraduatedCorporation.pageGraduatedCorporation(param,graduatedCorporation);
+        IPage<GraduatedCorporation> result = this.iGraduatedCorporation.pageGraduatedCorporation(param,graduatedCorporation);
         return R.ok(PageUtil.toPage(result));
     }
 
@@ -59,7 +59,7 @@ public class GraduatedCorporationController {
     @GetMapping("/{userId}")
     @ControllerEndpoint(operation = "查询该成员的毕业去向成功", exceptionMessage = "查询该成员的毕业去向失败")
     public R<GraduatedCorporation> selectGraduatedCorporationByUserId(@PathVariable("userId") int userId) {
-        return R.ok(iGraduatedCorporation.selectGraduatedCorporationById(userId));
+        return R.ok(this.iGraduatedCorporation.selectGraduatedCorporationById(userId));
     }
 
     /*
@@ -71,7 +71,7 @@ public class GraduatedCorporationController {
     @ControllerEndpoint(operation = "修改成员的毕业去向", exceptionMessage = "修改成员的毕业去向失败")
     public void updateFunding(@Valid GraduatedCorporation graduatedCorporation) {
         if(graduatedCorporation.getUserId()!=null&&graduatedCorporation.getCorporationName()!=null&&graduatedCorporation.getCorporationName()!="") {
-            iGraduatedCorporation.updateGraduatedCorporationMessage(graduatedCorporation);
+            this.iGraduatedCorporation.updateGraduatedCorporationMessage(graduatedCorporation);
         }else{
             throw new ApiException("用户id与公司名称不能为空，修改毕业去向失败");
         }
@@ -86,7 +86,7 @@ public class GraduatedCorporationController {
     @ControllerEndpoint(operation = "添加毕业去向", exceptionMessage = "添加毕业去向失败")
     public void addGraduatedCorporation(@Valid GraduatedCorporation graduatedCorporation) {
         if(graduatedCorporation.getUserId()!=null&&graduatedCorporation.getCorporationName()!=null&&graduatedCorporation.getCorporationName()!="") {
-            iGraduatedCorporation.addGraduatedCorporation(graduatedCorporation);
+            this.iGraduatedCorporation.addGraduatedCorporation(graduatedCorporation);
         }else{
             throw new ApiException("用户id与公司名称不能为空，添加毕业去向失败");
         }
@@ -102,7 +102,7 @@ public class GraduatedCorporationController {
     public void deleteGraduatedCorporations(@PathVariable("userIds") String userIds) {
         int[] split_userIds = StrUtil.splitToInt(userIds, StrUtil.COMMA);
         if(split_userIds.length>0){
-            iGraduatedCorporation.deleteGraduatedCorporationByUserIds(split_userIds);
+            this.iGraduatedCorporation.deleteGraduatedCorporationByUserIds(split_userIds);
         }
     }
 }
