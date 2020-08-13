@@ -46,7 +46,7 @@ public interface FundingMapper extends BaseMapper<Funding> {
      * 通过id删除指定经费数据
      * @param fundingIds 资金id
      */
-    void deleteByFundingid(int[] fundingIds);
+    void deleteFundingByFundingids(int[] fundingIds);
 
     /*
      * 修改指定经费数据，但是无法修改申请状态

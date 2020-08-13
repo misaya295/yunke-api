@@ -42,7 +42,10 @@ public class SchoolAssetsRepair implements Serializable {
    * 维修证明人【userIndoUuid】
    */
   private Integer repairProverUserInfoUuid;
-
+  /**
+   * 维修状态: 1 申请维修 2 维修中 3 维修完成
+   */
+  private Integer state;
 
   /**
    * 资产名称

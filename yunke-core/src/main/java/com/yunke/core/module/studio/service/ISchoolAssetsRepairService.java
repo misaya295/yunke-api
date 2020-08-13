@@ -47,4 +47,10 @@ public interface ISchoolAssetsRepairService extends IService<SchoolAssetsRepair>
      * @param schoolAssetsRepairId 维修申请id
      */
     SchoolAssetsRepair selectSchoolAssetsRepairIdById(int schoolAssetsRepairId);
+
+    /**
+     * 根据提供的id修改学校资产维修状态
+     * @param schoolAssetsRepair 维修申请对象
+     */
+    void updateSchoolAssetsRepairsState(SchoolAssetsRepair schoolAssetsRepair);
 }

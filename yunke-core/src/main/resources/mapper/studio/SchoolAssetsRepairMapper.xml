@@ -11,6 +11,7 @@
             sar.repair_price,
             sar.repair_invoice,
             sar.repair_prover_user_info_uuid,
+            sar.stata,
             u.full_name  AS  repairProverUserInfoName
     FROM t_school_assets_repair sar
         LEFT JOIN t_user u ON (u.user_id=sar.repair_prover_user_info_uuid)
@@ -45,65 +46,49 @@
 
     <select id="selectSchoolAssetsRepairIdById" parameterType="int" resultType="SchoolAssetsRepair">
         <include refid="baseSql"/>
-        <if test="schoolAssetsRepairId != null and schoolAssetsRepairId != ''">
             AND sar.id=#{schoolAssetsRepairId}
-        </if>
     </select>
 
     <delete id="deleteSchoolAssetsRepairById">
         delete from t_school_assets_repair where
-        <if test="array != null and array.length > 0">
             <foreach collection="array" open=" id in(" close=")" item="id" separator=",">
                 #{id}
             </foreach>
-        </if>
+
     </delete>
 
-    <insert id="addSchoolAssetsRepair" parameterType="SchoolAssetsRepair">
-        insert into t_school_assets_repair(assets_name,repair_prover_user_info_uuid
-        <if test="schoolAssetsRepair.repairDate != null and schoolAssetsRepair.repairDate != ''">
-            ,repair_date
-        </if>
-        <if test="schoolAssetsRepair.repairPrice != null and schoolAssetsRepair.repairPrice != ''">
-            ,repair_price
-        </if>
-        <if test="schoolAssetsRepair.repairInvoice != null and schoolAssetsRepair.repairInvoice != ''">
-            ,repair_invoice
-        </if>
-        )values (#{schoolAssetsRepair.assetsName},#{schoolAssetsRepair.repairProverUserInfoUuid}
-
-        <if test="schoolAssetsRepair.repairDate != null and schoolAssetsRepair.repairDate != ''">
-            , #{schoolAssetsRepair.repairDate}
-        </if>
-        <if test="schoolAssetsRepair.repairPrice != null and schoolAssetsRepair.repairPrice != ''">
-            , #{schoolAssetsRepair.repairPrice}
-        </if>
-        <if test="schoolAssetsRepair.repairInvoice != null and schoolAssetsRepair.repairInvoice != ''">
-            , #{schoolAssetsRepair.repairInvoice}
-        </if>
+    <insert id="addSchoolAssetsRepair">
+        insert into t_school_assets_repair(
+            assets_name,
+            repair_prover_user_info_uuid,
+            state,
+            repair_date,
+            repair_price,
+            repair_invoice
+        )values (
+            #{schoolAssetsRepair.assetsName},
+            #{schoolAssetsRepair.repairProverUserInfoUuid},
+            1,
+            #{schoolAssetsRepair.repairDate},
+            #{schoolAssetsRepair.repairPrice},
+            #{schoolAssetsRepair.repairInvoice}
         )
     </insert>
 
-    <update id="updateSchoolAssetsRepairsMessage" parameterType="SchoolAssetsRepair">
-        update t_school_assets_repair
-        <trim prefix="set" suffixOverrides=",">
-            <if test="schoolAssetsRepair.repairDate != null and schoolAssetsRepair.repairDate != ''">
-                repair_date = #{schoolAssetsRepair.repairDate},
-            </if>
-            <if test="schoolAssetsRepair.assetsName != null and schoolAssetsRepair.assetsName != ''">
-                assets_name = #{schoolAssetsRepair.assetsName},
-            </if>
-            <if test="schoolAssetsRepair.repairPrice != null and schoolAssetsRepair.repairPrice != ''">
-                repair_price = #{schoolAssetsRepair.repairPrice},
-            </if>
-            <if test="schoolAssetsRepair.repairInvoice != null and schoolAssetsRepair.repairInvoice != ''">
-                repair_invoice = #{schoolAssetsRepair.repairInvoice},
-            </if>
+    <update id="updateSchoolAssetsRepairsMessage">
+        update t_school_assets_repair set
+            repair_date = #{schoolAssetsRepair.repairDate},
+            repair_price = #{schoolAssetsRepair.repairPrice},
+            repair_invoice = #{schoolAssetsRepair.repairInvoice}
             <if test="schoolAssetsRepair.repairProverUserInfoUuid != null and schoolAssetsRepair.repairProverUserInfoUuid != ''">
-                repair_prover_user_info_uuid =  #{schoolAssetsRepair.repairProverUserInfoUuid},
+                ,repair_prover_user_info_uuid =  #{schoolAssetsRepair.repairProverUserInfoUuid}
             </if>
-        </trim>
         where id=#{schoolAssetsRepair.id}
     </update>
 
+    <update id="updateSchoolAssetsRepairsState">
+        update t_school_assets_repair set
+            state = #{schoolAssetsRepair.state}
+        where id=#{schoolAssetsRepair.id}
+    </update>
 </mapper>

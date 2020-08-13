@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunke.core.module.studio.mapper.GraduatedCorporationMapper">
+  <sql id="baseSql">
+     select tgc.user_id,
+         tgc.corporation_name,
+         tgc.position,
+         u.full_name as fullName
+     from t_graduated_corporation tgc
+        LEFT JOIN t_user u ON (tgc.user_id=u.user_id)
+     where 1=1
+  </sql>
+
+    <select id="pageGraduatedCorporationDetail" resultType="GraduatedCorporation">
+        <include refid="baseSql"/>
+        <if test="graduatedCorporation.userId != null and graduatedCorporation.userId != ''">
+            AND tgc.user_id like CONCAT('%',#{graduatedCorporation.userId},'%')
+        </if>
+        <if test="graduatedCorporation.fullName != null and graduatedCorporation.fullName != ''">
+            AND u.full_name like CONCAT('%',#{graduatedCorporation.fullName},'%')
+        </if>
+        <if test="graduatedCorporation.corporationName != null and graduatedCorporation.corporationName != ''">
+            AND tgc.corporation_name like CONCAT('%',#{graduatedCorporation.corporationName},'%')
+        </if>
+        <if test="graduatedCorporation.position != null and graduatedCorporation.position != ''">
+            AND tgc.position = #{graduatedCorporation.position}
+        </if>
+    </select>
+
+    <select id="selectGraduatedCorporationByUserId" resultType="GraduatedCorporation">
+        <include refid="baseSql"/>
+           and tgc.user_id=#{userId}
+    </select>
+
+
+
+    <update id="updateGraduatedCorporationMessage">
+        update t_graduated_corporation set
+            <if test="graduatedCorporation.corporationName != null and graduatedCorporation.corporationName != ''">
+                corporation_name=#{graduatedCorporation.corporationName},
+            </if>
+            position=#{graduatedCorporation.position}
+        where user_id=#{graduatedCorporation.userId}
+    </update>
+
+
+    <insert id="addGraduatedCorporation">
+        insert into t_graduated_corporation(
+            user_id,
+            corporation_name,
+            position
+        )values (
+            #{graduatedCorporation.userId},
+            #{graduatedCorporation.corporationName},
+            #{graduatedCorporation.position}
+        )
+    </insert>
+
+    <delete id="deleteGraduatedCorporationByUserIds">
+        delete from t_graduated_corporation where
+        <foreach collection="array" open=" user_id in(" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

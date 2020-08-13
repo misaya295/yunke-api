@@ -95,27 +95,15 @@
 
 
     <update id="updateSchoolAssetsMessage" parameterType="SchoolAssets">
-        update t_school_assets
-        <trim prefix="set" suffixOverrides=",">
-            <if test="schoolAssets.inclusionDate != null and schoolAssets.inclusionDate != ''">
+        update t_school_assets set
                 inclusion_date =#{schoolAssets.inclusionDate},
-            </if>
-            <if test="schoolAssets.assetsName != null and schoolAssets.assetsName != ''">
-                assets_name =#{schoolAssets.assetsName},
-            </if>
-            <if test="schoolAssets.assetsNum != null and schoolAssets.assetsNum != ''">
+                <if test="schoolAssets.assetsName != null and schoolAssets.assetsName != ''">
+                    assets_name =#{schoolAssets.assetsName},
+                </if>
                 assets_num =#{schoolAssets.assetsNum},
-            </if>
-            <if test="schoolAssets.price != null and schoolAssets.price != ''">
                 price =#{schoolAssets.price},
-            </if>
-            <if test="schoolAssets.scrapDate != null and schoolAssets.scrapDate != ''">
                 scrap_date =#{schoolAssets.scrapDate},
-            </if>
-            <if test="schoolAssets.scrapDetail != null and schoolAssets.scrapDetail != ''">
-                scrap_detail =#{schoolAssets.scrapDetail},
-            </if>
-        </trim>
+                scrap_detail =#{schoolAssets.scrapDetail}
         where id=#{schoolAssets.id}
     </update>
 

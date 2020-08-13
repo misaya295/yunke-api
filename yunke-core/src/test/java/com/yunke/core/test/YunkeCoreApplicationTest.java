@@ -25,10 +25,6 @@ public class YunkeCoreApplicationTest {
    */
   @Test
   public void testCase1() {
-    IFundingService fundingService = new FundingServiceImpl();
-    //TestCase.assertEquals(1, 1);
-    int[] arr = {1,2,3};
-    fundingService.deleteFundings(arr);
   }
 
 }
