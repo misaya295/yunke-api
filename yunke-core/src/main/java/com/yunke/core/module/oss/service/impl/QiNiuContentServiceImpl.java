@@ -89,26 +89,20 @@ public class QiNiuContentServiceImpl extends
     Auth auth = Auth.create(qiNiuConfig.getAccessKey(), qiNiuConfig.getSecretKey());
     String upToken = auth.uploadToken(qiNiuConfig.getBucket());
     try {
-      String key = file.getOriginalFilename();
-      if (getByName(key) != null) {
-        key = QiNiuUtil.getKey(key);
-      }
+      // fix：文件名唯一
+      String key = QiNiuUtil.getKey(file.getOriginalFilename());
       Response response = uploadManager.put(file.getBytes(), key, upToken);
-      DefaultPutRet putRet = JSON.parseObject(response.bodyString(), DefaultPutRet.class);
-      QiNiuContent content = getByName(FileUtil.getFileNameNoEx(putRet.key));
-      if (content == null) {
-        QiNiuContent qiniuContent = new QiNiuContent();
-        qiniuContent.setSuffix(FileUtil.getExtensionName(putRet.key));
-        qiniuContent.setBucket(qiNiuConfig.getBucket());
-        qiniuContent.setType(qiNiuConfig.getType());
-        qiniuContent.setName(FileUtil.getFileNameNoEx(putRet.key));
-        qiniuContent.setUrl(qiNiuConfig.getHost() + "/" + putRet.key);
-        qiniuContent.setSize(FileUtil.getSize(Integer.parseInt(file.getSize() + "")));
-        qiniuContent.setUpdateTime(new Date());
-        baseMapper.insert(qiniuContent);
-        return qiniuContent;
-      }
-      return content;
+      DefaultPutRet res = JSON.parseObject(response.bodyString(), DefaultPutRet.class);
+      QiNiuContent qiniuContent = new QiNiuContent();
+      qiniuContent.setSuffix(FileUtil.getExtensionName(res.key));
+      qiniuContent.setBucket(qiNiuConfig.getBucket());
+      qiniuContent.setType(qiNiuConfig.getType());
+      qiniuContent.setName(FileUtil.getFileNameNoEx(res.key));
+      qiniuContent.setUrl(qiNiuConfig.getHost() + "/" + res.key);
+      qiniuContent.setSize(FileUtil.getSize(Integer.parseInt(file.getSize() + "")));
+      qiniuContent.setUpdateTime(new Date());
+      baseMapper.insert(qiniuContent);
+      return qiniuContent;
     } catch (Exception e) {
       throw new ApiException(e.getMessage());
     }
