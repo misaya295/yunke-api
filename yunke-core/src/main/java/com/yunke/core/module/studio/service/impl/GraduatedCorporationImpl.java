@@ -7,6 +7,7 @@ import com.yunke.common.core.constant.SystemConstant;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.studio.Funding;
 import com.yunke.common.core.entity.studio.GraduatedCorporation;
+import com.yunke.common.core.exception.ApiException;
 import com.yunke.common.core.util.SortUtil;
 import com.yunke.core.module.studio.mapper.GraduatedCorporationMapper;
 import com.yunke.core.module.studio.service.IGraduatedCorporation;
@@ -46,7 +47,11 @@ public class GraduatedCorporationImpl extends ServiceImpl<GraduatedCorporationMa
 
     @Override
     public void addGraduatedCorporation(GraduatedCorporation graduatedCorporation) {
-        baseMapper.addGraduatedCorporation(graduatedCorporation);
+        if(baseMapper.selectGraduatedCorporationCountByUserId(graduatedCorporation.getUserId())==(long)0) {
+            baseMapper.addGraduatedCorporation(graduatedCorporation);
+        }else{
+            throw new ApiException("该用户已添加过毕业去向信息，添加失败");
+        }
     }
 
     @Override

@@ -24,11 +24,18 @@ public interface GraduatedCorporationMapper extends BaseMapper<GraduatedCorporat
     <T> IPage<GraduatedCorporation> pageGraduatedCorporationDetail(Page<T> page, @Param("graduatedCorporation") GraduatedCorporation graduatedCorporation);
 
     /**
+     * 通过用户userId返回该用户的去向公司数目
+     * @param userId 经费id
+     * @return int
+     */
+    int selectGraduatedCorporationCountByUserId(@Param("userId")long userId);
+
+    /**
      * 通过用户userId返回该用户的毕业去向数据
      * @param userId 经费id
-     * @return IPage<GraduatedCorporation>
+     * @return GraduatedCorporation
      */
-    GraduatedCorporation selectGraduatedCorporationByUserId(@Param("userId")int userId);
+    GraduatedCorporation selectGraduatedCorporationByUserId(@Param("userId")long userId);
 
     /**
      * 修改毕业去向数据
