@@ -59,4 +59,11 @@ public interface ICopyrightService extends IService<Copyright> {
      * @return 返回所有项目条数
      */
     Integer getAllTaskCount();
+
+    /**
+     * 修改任务状态
+     *
+     * @param copyright
+     */
+    void updateState(Copyright copyright);
 }

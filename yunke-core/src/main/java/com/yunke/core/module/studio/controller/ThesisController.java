@@ -109,4 +109,16 @@ public class ThesisController {
     }
 
 
+        /**
+         * 修改任务状态
+         *
+         * @param thesis
+         */
+        @PutMapping("state")
+        @PreAuthorize("hasAuthority('task:update')")
+        @ControllerEndpoint(operation = "更新任务状态", exceptionMessage = "更新任务状态")
+        public void updateState(@Valid Thesis thesis) {
+            this.thesisService.updateState(thesis);
+        }
+
 }

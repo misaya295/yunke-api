@@ -24,8 +24,16 @@
          where 1=1
   </sql>
 
+    <update id="updateState" parameterType="Match">
+        update t_match set
+        <if test="match.state!=null and match.state!=''">
+            state = #{match.state}
+        </if>
+        where match_id = #{match.matchId}
+    </update>
+
     <select id="pageTask" resultType="Match" parameterType="Match">
-        select t.match_id ,t.title,t.level,t.type,t.application_form,t.time,t.cost,t.invoice,t.certificate,t.state,t.reimbursement,a.rank_code
+        select DISTINCT t.match_id ,t.title,t.level,t.type,t.application_form,t.time,t.cost,t.invoice,t.certificate,t.state,t.reimbursement,a.rank_code
         from t_match t LEFT JOIN t_members m ON t.match_id = m.task_id
         LEFT JOIN t_user u ON u.user_id = m.user_id
         LEFT JOIN t_match_member_awards a ON t.match_id = a.task_id

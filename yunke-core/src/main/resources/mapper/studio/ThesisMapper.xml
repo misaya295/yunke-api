@@ -20,9 +20,18 @@
          where 1=1
   </sql>
 
+    <update id="updateState" parameterType="Thesis">
+        update t_thesis set
+        <if test="thesis.state!=null and thesis.state!=''">
+            state = #{thesis.state}
+        </if>
+        where thesis_id = #{thesis.thesisId}
+    </update>
+
     <select id="pageTask" resultType="Thesis" parameterType="Thesis">
         select DISTINCT t.thesis_id ,t.title, t.introduction,t.paper_type,t.time,t.url,t.cost,t.state,t.invoice,t.reimbursement
         from t_thesis t LEFT JOIN t_members m ON t.thesis_id = m.task_id
+        LEFT JOIN t_user u ON u.user_id = m.user_id
         where 1=1
         <if test="thesis.title != null and thesis.title != ''">
             AND  title like CONCAT('%',#{thesis.title},'%')

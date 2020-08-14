@@ -21,10 +21,18 @@
          FROM t_items t LEFT JOIN t_members m ON (t.items_id=m.task_id)
          where 1=1
   </sql>
+    <update id="updateState" parameterType="Items">
+        update t_items set
+        <if test="items.state!=null and items.state!=''">
+            state = #{items.state}
+        </if>
+        where items_id = #{items.itemsId}
+    </update>
 
     <select id="pageTask" resultType="Items" parameterType="Items">
         select DISTINCT t.items_id ,t.title,t.introduction,t.start_time,t.end_time,t.cost,t.invoice,t.specification,t.url,t.state,t.reimbursement
          from t_items t LEFT JOIN t_members m ON t.items_id = m.task_id
+        LEFT JOIN t_user u ON u.user_id = m.user_id
         where 1=1
         <if test="items.title != null and items.title != ''">
             AND  title like CONCAT('%',#{items.title},'%')

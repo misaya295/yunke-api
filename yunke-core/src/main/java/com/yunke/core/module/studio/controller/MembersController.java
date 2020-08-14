@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.R;
 import com.yunke.common.core.entity.studio.Members;
-import com.yunke.common.core.entity.studio.Thesis;
 import com.yunke.common.core.util.PageUtil;
 import com.yunke.core.annotation.ControllerEndpoint;
 import com.yunke.core.module.studio.service.IMembersService;
@@ -100,4 +99,5 @@ public class MembersController {
         IPage<Map<String,Object>> result = this.membersService.pageMembersList(param, taskId);
         return R.ok(PageUtil.toPage(result));
     }
+
 }
