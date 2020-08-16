@@ -59,6 +59,9 @@
     <if test="user.grade!= null and user.grade !='' and user.profession!= null and user.profession !=''">
       AND u.username like CONCAT(#{user.grade},'04',#{user.profession},'_____')
     </if>
+    <if test="user.deptId!= null and user.deptId !=''">
+      AND u.dept_id = #{user.deptId}
+    </if>
     GROUP BY u.username,u.user_id,u.email,u.mobile,u.status,u.create_time,u.ssex,
     u.dept_id,u.last_login_time,u.update_time,u.description,u.avatar
   </select>
