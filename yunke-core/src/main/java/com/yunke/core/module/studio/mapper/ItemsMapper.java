@@ -22,4 +22,6 @@ public interface ItemsMapper extends BaseMapper<Items> {
     Map<String,Object> getTask(@Param("itemsId") String itemsId);
 
     Copyright getCopyright(@Param("itemId") String id);
+
+    void updateState(@Param("items") Items items);
 }

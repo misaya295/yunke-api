@@ -59,4 +59,8 @@ public class SchoolAssetsRepair implements Serializable {
   @TableField(exist = false)
   private String repairProverUserInfoName;
 
+  /**
+   * 维修信息
+   */
+  private String repairMessage;
 }

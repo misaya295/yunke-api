@@ -22,7 +22,7 @@ public class MatchMemberAwardsServiceImpl extends
 
     @Override
     public void saveMatchMemberAwards(MatchMemberAwards memberAwards) {
-            this.baseMapper.saveMatchMemberAwards(memberAwards);
+        this.baseMapper.saveMatchMemberAwards(memberAwards);
     }
 
     @Override

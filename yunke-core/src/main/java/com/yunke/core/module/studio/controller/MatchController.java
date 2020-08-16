@@ -109,4 +109,16 @@ public class MatchController {
         return R.ok(this.matchService.getAllTaskCount());
     }
 
+
+    /**
+     * 修改任务状态
+     *
+     * @param match
+     */
+    @PutMapping("state")
+    @PreAuthorize("hasAuthority('task:update')")
+    @ControllerEndpoint(operation = "更新任务状态", exceptionMessage = "更新任务状态")
+    public void updateState(@Valid Match match) {
+        this.matchService.updateState(match);
+    }
 }

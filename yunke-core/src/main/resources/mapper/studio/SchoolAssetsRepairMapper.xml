@@ -11,7 +11,8 @@
             sar.repair_price,
             sar.repair_invoice,
             sar.repair_prover_user_info_uuid,
-            sar.stata,
+            sar.state,
+            sar.repair_message,
             u.full_name  AS  repairProverUserInfoName
     FROM t_school_assets_repair sar
         LEFT JOIN t_user u ON (u.user_id=sar.repair_prover_user_info_uuid)
@@ -42,6 +43,9 @@
       <if test="schoolAssetsRepair.repairProverUserInfoName != null and schoolAssetsRepair.repairProverUserInfoName != ''">
           AND u.full_name like CONCAT('%',#{schoolAssetsRepair.repairProverUserInfoName},'%')
       </if>
+      <if test="schoolAssetsRepair.repairMessage != null and schoolAssetsRepair.repairMessage != ''">
+          AND sar.repair_message like CONCAT('%',#{schoolAssetsRepair.repairMessage},'%')
+      </if>
   </select>
 
     <select id="selectSchoolAssetsRepairIdById" parameterType="int" resultType="SchoolAssetsRepair">
@@ -64,14 +68,16 @@
             state,
             repair_date,
             repair_price,
-            repair_invoice
+            repair_invoice,
+            repair_message
         )values (
             #{schoolAssetsRepair.assetsName},
             #{schoolAssetsRepair.repairProverUserInfoUuid},
             1,
             #{schoolAssetsRepair.repairDate},
             #{schoolAssetsRepair.repairPrice},
-            #{schoolAssetsRepair.repairInvoice}
+            #{schoolAssetsRepair.repairInvoice},
+            #{schoolAssetsRepair.repairMessage}
         )
     </insert>
 
@@ -79,7 +85,8 @@
         update t_school_assets_repair set
             repair_date = #{schoolAssetsRepair.repairDate},
             repair_price = #{schoolAssetsRepair.repairPrice},
-            repair_invoice = #{schoolAssetsRepair.repairInvoice}
+            repair_invoice = #{schoolAssetsRepair.repairInvoice},
+            repair_message = #{schoolAssetsRepair.repairMessage}
             <if test="schoolAssetsRepair.repairProverUserInfoUuid != null and schoolAssetsRepair.repairProverUserInfoUuid != ''">
                 ,repair_prover_user_info_uuid =  #{schoolAssetsRepair.repairProverUserInfoUuid}
             </if>
