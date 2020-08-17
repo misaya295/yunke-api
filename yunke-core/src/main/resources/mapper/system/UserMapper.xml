@@ -57,7 +57,20 @@
       AND u.create_time &lt; #{user.createTimeTo}
     </if>
     <if test="user.grade!= null and user.grade !='' and user.profession!= null and user.profession !=''">
-      AND u.username like CONCAT(#{user.grade},'04',#{user.profession},'_____')<!--通过字符串拼接，把专业和班级转化为相对应的学号-->
+        <choose>
+            <when test="user.profession=='___'">
+                AND u.username like CONCAT(#{user.grade},'%')
+            </when>
+            <when test="user.profession=='00'">
+                AND u.username like CONCAT(#{user.grade},#{user.profession},'__')
+            </when>
+            <otherwise>
+                AND u.username like CONCAT(#{user.grade},'04',#{user.profession},'_____')<!--通过字符串拼接，把专业和班级转化为相对应的学号-->
+            </otherwise>
+        </choose>
+    </if>
+    <if test="user.deptId!= null and user.deptId !=''">
+        AND u.dept_id = #{user.deptId}
     </if>
     <if test="user.fullName!= null and user.fullName !=''">
       AND u.full_name like CONCAT('%',#{user.fullName},'%')
