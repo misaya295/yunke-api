@@ -55,6 +55,14 @@
         <if test="thesis.fullName != null and thesis.fullName != ''">
             AND  u.full_name like CONCAT('%',#{thesis.fullName},'%')
         </if>
+        <if test="thesis.chargeFullName != null and thesis.chargeFullName != ''">
+            AND  u.full_name like CONCAT('%',#{thesis.chargeFullName},'%')
+            AND  m.state = 1
+        </if>
+        <if test="thesis.teacherFullName != null and thesis.teacherFullName != ''">
+            AND  u.full_name like CONCAT('%',#{thesis.teacherFullName},'%')
+            AND  m.state = 3
+        </if>
         GROUP BY t.thesis_id
     </select>
 

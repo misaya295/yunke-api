@@ -64,6 +64,16 @@ public class Thesis implements Serializable {
   @TableField(exist = false)
   private String fullName;
   /**
+   * 负责人姓名
+   */
+  @TableField(exist = false)
+  private String chargeFullName;
+  /**
+   * 指导老师姓名
+   */
+  @TableField(exist = false)
+  private String teacherFullName;
+  /**
    * 成员id ","分隔
    */
   @TableField(exist = false)
