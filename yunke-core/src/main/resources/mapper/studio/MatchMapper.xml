@@ -4,37 +4,36 @@
 <mapper namespace="com.yunke.core.module.studio.mapper.MatchMapper">
 
     <sql id="baseSql">
-        SELECT t.match_id AS matchId,
+        SELECT t.match_id ,
                 t.title,
                 t.level,
                 t.type,
-                t.application_form AS applicationForm,
+                t.application_form ,
                 t.time,
                 t.cost,
                 t.state,
                 t.invoice,
                 t.certificate,
                 t.reimbursement,
-                a.rank_code AS rankCode,
-                a.certificate AS awardsCertificate,
+                a.rank_code ,
                 GROUP_CONCAT(m.user_id) userId ,
                 GROUP_CONCAT(m.state) userState
-         FROM t_match t LEFT JOIN t_members m ON (t.match_id=m.task_id)
-                        LEFT JOIN t_match_member_awards a ON t.match_id = a.task_id
-         where 1=1
   </sql>
 
     <update id="updateState" parameterType="Match">
-        update t_match set
+        update t_match
+        <set>
         <if test="match.state!=null and match.state!=''">
             state = #{match.state}
         </if>
+        </set>
         where match_id = #{match.matchId}
     </update>
 
     <select id="pageTask" resultType="Match" parameterType="Match">
-        select DISTINCT t.match_id ,t.title,t.level,t.type,t.application_form,t.time,t.cost,t.invoice,t.certificate,t.state,t.reimbursement,a.rank_code
-        from t_match t LEFT JOIN t_members m ON t.match_id = m.task_id
+        <include refid="baseSql"/>
+        FROM t_match t
+        LEFT JOIN t_members m ON t.match_id = m.task_id
         LEFT JOIN t_user u ON u.user_id = m.user_id
         LEFT JOIN t_match_member_awards a ON t.match_id = a.task_id
         where 1=1
@@ -58,17 +57,41 @@
             </foreach>
         </if>
         <if test="match.fullName != null and match.fullName != ''">
-            AND  u.full_name like CONCAT('%',#{match.fullName},'%')
+            AND  (select  GROUP_CONCAT(u1.full_name)
+                     from t_user u1
+                     LEFT JOIN t_members m1 on u1.user_id = m1.user_id
+                     where m1.task_id = t.match_id) like CONCAT('%',#{match.fullName},'%')
         </if>
+        <if test="match.chargeFullName != null and match.chargeFullName != ''">
+            AND (select  full_name
+                    from t_user u1
+                    LEFT JOIN t_members m1 on u1.user_id = m1.user_id
+                    where m1.task_id = t.match_id
+                    and m1.state = 1)  like CONCAT('%',#{match.chargeFullName},'%')
+        </if>
+        <if test="match.teacherFullName != null and match.teacherFullName != ''">
+            AND  (select  full_name
+                        from t_user u1
+                        LEFT JOIN t_members m1 on u1.user_id = m1.user_id
+                        where m1.task_id = t.match_id
+                        and m1.state = 3)  like CONCAT('%',#{match.teacherFullName},'%')
+        </if>
+        <if test="match.level != null and match.level != ''">
+            AND t.level = #{match.level}
+        </if>
+        GROUP BY t.match_id,a.rank_code
     </select>
 
-    <select id="getTask" resultType="map" parameterType="string">
+    <select id="getTask" resultType="Match" parameterType="string">
         <include refid="baseSql"/>
+        FROM t_match t
+        LEFT JOIN t_members m ON (t.match_id=m.task_id)
+        LEFT JOIN t_match_member_awards a ON t.match_id = a.task_id
+        where 1=1
         <if test="matchId!=null and matchId!=''">
             AND match_id = #{matchId}
         </if>
         GROUP BY t.match_id,a.rank_code,a.certificate
     </select>
-
 
 </mapper>

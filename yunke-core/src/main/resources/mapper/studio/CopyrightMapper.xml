@@ -4,27 +4,23 @@
 <mapper namespace="com.yunke.core.module.studio.mapper.CopyrightMapper">
 
     <sql id="baseSql">
-        SELECT t.copyright_id AS copyrightId,
+        SELECT t.copyright_id,
                 t.title,
                 t.introduction,
-                t.start_time AS startTime,
-                t.end_time AS endTime,
+                t.start_time,
+                t.end_time,
                 t.certificate,
                 t.cost,
-                t.application_form AS applicationForm,
-                t.origin_file AS originFile,
+                t.application_form,
+                t.origin_file,
                 t.agreement,
-                t.cost,
                 t.invoice,
-                t.item_id AS itemId,
+                t.item_id,
                 t.state,
                 t.reimbursement,
                 GROUP_CONCAT(m.user_id) userId ,
                 GROUP_CONCAT(m.state) userState,
                 i.title AS itemTitle
-         FROM t_copyright t LEFT JOIN t_members m ON (t.copyright_id=m.task_id)
-                            LEFT JOIN t_items i ON  (i.items_id=t.item_id)
-         where 1=1
   </sql>
     <update id="updateState" parameterType="Copyright">
         update t_copyright set
@@ -35,11 +31,11 @@
     </update>
 
     <select id="pageTask" resultType="Copyright" parameterType="Copyright">
-        select DISTINCT t.copyright_id ,t.title,t.introduction,t.start_time,t.end_time,t.certificate,t.application_form,t.origin_file,
-        t.agreement,t.cost,t.invoice,t.item_id,t.state,t.reimbursement,i.title AS item_title
-         from t_copyright t  LEFT JOIN t_items i on t.item_id = i.items_id
-                            LEFT JOIN t_members m ON t.copyright_id = m.task_id
-                             LEFT JOIN t_user u ON u.user_id = m.user_id
+        <include refid="baseSql"/>
+         FROM t_copyright t
+         LEFT JOIN t_items i on t.item_id = i.items_id
+         LEFT JOIN t_members m ON t.copyright_id = m.task_id
+         LEFT JOIN t_user u ON u.user_id = m.user_id
          where 1=1
         <if test="copyright.title != null and copyright.title != ''">
             AND  title like CONCAT('%',#{copyright.title},'%')
@@ -71,14 +67,34 @@
             </foreach>
         </if>
         <if test="copyright.fullName != null and copyright.fullName != ''">
-            AND  u.full_name like CONCAT('%',#{copyright.fullName},'%')
+            AND  (select  GROUP_CONCAT(u1.full_name)
+            from t_user u1
+            LEFT JOIN t_members m1 on u1.user_id = m1.user_id
+            where m1.task_id = t.copyright_id) like CONCAT('%',#{copyright.fullName},'%')
+        </if>
+        <if test="copyright.chargeFullName != null and copyright.chargeFullName != ''">
+            AND (select  full_name
+            from t_user u1
+            LEFT JOIN t_members m1 on u1.user_id = m1.user_id
+            where m1.task_id = t.copyright_id
+            and m1.state = 1)  like CONCAT('%',#{copyright.chargeFullName},'%')
+        </if>
+        <if test="copyright.teacherFullName != null and copyright.teacherFullName != ''">
+            AND  (select  full_name
+            from t_user u1
+            LEFT JOIN t_members m1 on u1.user_id = m1.user_id
+            where m1.task_id = t.copyright_id
+            and m1.state = 3)  like CONCAT('%',#{copyright.teacherFullName},'%')
         </if>
         GROUP BY t.copyright_id
 
     </select>
 
-    <select id="getTask" resultType="map" parameterType="string">
+    <select id="getTask" resultType="Copyright" parameterType="string">
         <include refid="baseSql"/>
+        FROM t_copyright t LEFT JOIN t_members m ON (t.copyright_id=m.task_id)
+        LEFT JOIN t_items i ON  (i.items_id=t.item_id)
+        where 1=1
         <if test="copyrightId!=null and copyrightId!=''">
             AND copyright_id = #{copyrightId}
         </if>

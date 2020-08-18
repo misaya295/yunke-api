@@ -1,6 +1,7 @@
 package com.yunke.common.core.entity.studio;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -31,6 +32,12 @@ public class Members implements Serializable {
      * 1为负责人，2为成员，3为指导老师
      */
     private Integer state;
+
+    /**
+     * 成员姓名
+     */
+    @TableField(exist = false)
+    private String fullName;
 
     public Members(){}
 

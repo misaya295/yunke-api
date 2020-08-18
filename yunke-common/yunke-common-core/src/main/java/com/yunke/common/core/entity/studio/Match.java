@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -68,6 +70,16 @@ public class Match implements Serializable {
   @TableField(exist = false)
   private String fullName;
   /**
+   * 负责人姓名
+   */
+  @TableField(exist = false)
+  private String chargeFullName;
+  /**
+   * 指导老师姓名
+   */
+  @TableField(exist = false)
+  private String teacherFullName;
+  /**
    * 奖项(1：一等，2：二等，3：三等，4：特等，5：优胜，6、无)
    */
   @TableField(exist = false)
@@ -82,6 +94,17 @@ public class Match implements Serializable {
    */
   @TableField(exist = false)
   private String  m_state;
+  /**
+   * 成员角色 ","分隔   1为负责人，2为成员，3为指导老师
+   */
+  @TableField(exist = false)
+  private String  userState;
+  /**
+   * 任务成员
+   */
+  @TableField(exist = false)
+  private List<Members> members;
+
 
 
 }

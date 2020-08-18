@@ -45,4 +45,13 @@ public interface IMembersService extends IService<Members> {
      * @return 成员列表
      */
     IPage<Map<String, Object>> pageMembersList(QueryParam param, String taskId);
+
+
+    /**
+     * 通过任务id查询成员列表
+     *
+     * @param taskId 任务id
+     * @return
+     */
+    List<Members> getMembers(String taskId);
 }

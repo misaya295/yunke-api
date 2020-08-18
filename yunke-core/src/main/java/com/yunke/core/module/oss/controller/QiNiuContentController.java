@@ -83,6 +83,12 @@ public class QiNiuContentController {
     qiNiuContentService.delete(idArray, qiNiuConfigService.getConfig());
   }
 
+  @DeleteMapping()
+  public void deleteByFileName(@NotBlank(message = "{required}") String fileName) {
+    qiNiuContentService.delete(fileName, qiNiuConfigService.getConfig());
+  }
+
+
   @GetMapping("top10")
   public R<List<Map<String, Object>>> countTopTenTypeFiles() {
     return R.ok(qiNiuContentService.getTopTenFileTypeData());

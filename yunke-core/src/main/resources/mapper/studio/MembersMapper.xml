@@ -26,4 +26,18 @@
     </select>
 
 
+    <select id="getMembers" resultType="Members" parameterType="string">
+        select m.user_id,
+        m.task_id,
+        m.state,
+        u.full_Name
+        from t_members m
+        LEFT JOIN t_user u ON u.user_id = m.user_id
+        where 1=1
+        <if test="taskId!=null and taskId!=''">
+            AND m.task_id = #{taskId}
+        </if>
+    </select>
+
+
 </mapper>

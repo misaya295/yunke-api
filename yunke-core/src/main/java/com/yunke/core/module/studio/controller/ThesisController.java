@@ -93,8 +93,8 @@ public class ThesisController {
          * @return thesis 论文详细信息
          */
         @GetMapping("{thesisId}")
-        public R<Map<String,Object>> getTask(@NotBlank(message = "{required}") @PathVariable String thesisId) {
-            Map<String,Object> thesis = this.thesisService.getTask(thesisId);
+        public R<Thesis> getTask(@NotBlank(message = "{required}") @PathVariable String thesisId) {
+            Thesis thesis = this.thesisService.getTask(thesisId);
             return R.ok(thesis);
         }
 

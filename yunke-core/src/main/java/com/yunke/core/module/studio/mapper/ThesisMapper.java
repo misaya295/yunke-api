@@ -18,7 +18,7 @@ public interface ThesisMapper extends BaseMapper<Thesis> {
 
    <T> IPage<Thesis> pageTask(Page<T> page,@Param("thesis") Thesis thesis);
 
-   Map<String,Object> getTask(@Param("thesisId") String thesisId);
+   Thesis getTask(@Param("thesisId") String thesisId);
 
     void updateState(@Param("thesis")Thesis thesis);
 }

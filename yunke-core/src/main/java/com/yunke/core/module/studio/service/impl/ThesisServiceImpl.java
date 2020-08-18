@@ -106,12 +106,26 @@ public class ThesisServiceImpl extends ServiceImpl<ThesisMapper, Thesis> impleme
     public IPage<Thesis> pageTaskList(QueryParam param, Thesis thesis) {
         Page<Thesis> page = new Page<>(param.getPageNum(), param.getPageSize());
         SortUtil.handlePageSort(param, page, "title", SystemConstant.ORDER_ASC, true);
-        return baseMapper.pageTask(page,thesis);
+        IPage<Thesis> thesisIPage = baseMapper.pageTask(page, thesis);
+        List<Thesis> records = thesisIPage.getRecords();
+        records.stream().forEach(thesis1 -> {
+            List<Members> members = this.membersService.getMembers(thesis1.getThesisId());
+            if (members!=null){
+                thesis1.setMembers(members);
+            }
+        });
+        thesisIPage.setRecords(records);
+        return thesisIPage;
     }
 
     @Override
-    public Map<String, Object> getTask(String thesisId) {
-        return baseMapper.getTask(thesisId);
+    public Thesis getTask(String thesisId) {
+        Thesis thesis = baseMapper.getTask(thesisId);
+        List<Members> members = this.membersService.getMembers(thesisId);
+        if (members!=null){
+            thesis.setMembers(members);
+        }
+        return thesis;
     }
 
     @Override

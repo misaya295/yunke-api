@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yunke.common.core.entity.studio.Members;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,4 +19,6 @@ public interface MembersMapper extends BaseMapper<Members> {
 
 
     IPage<Map<String, Object>> pageMembers(Page<Map<String, Object>> page, @Param("taskId") String taskId);
+
+    List<Members> getMembers(@Param("taskId") String taskId);
 }

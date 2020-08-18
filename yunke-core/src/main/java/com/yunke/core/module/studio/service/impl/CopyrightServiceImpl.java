@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yunke.common.core.constant.SystemConstant;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.studio.Copyright;
+import com.yunke.common.core.entity.studio.Items;
 import com.yunke.common.core.entity.studio.Members;
 import com.yunke.common.core.util.SortUtil;
 import com.yunke.core.module.studio.generator.IdGenerateUtil;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -121,12 +123,26 @@ public class CopyrightServiceImpl extends ServiceImpl<CopyrightMapper, Copyright
     public IPage<Copyright> pageTaskList(QueryParam param, Copyright copyright) {
         Page<Copyright> page = new Page<>(param.getPageNum(), param.getPageSize());
         SortUtil.handlePageSort(param, page, "title", SystemConstant.ORDER_ASC, true);
-        return baseMapper.pageTask(page,copyright);
+        IPage<Copyright> copyrightIPage = baseMapper.pageTask(page, copyright);
+        List<Copyright> records = copyrightIPage.getRecords();
+        records.stream().forEach(copyright1 -> {
+            List<Members> members = this.membersService.getMembers(copyright1.getCopyrightId());
+            if (members!=null){
+                copyright1.setMembers(members);
+            }
+        });
+        copyrightIPage.setRecords(records);
+        return copyrightIPage;
     }
 
     @Override
-    public Map<String, Object> getTask(String copyrightId) {
-        return baseMapper.getTask(copyrightId);
+    public Copyright getTask(String copyrightId) {
+        Copyright copyright = baseMapper.getTask(copyrightId);
+        List<Members> members = this.membersService.getMembers(copyrightId);
+        if (members!=null){
+            copyright.setMembers(members);
+        }
+        return copyright;
     }
 
     @Override

@@ -7,10 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yunke.common.core.constant.SystemConstant;
 import com.yunke.common.core.entity.QueryParam;
-import com.yunke.common.core.entity.studio.Copyright;
-import com.yunke.common.core.entity.studio.Match;
-import com.yunke.common.core.entity.studio.MatchMemberAwards;
-import com.yunke.common.core.entity.studio.Members;
+import com.yunke.common.core.entity.studio.*;
 import com.yunke.common.core.util.SortUtil;
 import com.yunke.core.module.studio.generator.IdGenerateUtil;
 import com.yunke.core.module.studio.generator.TaskTypeConstant;
@@ -25,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -148,12 +146,26 @@ public class MatchServiceImpl extends ServiceImpl<MatchMapper, Match> implements
     public IPage<Match> pageTaskList(QueryParam param, Match match) {
         Page<Match> page = new Page<>(param.getPageNum(), param.getPageSize());
         SortUtil.handlePageSort(param, page, "title", SystemConstant.ORDER_ASC, true);
-        return baseMapper.pageTask(page, match);
+        IPage<Match> matchIPage = baseMapper.pageTask(page, match);
+        List<Match> records = matchIPage.getRecords();
+        records.stream().forEach(match1 -> {
+            List<Members> members = this.membersService.getMembers(match1.getMatchId());
+            if (members!=null){
+                match1.setMembers(members);
+            }
+        });
+        matchIPage.setRecords(records);
+        return matchIPage;
     }
 
     @Override
-    public Map<String, Object> getTask(String matchId) {
-        return baseMapper.getTask(matchId);
+    public Match getTask(String matchId) {
+        Match match = baseMapper.getTask(matchId);
+        List<Members> members = this.membersService.getMembers(matchId);
+        if (members!=null){
+            match.setMembers(members);
+        }
+        return match;
     }
 
     @Override

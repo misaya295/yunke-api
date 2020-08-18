@@ -50,7 +50,7 @@ public interface IThesisService extends IService<Thesis> {
      *
      * @param thesisId 论文id
      */
-    Map<String,Object> getTask(String thesisId);
+    Thesis getTask(String thesisId);
 
     /**
      * 查询所有项目条数
