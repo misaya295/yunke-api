@@ -93,8 +93,8 @@ public class ItemsController {
      * @return items 项目详细信息
      */
     @GetMapping("{itemsId}")
-    public R<Map<String,Object>> getTask(@NotBlank(message = "{required}") @PathVariable String itemsId) {
-        Map<String,Object> items = this.iItemsService.getTask(itemsId);
+    public R<Items> getTask(@NotBlank(message = "{required}") @PathVariable String itemsId) {
+        Items items = this.iItemsService.getTask(itemsId);
         return R.ok(items);
     }
 

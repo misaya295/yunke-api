@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -111,12 +111,26 @@ public class ItemsServiceImpl extends ServiceImpl<ItemsMapper, Items> implements
     public IPage<Items> pageTaskList(QueryParam param, Items items) {
         Page<Items> page = new Page<>(param.getPageNum(), param.getPageSize());
         SortUtil.handlePageSort(param, page, "title", SystemConstant.ORDER_ASC, true);
-        return baseMapper.pageTask(page,items);
+        IPage<Items> itemsIPage = baseMapper.pageTask(page, items);
+        List<Items> records = itemsIPage.getRecords();
+        records.stream().forEach(items1 -> {
+            List<Members> members = this.membersService.getMembers(items1.getItemsId());
+            if (members!=null){
+                items1.setMembers(members);
+            }
+        });
+        itemsIPage.setRecords(records);
+        return itemsIPage;
     }
 
     @Override
-    public Map<String, Object> getTask(String itemsId) {
-        return baseMapper.getTask(itemsId);
+    public Items getTask(String itemsId) {
+        Items items = baseMapper.getTask(itemsId);
+        List<Members> members = this.membersService.getMembers(itemsId);
+        if (members!=null){
+            items.setMembers(members);
+        }
+        return items;
     }
 
     @Override

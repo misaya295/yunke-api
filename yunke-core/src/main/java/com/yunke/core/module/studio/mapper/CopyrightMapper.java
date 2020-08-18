@@ -20,7 +20,7 @@ public interface CopyrightMapper extends BaseMapper<Copyright> {
 
     <T> IPage<Copyright> pageTask(Page<T> page, @Param("copyright") Copyright copyright);
 
-    Map<String,Object> getTask(@Param("copyrightId") String copyrightId);
+    Copyright getTask(@Param("copyrightId") String copyrightId);
 
     void updateState(@Param("copyright")Copyright copyright);
 }

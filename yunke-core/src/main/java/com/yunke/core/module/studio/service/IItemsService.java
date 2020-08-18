@@ -51,7 +51,7 @@ public interface IItemsService extends IService<Items> {
      *
      * @param itemsId 项目id
      */
-    Map<String,Object> getTask(String itemsId);
+    Items getTask(String itemsId);
 
     /**
      * 查询所有项目条数

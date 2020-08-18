@@ -51,7 +51,7 @@ public interface IMatchService extends IService<Match> {
      *
      * @param matchId 比赛id
      */
-    Map<String,Object> getTask(String matchId);
+    Match getTask(String matchId);
 
     /**
      * 查询所有项目条数

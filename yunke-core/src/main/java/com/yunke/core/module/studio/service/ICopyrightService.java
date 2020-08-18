@@ -52,7 +52,7 @@ public interface ICopyrightService extends IService<Copyright> {
      *
      * @param copyrightId 软件著作权id
      */
-    Map<String,Object> getTask(String copyrightId);
+    Copyright getTask(String copyrightId);
 
     /**
      * 查询所有项目条数

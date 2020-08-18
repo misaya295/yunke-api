@@ -19,7 +19,7 @@ public interface ItemsMapper extends BaseMapper<Items> {
 
     <T> IPage<Items> pageTask(Page<T> page, @Param("items") Items items);
 
-    Map<String,Object> getTask(@Param("itemsId") String itemsId);
+    Items getTask(@Param("itemsId") String itemsId);
 
     Copyright getCopyright(@Param("itemId") String id);
 

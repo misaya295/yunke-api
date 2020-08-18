@@ -94,8 +94,8 @@ public class MatchController {
      * @return match 比赛详细信息
      */
     @GetMapping("{matchId}")
-    public R<Map<String, Object>> getTask(@NotBlank(message = "{required}") @PathVariable String matchId) {
-        Map<String, Object> match = this.matchService.getTask(matchId);
+    public R<Match> getTask(@NotBlank(message = "{required}") @PathVariable String matchId) {
+        Match match = this.matchService.getTask(matchId);
         return R.ok(match);
     }
 

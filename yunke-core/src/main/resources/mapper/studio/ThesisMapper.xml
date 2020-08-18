@@ -4,10 +4,10 @@
 <mapper namespace="com.yunke.core.module.studio.mapper.ThesisMapper">
 
     <sql id="baseSql">
-        SELECT t.thesis_id AS thesisId,
+        SELECT t.thesis_id ,
                 t.title,
                 t.introduction,
-                t.paper_type AS paperType,
+                t.paper_type ,
                 t.time,
                 t.url,
                 t.cost,
@@ -16,21 +16,25 @@
                 t.reimbursement,
                 GROUP_CONCAT(m.user_id) userId ,
                 GROUP_CONCAT(m.state) userState
-         FROM t_thesis t LEFT JOIN t_members m ON (t.thesis_id=m.task_id)
-         where 1=1
+
   </sql>
 
+
+
     <update id="updateState" parameterType="Thesis">
-        update t_thesis set
+        update t_thesis
+        <set>
         <if test="thesis.state!=null and thesis.state!=''">
             state = #{thesis.state}
         </if>
+        </set>
         where thesis_id = #{thesis.thesisId}
     </update>
 
-    <select id="pageTask" resultType="Thesis" parameterType="Thesis">
-        select DISTINCT t.thesis_id ,t.title, t.introduction,t.paper_type,t.time,t.url,t.cost,t.state,t.invoice,t.reimbursement
-        from t_thesis t LEFT JOIN t_members m ON t.thesis_id = m.task_id
+    <select id="pageTask"  parameterType="Thesis" resultType="Thesis">
+        <include refid="baseSql"/>
+        FROM t_thesis t
+        LEFT JOIN t_members m ON t.thesis_id = m.task_id
         LEFT JOIN t_user u ON u.user_id = m.user_id
         where 1=1
         <if test="thesis.title != null and thesis.title != ''">
@@ -53,21 +57,33 @@
             </foreach>
         </if>
         <if test="thesis.fullName != null and thesis.fullName != ''">
-            AND  u.full_name like CONCAT('%',#{thesis.fullName},'%')
+            AND  (select  GROUP_CONCAT(u1.full_name)
+            from t_user u1
+            LEFT JOIN t_members m1 on u1.user_id = m1.user_id
+            where m1.task_id = t.thesis_id) like CONCAT('%',#{thesis.fullName},'%')
         </if>
         <if test="thesis.chargeFullName != null and thesis.chargeFullName != ''">
-            AND  u.full_name like CONCAT('%',#{thesis.chargeFullName},'%')
-            AND  m.state = 1
+            AND (select  full_name
+            from t_user u1
+            LEFT JOIN t_members m1 on u1.user_id = m1.user_id
+            where m1.task_id = t.thesis_id
+            and m1.state = 1)  like CONCAT('%',#{thesis.chargeFullName},'%')
         </if>
         <if test="thesis.teacherFullName != null and thesis.teacherFullName != ''">
-            AND  u.full_name like CONCAT('%',#{thesis.teacherFullName},'%')
-            AND  m.state = 3
+            AND  (select  full_name
+            from t_user u1
+            LEFT JOIN t_members m1 on u1.user_id = m1.user_id
+            where m1.task_id = t.thesis_id
+            and m1.state = 3)  like CONCAT('%',#{thesis.teacherFullName},'%')
         </if>
         GROUP BY t.thesis_id
     </select>
 
-    <select id="getTask" resultType="map" parameterType="string">
+    <select id="getTask" resultType="Thesis" parameterType="string">
         <include refid="baseSql"/>
+        FROM t_thesis t
+        LEFT JOIN t_members m ON (t.thesis_id=m.task_id)
+        where 1=1
         <if test="thesisId!=null and thesisId!=''">
             AND thesis_id = #{thesisId}
         </if>

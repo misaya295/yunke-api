@@ -94,8 +94,8 @@ public class CopyrightController {
      * @return copyright 软件著作权详细信息
      */
     @GetMapping("{copyrightId}")
-    public R<Map<String, Object>> getTask(@NotBlank(message = "{required}") @PathVariable String copyrightId) {
-        Map<String,Object> copyright = this.copyrightService.getTask(copyrightId);
+    public R<Copyright> getTask(@NotBlank(message = "{required}") @PathVariable String copyrightId) {
+        Copyright copyright = this.copyrightService.getTask(copyrightId);
         return R.ok(copyright);
     }
 

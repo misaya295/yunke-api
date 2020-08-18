@@ -77,6 +77,11 @@ public class MembersServiceImpl extends ServiceImpl<MembersMapper, Members> impl
         return baseMapper.pageMembers(page,taskId);
     }
 
+    @Override
+    public List<Members> getMembers(String taskId) {
+        return this.baseMapper.getMembers(taskId);
+    }
+
     //添加成员列表
     public void setMembers(String taskId, String[] userId) {
         ArrayList<Members> members = new ArrayList<>(userId.length);
