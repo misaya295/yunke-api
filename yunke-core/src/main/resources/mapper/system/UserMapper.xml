@@ -70,7 +70,7 @@
         </choose>
     </if>
     <if test="user.deptId!= null and user.deptId !=''">
-        AND u.dept_id = #{user.deptId}
+        AND u.dept_id = #{user.deptId} OR d.parent_id = #{user.deptId}
     </if>
     <if test="user.fullName!= null and user.fullName !=''">
       AND u.full_name like CONCAT('%',#{user.fullName},'%')
