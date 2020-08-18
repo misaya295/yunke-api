@@ -77,6 +77,14 @@ public interface IQiNiuContentService extends IService<QiNiuContent> {
   void delete(String[] contentIds, QiNiuConfig config);
 
   /**
+   * 删除文件
+   *
+   * @param fileName 文件名字
+   * @param config     配置
+   */
+  void delete(String fileName, QiNiuConfig config);
+
+  /**
    * 删除七牛云对象存储文件
    *
    * @param contents 文件

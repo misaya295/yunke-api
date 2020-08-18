@@ -23,6 +23,7 @@ import com.yunke.core.module.oss.mapper.QiNiuContentMapper;
 import com.yunke.core.module.oss.service.IQiNiuConfigService;
 import com.yunke.core.module.oss.service.IQiNiuContentService;
 import com.yunke.core.module.oss.util.QiNiuUtil;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -143,6 +144,18 @@ public class QiNiuContentServiceImpl extends
 
   @Override
   @Transactional(rollbackFor = Exception.class)
+  public void delete(String fileName, QiNiuConfig config) {
+    QiNiuContent content = getByName(fileName);
+    if (content != null) {
+      baseMapper.deleteById(content.getContentId());
+      List<QiNiuContent> res = new ArrayList<>(1);
+      res.add(content);
+      this.deleteOssFiles(res, config);
+    }
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
   public void synchronize(QiNiuConfig config) {
     if (config.getConfigId() == null) {
       throw new ApiException("请先添加相应配置，再操作");
@@ -181,9 +194,7 @@ public class QiNiuContentServiceImpl extends
 
   @Override
   public void deleteOssFiles(List<QiNiuContent> contents, QiNiuConfig config) {
-    Configuration cfg = new Configuration(QiNiuUtil.getRegion(config.getZone()));
-    Auth auth = Auth.create(config.getAccessKey(), config.getSecretKey());
-    BucketManager bucketManager = new BucketManager(auth, cfg);
+    BucketManager bucketManager = getBucketManager(config);
     for (QiNiuContent content : contents) {
       try {
         bucketManager.delete(content.getBucket(), content.getName() + "." + content.getSuffix());
@@ -197,5 +208,11 @@ public class QiNiuContentServiceImpl extends
   @Override
   public List<Map<String, Object>> getTopTenFileTypeData() {
     return baseMapper.listCountTopTenFileTypeData();
+  }
+
+  private BucketManager getBucketManager(QiNiuConfig config) {
+    Configuration cfg = new Configuration(QiNiuUtil.getRegion(config.getZone()));
+    Auth auth = Auth.create(config.getAccessKey(), config.getSecretKey());
+    return new BucketManager(auth, cfg);
   }
 }
