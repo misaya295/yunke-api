@@ -35,31 +35,31 @@
         LEFT JOIN t_user u ON u.user_id = m.user_id
         where 1=1
         <if test="items.title != null and items.title != ''">
-            AND  title like CONCAT('%',#{items.title},'%')
+            AND  t.title like CONCAT('%',#{items.title},'%')
         </if>
         <if test="items.state != null and items.state != ''">
-            AND  state = #{items.state}
+            AND  t.state = #{items.state}
         </if>
         <if test="(items.reimbursement != null and items.reimbursement != '') or items.reimbursement == 0">
-            AND  reimbursement =#{items.reimbursement}
+            AND  t.reimbursement =#{items.reimbursement}
         </if>
         <if test="items.startTime != null and items.startTime != ''">
             <foreach item="item" index="index" collection="items.startTime.split(',')"  open="AND" separator="AND" >
                 <if test="index == 0">
-                    start_time &gt;= '${item}'
+                    t.start_time &gt;= '${item}'
                 </if>
                 <if test="index == 1">
-                    start_time &lt;= '${item}'
+                    t.start_time &lt;= '${item}'
                 </if>
             </foreach>
         </if>
         <if test="items.endTime != null and items.endTime != ''">
             <foreach item="item" index="index" collection="items.endTime.split(',')"  open="AND" separator="AND" >
                 <if test="index == 0">
-                    end_time &gt;= '${item}'
+                    t.end_time &gt;= '${item}'
                 </if>
                 <if test="index == 1">
-                    end_time &lt;= '${item}'
+                    t.end_time &lt;= '${item}'
                 </if>
             </foreach>
         </if>

@@ -21,18 +21,18 @@
     <select id="pagePostgraduate" resultType="Postgraduate" parameterType="Postgraduate">
         <include refid="baseSql"/>
         <if test="(postgraduate.state != null and postgraduate.state !='') or postgraduate.state == 0 ">
-            AND state = #{postgraduate.state}
+            AND p.state = #{postgraduate.state}
         </if>
         <if test="postgraduate.userId != null and postgraduate.userId !=''">
-            AND user_id = #{postgraduate.userId}
+            AND p.user_id = #{postgraduate.userId}
         </if>
         <if test="postgraduate.time != null and postgraduate.time !=''">
             <foreach item="item" index="index" collection="postgraduate.time.split(',')"  open="AND" separator="AND" >
                 <if test="index == 0">
-                    time &gt;= '${item}'
+                    p.time &gt;= '${item}'
                 </if>
                 <if test="index == 1">
-                    time &lt;= '${item}'
+                    p.time &lt;= '${item}'
                 </if>
             </foreach>
         </if>
@@ -44,7 +44,7 @@
     <select id="getPostgraduate" resultType="map" parameterType="string">
         <include refid="baseSql"/>
         <if test="id!=null and id!=''">
-            AND id = #{id}
+            AND p.id = #{id}
         </if>
     </select>
 

@@ -38,21 +38,21 @@
         LEFT JOIN t_user u ON u.user_id = m.user_id
         where 1=1
         <if test="thesis.title != null and thesis.title != ''">
-            AND  title like CONCAT('%',#{thesis.title},'%')
+            AND  t.title like CONCAT('%',#{thesis.title},'%')
         </if>
         <if test="thesis.state != null and thesis.state != ''">
-            AND  state = #{thesis.state}
+            AND  t.state = #{thesis.state}
         </if>
         <if test="(thesis.reimbursement != null and thesis.reimbursement != '') or thesis.reimbursement==0">
-            AND  reimbursement =#{thesis.reimbursement}
+            AND  t.reimbursement =#{thesis.reimbursement}
         </if>
         <if test="thesis.time != null and thesis.time != ''">
             <foreach item="item" index="index" collection="thesis.time.split(',')"  open="AND" separator="AND" >
                 <if test="index == 0">
-                    time &gt;= '${item}'
+                    t.time &gt;= '${item}'
                 </if>
                 <if test="index == 1">
-                    time &lt;= '${item}'
+                    t.time &lt;= '${item}'
                 </if>
             </foreach>
         </if>
@@ -85,9 +85,9 @@
         LEFT JOIN t_members m ON (t.thesis_id=m.task_id)
         where 1=1
         <if test="thesisId!=null and thesisId!=''">
-            AND thesis_id = #{thesisId}
+            AND t.thesis_id = #{thesisId}
         </if>
-        GROUP BY thesis_id
+        GROUP BY t.thesis_id
     </select>
 
 

@@ -21,7 +21,7 @@
     <select id="pageMembers" resultType="map" parameterType="string">
         <include refid="baseSql"/>
         <if test="taskId!=null and taskId!=''">
-            AND task_id = #{taskId}
+            AND m.task_id = #{taskId}
         </if>
     </select>
 

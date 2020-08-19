@@ -38,21 +38,21 @@
         LEFT JOIN t_match_member_awards a ON t.match_id = a.task_id
         where 1=1
         <if test="match.title != null and match.title != ''">
-            AND  title like CONCAT('%',#{match.title},'%')
+            AND  t.title like CONCAT('%',#{match.title},'%')
         </if>
         <if test="match.state != null and match.state != ''">
-            AND  state = #{match.state}
+            AND  t.state = #{match.state}
         </if>
         <if test="(match.reimbursement != null and match.reimbursement != '') or match.reimbursement==0">
-            AND  reimbursement =#{match.reimbursement}
+            AND  t.reimbursement =#{match.reimbursement}
         </if>
         <if test="match.time != null and match.time != ''">
             <foreach item="item" index="index" collection="match.time.split(',')"  open="AND" separator="AND" >
                 <if test="index == 0">
-                    time &gt;= '${item}'
+                    t.time &gt;= '${item}'
                 </if>
                 <if test="index == 1">
-                    time &lt;= '${item}'
+                    t.time &lt;= '${item}'
                 </if>
             </foreach>
         </if>
@@ -89,7 +89,7 @@
         LEFT JOIN t_match_member_awards a ON t.match_id = a.task_id
         where 1=1
         <if test="matchId!=null and matchId!=''">
-            AND match_id = #{matchId}
+            AND t.match_id = #{matchId}
         </if>
         GROUP BY t.match_id,a.rank_code,a.certificate
     </select>
