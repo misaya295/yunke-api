@@ -83,11 +83,11 @@
         AND f.id=#{fundingId}
     </select>
 
-   <delete id="deleteFundingByFundingid">
-    delete from t_funding where state=4
-       <foreach collection="array" open=" and id in(" close=")" item="id" separator=",">
-              #{id}
-       </foreach>
+   <delete id="deleteFundingByFundingids">
+        delete from t_funding where state=4
+           <foreach collection="array" open=" and id in(" close=")" item="id" separator=",">
+                  #{id}
+           </foreach>
     </delete>
 
     <update id="updateFundingState" parameterType="Funding">
