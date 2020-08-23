@@ -44,6 +44,9 @@
       <if test="funding.name != null and funding.name != ''">                              <!--报销名称-->
           AND f.name  like CONCAT('%',#{funding.name},'%')
       </if>
+      <if test="funding.type != null and funding.type != ''">                              <!--报销类型-->
+          AND f.type  like CONCAT('%',#{funding.type},'%')
+      </if>
       <if test="funding.verifierName != null and funding.verifierName != ''">              <!--审核人-->
           AND u1.full_name like CONCAT('%',#{funding.verifierName},'%')
       </if>
