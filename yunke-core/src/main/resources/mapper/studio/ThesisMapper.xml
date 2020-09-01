@@ -14,6 +14,8 @@
                 t.state,
                 t.invoice,
                 t.reimbursement,
+                t.publish_time,
+                t.issue,
                 GROUP_CONCAT(m.user_id) userId ,
                 GROUP_CONCAT(m.state) userState
 
@@ -43,8 +45,11 @@
         <if test="thesis.state != null and thesis.state != ''">
             AND  t.state = #{thesis.state}
         </if>
-        <if test="(thesis.reimbursement != null and thesis.reimbursement != '') or thesis.reimbursement==0">
+        <if test="thesis.reimbursement != null and thesis.reimbursement != ''">
             AND  t.reimbursement =#{thesis.reimbursement}
+        </if>
+        <if test="thesis.issue != null and thesis.issue != ''">
+            AND  t.issue like CONCAT('%',#{thesis.issue},'%')
         </if>
         <if test="thesis.time != null and thesis.time != ''">
             <foreach item="item" index="index" collection="thesis.time.split(',')"  open="AND" separator="AND" >
@@ -53,6 +58,16 @@
                 </if>
                 <if test="index == 1">
                     t.time &lt;= '${item}'
+                </if>
+            </foreach>
+        </if>
+        <if test="thesis.publishTime != null and thesis.publishTime != ''">
+            <foreach item="item" index="index" collection="thesis.publishTime.split(',')"  open="AND" separator="AND" >
+                <if test="index == 0">
+                    t.publish_time &gt;= '${item}'
+                </if>
+                <if test="index == 1">
+                    t.publish_time &lt;= '${item}'
                 </if>
             </foreach>
         </if>
