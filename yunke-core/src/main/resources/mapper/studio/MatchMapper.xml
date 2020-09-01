@@ -15,6 +15,7 @@
                 t.invoice,
                 t.certificate,
                 t.reimbursement,
+                t.sponsor,
                 a.rank_code ,
                 GROUP_CONCAT(m.user_id) userId ,
                 GROUP_CONCAT(m.state) userState
