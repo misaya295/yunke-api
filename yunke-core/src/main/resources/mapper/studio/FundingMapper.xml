@@ -19,7 +19,8 @@
             f.proposer_id,
             u3.full_name        as proposerName,
             f.state,
-            f.task_id
+            f.task_id,
+            f.reject
     FROM t_funding f
 		LEFT JOIN t_user u1 ON (f.verifier_id=u1.user_id)
 		LEFT JOIN t_user u2 ON (f.certifier_id=u2.user_id)
@@ -103,7 +104,7 @@
                 name=#{funding.name},
             </if>
             <if test="funding.applyTime != null and funding.applyTime != ''">
-                apply_time=#{funding.applyTime},
+                apply_time=#{funding.},
             </if>
             <if test="funding.proposerId != null and funding.proposerId != ''">
                 proposer_id=#{funding.proposerId},
@@ -115,7 +116,8 @@
             invoice=#{funding.invoice},
             cost=#{funding.cost},
             card=#{funding.card},
-            task_id=#{funding.taskId}
+            task_id=#{funding.taskId},
+            reject=#{funding.reject}
         where id=#{funding.id} and state!=3
     </update>
 
@@ -130,7 +132,8 @@
             invoice,
             cost,
             card,
-            task_id
+            task_id,
+            reject
         )values (
             #{funding.name},
             #{funding.proposerId},
@@ -141,7 +144,8 @@
             #{funding.invoice},
             #{funding.cost},
             #{funding.card},
-            #{funding.taskId}
+            #{funding.taskId},
+            #{funding.reject}
         )
     </insert>
 
