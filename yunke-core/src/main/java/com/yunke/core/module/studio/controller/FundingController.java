@@ -105,7 +105,7 @@ public class FundingController {
     @ControllerEndpoint(operation = "查询经费申请数据和选择的申请人和审核人成功", exceptionMessage = "查询经费申请数据和选择的申请人和审核人失败")
     public R<List<Object>> selectFundingById(@PathVariable("fundingId") int fundingId) {
         List<Object> message = new ArrayList<>();
-        if(fundingId==-1) {
+        if(fundingId!=-1) {
             //该经费id的数据
             Funding funding = fundingService.selectFundingById(fundingId);
             if (funding != null) {

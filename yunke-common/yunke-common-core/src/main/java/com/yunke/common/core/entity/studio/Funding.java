@@ -70,6 +70,10 @@ public class Funding implements Serializable {
    * 对应的任务UUID
    */
   private String taskId;
+  /**
+   * 驳回理由
+   */
+  private String  reject;
 
   /**
    * 审核人名称
