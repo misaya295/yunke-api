@@ -70,7 +70,7 @@ public class GraduatedCorporationController {
     @PutMapping
     @ControllerEndpoint(operation = "修改成员的毕业去向", exceptionMessage = "修改成员的毕业去向失败")
     public void updateFunding(@Valid GraduatedCorporation graduatedCorporation) {
-        if(graduatedCorporation.getUserId()!=null&&graduatedCorporation.getCorporationName()!=null&&graduatedCorporation.getCorporationName()!="") {
+        if(graduatedCorporation.getUserId()!=null && graduatedCorporation.getCorporationName()!=null && graduatedCorporation.getCorporationName()!="") {
             this.iGraduatedCorporation.updateGraduatedCorporationMessage(graduatedCorporation);
         }else{
             throw new ApiException("用户id与公司名称不能为空，修改毕业去向失败");

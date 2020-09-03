@@ -45,6 +45,12 @@ public class SchoolAssets implements Serializable {
    * 报废信息
    */
   private String scrapDetail;
-
-
+  /**
+   * 报废申请人id
+   */
+  private String scrapApplicantId;
+  /**
+   * 报废申请人名字
+   */
+  private String scrapApplicantName;
 }

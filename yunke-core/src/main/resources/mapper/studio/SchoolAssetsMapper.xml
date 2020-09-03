@@ -10,8 +10,11 @@
             sa.assets_num,
             sa.price,
             sa.scrap_date,
-            sa.scrap_detail
+            sa.scrap_detail,
+            sa.scrap_applicant_id,
+            u.full_name  AS  scrapApplicantName
     FROM t_school_assets sa
+        LEFT JOIN t_user u ON (u.user_id=sa.scrap_applicant_id)
     where 1=1
   </sql>
 
@@ -37,6 +40,12 @@
               DATE_FORMAT(sa.inclusion_date,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime} OR
               DATE_FORMAT(sa.scrap_date,'%Y-%m-%d') BETWEEN #{statrtTime} AND #{endTime}
           )
+      </if>
+      <if test="schoolAssets.scrapApplicantId != null and schoolAssets.scrapApplicantId != ''">
+          AND sa.scrap_applicant_id = #{schoolAssets.scrapApplicantId}
+      </if>
+      <if test="schoolAssets.scrapApplicantName != null and schoolAssets.scrapApplicantName != ''">
+          AND u.full_name like CONCAT('%',#{schoolAssets.scrapApplicantName},'%')
       </if>
   </select>
 
@@ -103,7 +112,8 @@
                 assets_num =#{schoolAssets.assetsNum},
                 price =#{schoolAssets.price},
                 scrap_date =#{schoolAssets.scrapDate},
-                scrap_detail =#{schoolAssets.scrapDetail}
+                scrap_detail =#{schoolAssets.scrapDetail},
+                scrap_applicant_id = #{schoolAssets.scrapApplicantId}
         where id=#{schoolAssets.id}
     </update>
 

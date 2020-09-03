@@ -6,7 +6,8 @@
      select tgc.user_id,
          tgc.corporation_name,
          tgc.position,
-         u.full_name as fullName
+         u.full_name as fullName,
+         tgc.entry_time
      from t_graduated_corporation tgc
         LEFT JOIN t_user u ON (tgc.user_id=u.user_id)
      where 1=1
@@ -25,6 +26,12 @@
         </if>
         <if test="graduatedCorporation.position != null and graduatedCorporation.position != ''">
             AND tgc.position like CONCAT('%',#{graduatedCorporation.position},'%')
+        </if>
+        <if test="graduatedCorporation.entryTimeFrom != null and graduatedCorporation.entryTimeFrom !=''">
+            AND tgc.entry_time &gt; #{graduatedCorporation.entryTimeFrom}
+        </if>
+        <if test="graduatedCorporation.entryTimeTo!= null and graduatedCorporation.entryTimeTo !=''">
+            AND tgc.entry_time &lt; #{graduatedCorporation.entryTimeTo}
         </if>
     </select>
 
@@ -47,7 +54,8 @@
             <if test="graduatedCorporation.corporationName != null and graduatedCorporation.corporationName != ''">
                 corporation_name=#{graduatedCorporation.corporationName},
             </if>
-            position=#{graduatedCorporation.position}
+            position=#{graduatedCorporation.position},
+            entry_time=#{graduatedCorporation.entryTime}
         where user_id=#{graduatedCorporation.userId}
     </update>
 
@@ -56,11 +64,13 @@
         insert into t_graduated_corporation(
             user_id,
             corporation_name,
-            position
+            position,
+            entry_time
         )values (
             #{graduatedCorporation.userId},
             #{graduatedCorporation.corporationName},
-            #{graduatedCorporation.position}
+            #{graduatedCorporation.position},
+            #{graduatedCorporation.entryTime}
         )
     </insert>
 
