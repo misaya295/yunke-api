@@ -104,6 +104,10 @@ public class Match implements Serializable {
    */
   @TableField(exist = false)
   private List<Members> members;
+  /**
+   * 主办单位
+   */
+  private String sponsor;
 
 
 

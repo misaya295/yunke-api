@@ -95,4 +95,12 @@ public class Thesis implements Serializable {
    */
   @TableField(exist = false)
   private List<Members> members;
+  /**
+   * 更新时间
+   */
+  private String publishTime;
+  /**
+   * 刊号
+   */
+  private String issue;
 }

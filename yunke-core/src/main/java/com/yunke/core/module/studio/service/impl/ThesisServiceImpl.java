@@ -75,8 +75,8 @@ public class ThesisServiceImpl extends ServiceImpl<ThesisMapper, Thesis> impleme
         //进行中的任务or报销成功后的报销字段修改
         if (thesis.getState() == 1) {
             //更新时间
-            thesis.setTime(DateUtil.getDateFormat(new Date(), DateUtil.FULL_TIME_UNIFIED_PATTERN));
-            this.updateById(thesis); //修改论文任务
+//            thesis.setTime(DateUtil.getDateFormat(new Date(), DateUtil.FULL_TIME_UNIFIED_PATTERN));
+            this.updateById(thesis); //修改论文任务 ++-
             if(thesis.getUserId()!=null&&thesis.getUserId()!="") {
                 //修改成员
                 //1,先删除原先成员列表
