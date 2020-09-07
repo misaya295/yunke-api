@@ -104,7 +104,7 @@
                 name=#{funding.name},
             </if>
             <if test="funding.applyTime != null and funding.applyTime != ''">
-                apply_time=#{funding.},
+                apply_time=#{funding.applyTime},
             </if>
             <if test="funding.proposerId != null and funding.proposerId != ''">
                 proposer_id=#{funding.proposerId},
