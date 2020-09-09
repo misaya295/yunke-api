@@ -55,11 +55,12 @@ public class CopyrightController {
         //给非内部人员注册一个禁用状态的账号
         for(int i=0;i<strangerIndex.size();i++) {
             SystemUser user = new SystemUser();
-            user.setUsername(split_userId[strangerIndex.get(i)]);//用户输入的名字为userName
+            user.setUsername(new Date().toString()+ (new Random()).nextInt(10)%(10-1+1) + 1);//用户输入的时间为userName+1-9的随机数
             user.setFullName(split_userId[strangerIndex.get(i)]);//用户输入的名字
             user.setStatus("0");//默认禁用
             user.setCreateTime(new Date());//默认当前时间
             user.setDeptId((long)47);
+            user.setRoleId("7");
             userService.createUser(user);
             //将原本的非内置成员的不正常id替换为创建后的id
             split_userId[strangerIndex.get(i)] = userService.getSystemUser(user.getUsername()).getUserId().toString();
