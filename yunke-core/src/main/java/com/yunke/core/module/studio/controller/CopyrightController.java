@@ -6,9 +6,12 @@ import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.R;
 import com.yunke.common.core.entity.studio.Copyright;
 import com.yunke.common.core.entity.studio.Items;
+import com.yunke.common.core.entity.system.SystemUser;
 import com.yunke.common.core.util.PageUtil;
+import com.yunke.common.core.util.UserIdUtil;
 import com.yunke.core.annotation.ControllerEndpoint;
 import com.yunke.core.module.studio.service.ICopyrightService;
+import com.yunke.core.module.system.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +38,7 @@ import java.util.Map;
 public class CopyrightController {
 
     private final ICopyrightService copyrightService;
+    private final IUserService userService;
 
     /**
      * 新增软件著作权任务_POST
@@ -45,6 +51,19 @@ public class CopyrightController {
     public void addTask(@Valid Copyright copyright) {
         String[] split_userId = StrUtil.split(copyright.getUserId(), StrUtil.COMMA); //成员id
         String[] split_state = StrUtil.split(copyright.getM_state(), StrUtil.COMMA);//成员角色
+        List<Integer> strangerIndex = UserIdUtil.formatStrangerName(split_userId);//非内部成员id的下标集合
+        //给非内部人员注册一个禁用状态的账号
+        for(int i=0;i<strangerIndex.size();i++) {
+            SystemUser user = new SystemUser();
+            user.setUsername(split_userId[strangerIndex.get(i)]);//用户输入的名字为userName
+            user.setFullName(split_userId[strangerIndex.get(i)]);//用户输入的名字
+            user.setStatus("0");//默认禁用
+            user.setCreateTime(new Date());//默认当前时间
+            user.setDeptId((long)47);
+            userService.createUser(user);
+            //将原本的非内置成员的不正常id替换为创建后的id
+            split_userId[strangerIndex.get(i)] = userService.getSystemUser(user.getUsername()).getUserId().toString();
+        }
         this.copyrightService.createTask(copyright, split_userId, split_state);
     }
 
