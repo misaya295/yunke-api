@@ -161,9 +161,11 @@ public class MatchServiceImpl extends ServiceImpl<MatchMapper, Match> implements
     @Override
     public Match getTask(String matchId) {
         Match match = baseMapper.getTask(matchId);
-        List<Members> members = this.membersService.getMembers(matchId);
-        if (members!=null){
-            match.setMembers(members);
+        if(match!=null){
+            List<Members> members = this.membersService.getMembers(matchId);
+            if (members!=null){
+                match.setMembers(members);
+            }
         }
         return match;
     }
