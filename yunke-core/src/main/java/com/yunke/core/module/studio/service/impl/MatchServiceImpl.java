@@ -8,22 +8,22 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yunke.common.core.constant.SystemConstant;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.studio.*;
+import com.yunke.common.core.entity.system.SystemUser;
 import com.yunke.common.core.util.SortUtil;
+import com.yunke.common.core.util.UserIdUtil;
 import com.yunke.core.module.studio.generator.IdGenerateUtil;
 import com.yunke.core.module.studio.generator.TaskTypeConstant;
 import com.yunke.core.module.studio.mapper.MatchMapper;
 import com.yunke.core.module.studio.service.IMatchMemberAwardsService;
 import com.yunke.core.module.studio.service.IMatchService;
 import com.yunke.core.module.studio.service.IMembersService;
+import com.yunke.core.module.system.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -40,6 +40,7 @@ public class MatchServiceImpl extends ServiceImpl<MatchMapper, Match> implements
 
     private final IMembersService membersService;
     private final IMatchMemberAwardsService matchMemberAwardsService;
+    private final IUserService userService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -107,6 +108,14 @@ public class MatchServiceImpl extends ServiceImpl<MatchMapper, Match> implements
             //添加成员
             String[] userId = match.getUserId().split(StrUtil.COMMA);
             String[] state = match.getM_state().split(StrUtil.COMMA);
+            List<Integer> strangerIndex = UserIdUtil.formatStrangerName(userId);//非内部成员id的下标集合
+            //给非内部人员注册一个禁用状态的账号
+            for(int i=0;i<strangerIndex.size();i++) {
+                SystemUser user = UserIdUtil.strangerUser(userId[strangerIndex.get(i)]);//生成一个默认的用户
+                userService.createUser(user);
+                //将原本的非内置成员的不正常id替换为创建后的id
+                userId[strangerIndex.get(i)] = userService.getSystemUser(user.getUsername()).getUserId().toString();
+            }
             ArrayList<Members> members = new ArrayList<>(userId.length);
             IntStream.range(0, userId.length).forEach(index -> {
                 members.add(new Members(Integer.parseInt(userId[index]), Integer.parseInt(state[index]), match.getMatchId()));

@@ -10,22 +10,22 @@ import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.studio.Copyright;
 import com.yunke.common.core.entity.studio.Items;
 import com.yunke.common.core.entity.studio.Members;
+import com.yunke.common.core.entity.system.SystemUser;
 import com.yunke.common.core.util.SortUtil;
+import com.yunke.common.core.util.UserIdUtil;
 import com.yunke.core.module.studio.generator.IdGenerateUtil;
 import com.yunke.core.module.studio.generator.TaskTypeConstant;
 import com.yunke.core.module.studio.mapper.CopyrightMapper;
 import com.yunke.core.module.studio.service.ICopyrightService;
 import com.yunke.core.module.studio.service.IItemsService;
 import com.yunke.core.module.studio.service.IMembersService;
+import com.yunke.core.module.system.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -43,6 +43,7 @@ public class CopyrightServiceImpl extends ServiceImpl<CopyrightMapper, Copyright
 
     private final IMembersService membersService;
     private final IItemsService itemsService;
+    private final IUserService userService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -101,6 +102,14 @@ public class CopyrightServiceImpl extends ServiceImpl<CopyrightMapper, Copyright
                 //添加成员
                 String[] userId = copyright.getUserId().split(StrUtil.COMMA);
                 String[] state = copyright.getM_state().split(StrUtil.COMMA);
+                List<Integer> strangerIndex = UserIdUtil.formatStrangerName(userId);//非内部成员id的下标集合
+                //给非内部人员注册一个禁用状态的账号
+                for(int i=0;i<strangerIndex.size();i++) {
+                    SystemUser user = UserIdUtil.strangerUser(userId[strangerIndex.get(i)]);//生成一个默认的用户
+                    userService.createUser(user);
+                    //将原本的非内置成员的不正常id替换为创建后的id
+                    userId[strangerIndex.get(i)] = userService.getSystemUser(user.getUsername()).getUserId().toString();
+                }
                 ArrayList<Members> members = new ArrayList<>(userId.length);
                 IntStream.range(0, userId.length).forEach(index -> {
                     members.add(new Members(Integer.parseInt(userId[index]), Integer.parseInt(state[index]), copyright.getCopyrightId()));

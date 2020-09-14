@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * 论文_任务表(Thesis)表控制层
@@ -54,13 +51,7 @@ public class ThesisController {
             List<Integer> strangerIndex = UserIdUtil.formatStrangerName(split_userId);//非内部成员id的下标集合
             //给非内部人员注册一个禁用状态的账号
             for(int i=0;i<strangerIndex.size();i++) {
-                SystemUser user = new SystemUser();
-                user.setUsername(new Date().toString()+ (new Random()).nextInt(10)%(10-1+1) + 1);//用户输入的时间为userName+1-9的随机数
-                user.setFullName(split_userId[strangerIndex.get(i)]);//用户输入的名字
-                user.setStatus("0");//默认禁用
-                user.setCreateTime(new Date());//默认当前时间
-                user.setDeptId((long)47);
-                user.setRoleId("7");
+                SystemUser user = UserIdUtil.strangerUser(split_userId[strangerIndex.get(i)]);//生成一个默认的用户
                 userService.createUser(user);
                 //将原本的非内置成员的不正常id替换为创建后的id
                 split_userId[strangerIndex.get(i)] = userService.getSystemUser(user.getUsername()).getUserId().toString();
