@@ -183,6 +183,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, SystemUser> impleme
     return result;
   }
 
+  @Override
+  public List<SystemUser> selectSystemUserByNoteIds(int[] noteId) {
+    return baseMapper.selectSystemUserByNoteIds(noteId);
+  }
+
   private void setUserRoles(SystemUser user, String[] roles) {
     List<UserRole> userRoles = new ArrayList<>(roles.length);
     Stream.of(roles).forEach(id -> userRoles.add(new UserRole(user.getUserId(), Long.valueOf(id))));

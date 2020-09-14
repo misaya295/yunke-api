@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.yunke.common.core.entity.OptionTree;
 import com.yunke.common.core.entity.QueryParam;
 import com.yunke.common.core.entity.R;
+import com.yunke.common.core.entity.studio.Funding;
 import com.yunke.common.core.entity.system.LoginLog;
 import com.yunke.common.core.entity.system.SystemUser;
 import com.yunke.common.core.util.PageUtil;
@@ -13,6 +14,8 @@ import com.yunke.core.annotation.ControllerEndpoint;
 import com.yunke.core.module.system.service.ILoginLogService;
 import com.yunke.core.module.system.service.IUserDataPermissionService;
 import com.yunke.core.module.system.service.IUserService;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,6 +107,12 @@ public class UserController {
   public R<List<OptionTree<SystemUser>>> getTreeOption(SystemUser user) {
     List<OptionTree<SystemUser>> tree = userService.getSystemUserTree(user);
     return R.ok(tree);
+  }
+
+  @GetMapping("/queryUserByNoteIds")
+  public R<List<SystemUser>> queryUserByNoteIds(String noteIds) {
+    int[] split_noteIds = StrUtil.splitToInt(noteIds, StrUtil.COMMA);
+    return R.ok(userService.selectSystemUserByNoteIds(split_noteIds));
   }
 
   @GetMapping

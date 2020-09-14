@@ -23,6 +23,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * 软件著作权_任务表(Copyright)表控制层

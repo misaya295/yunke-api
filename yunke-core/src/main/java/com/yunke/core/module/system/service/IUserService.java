@@ -104,4 +104,10 @@ public interface IUserService extends IService<SystemUser> {
    */
   List<OptionTree<SystemUser>> getSystemUserTree(SystemUser user);
 
+  /**
+   * 通过用户的状态查询到用户的id和真实名字： 1老师/2毕业生/3在校4考核
+   * @param noteId 用户备注数组
+   * @return List<SystemUser>
+   */
+  List<SystemUser> selectSystemUserByNoteIds(int[] noteId);
 }

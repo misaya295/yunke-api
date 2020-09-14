@@ -79,6 +79,19 @@
     u.dept_id,u.last_login_time,u.update_time,u.description,u.avatar
   </select>
 
+    <select id="selectSystemUserByNoteIds"  resultType="SystemUser">
+        SELECT user_id,
+            full_name
+        from t_user
+        where 1=1
+        <if test="array != null and array.length > 0">
+            <foreach collection="array" open=" and note_id in(" close=")" item="noteId" separator=",">
+                #{noteId}
+            </foreach>
+        </if>
+        and status!=0
+    </select>
+
   <select id="selectSystemUserDetail"
     parameterType="SystemUser"
     resultType="SystemUser">
