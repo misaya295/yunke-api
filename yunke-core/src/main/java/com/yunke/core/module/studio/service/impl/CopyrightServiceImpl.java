@@ -138,10 +138,13 @@ public class CopyrightServiceImpl extends ServiceImpl<CopyrightMapper, Copyright
     @Override
     public Copyright getTask(String copyrightId) {
         Copyright copyright = baseMapper.getTask(copyrightId);
-        List<Members> members = this.membersService.getMembers(copyrightId);
-        if (members!=null){
-            copyright.setMembers(members);
+        if(copyright!=null){
+            List<Members> members = this.membersService.getMembers(copyrightId);
+            if (members!=null){
+                copyright.setMembers(members);
+            }
         }
+
         return copyright;
     }
 
