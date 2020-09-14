@@ -70,13 +70,10 @@
         </choose>
     </if>
     <if test="user.deptId!= null and user.deptId !=''">
-        AND u.dept_id = #{user.deptId} OR d.parent_id = #{user.deptId}
+        AND d.dept_id = #{user.deptId} OR d.parent_id = #{user.deptId}
     </if>
     <if test="user.fullName!= null and user.fullName !=''">
       AND u.full_name like CONCAT('%',#{user.fullName},'%')
-    </if>
-    <if test="user.deptId!= null and user.deptId !=''">
-      AND u.dept_id = #{user.deptId}
     </if>
     GROUP BY u.username,u.user_id,u.email,u.mobile,u.status,u.create_time,u.ssex,
     u.dept_id,u.last_login_time,u.update_time,u.description,u.avatar
@@ -110,6 +107,9 @@
     <if test="user.roleId != null and user.roleId != ''">
       AND r.role_id = #{user.roleId,jdbcType=VARCHAR}
     </if>
+      <if test="user.fullName!= null and user.fullName !=''">
+          AND u.full_name = #{user.fullName}
+      </if>
     GROUP BY u.username,u.user_id,u.email,u.mobile,u.status,u.create_time,u.ssex,
     u.dept_id,u.last_login_time,u.update_time,u.description,u.avatar
   </select>

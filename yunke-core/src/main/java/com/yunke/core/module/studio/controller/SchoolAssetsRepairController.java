@@ -112,7 +112,7 @@ public class SchoolAssetsRepairController {
     @ControllerEndpoint(operation = "修改校资产维修状态成功", exceptionMessage = "修改校资产维修状态失败")
     public void updateSchoolAssetsRepairsState(@Valid SchoolAssetsRepair schoolAssetsRepair) {
         if(schoolAssetsRepair.getId() != null) {
-            if (schoolAssetsRepair.getState() >= 1 && schoolAssetsRepair.getState() <= 3) {
+            if (schoolAssetsRepair.getState() >= 0 && schoolAssetsRepair.getState() <= 4) {
                 schoolAssetsRepairService.updateSchoolAssetsRepairsState(schoolAssetsRepair);
             } else {
                 throw new ApiException("经费申请的状态修改值不在正常范围");

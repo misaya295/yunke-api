@@ -121,10 +121,14 @@ public class ThesisServiceImpl extends ServiceImpl<ThesisMapper, Thesis> impleme
     @Override
     public Thesis getTask(String thesisId) {
         Thesis thesis = baseMapper.getTask(thesisId);
-        List<Members> members = this.membersService.getMembers(thesisId);
-        if (members!=null){
-            thesis.setMembers(members);
+        if(thesis!=null){
+            List<Members> members = this.membersService.getMembers(thesisId);
+            if (members!=null){
+                thesis.setMembers(members);
+            }
+
         }
+
         return thesis;
     }
 

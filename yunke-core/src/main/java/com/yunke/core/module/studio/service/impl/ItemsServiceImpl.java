@@ -126,9 +126,12 @@ public class ItemsServiceImpl extends ServiceImpl<ItemsMapper, Items> implements
     @Override
     public Items getTask(String itemsId) {
         Items items = baseMapper.getTask(itemsId);
-        List<Members> members = this.membersService.getMembers(itemsId);
-        if (members!=null){
-            items.setMembers(members);
+        if(items!=null){
+            List<Members> members = this.membersService.getMembers(itemsId);
+            if (members!=null){
+                items.setMembers(members);
+            }
+
         }
         return items;
     }
