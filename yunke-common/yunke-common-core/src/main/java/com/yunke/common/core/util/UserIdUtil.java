@@ -61,7 +61,7 @@ public class UserIdUtil {
     public static String randomUserId() {
         long frontId = new Date().getTime()%100000;
         long endId = new Date().getTime()/1000%100000;
-        int random = new Random().nextInt(100000)%(100000-1+1) + 1;
+        int random = new Random().nextInt(1000000)%(1000000-1+100000) + 100000;
         return ""+frontId+random+endId;
     }
 }
